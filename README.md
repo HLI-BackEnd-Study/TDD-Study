@@ -17,6 +17,18 @@
 - 마음편한 배포를 하자...
 
 ## 💻 참여자
+
 <table>
-  
+ <tr>
+    <td align="center"><a href="https://github.com/herbtea30"><img src="https://avatars.githubusercontent.com/herbtea30" width="130px;" alt=""></a></td>
+    <td align="center"><a href="https://github.com/hjlee01"><img src="https://avatars.githubusercontent.com/hjlee01" width="130px;" alt=""></a></td>
+    <td align="center"><a href="https://github.com/mjkim103301"><img src="https://avatars.githubusercontent.com/mjkim103301" width="130px;" alt=""></a></td>
+    <td align="center"><a href="https://github.com/ch200203"><img src="https://avatars.githubusercontent.com/ch200203" width="130px;" alt=""></a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/herbtea30"><b>@herbtea30</b></a></td>
+    <td align="center"><a href="https://github.com/hjlee01"><b>hjlee01</b></a></td>
+    <td align="center"><a href="https://github.com/mjkim103301">mjkim103301<b></b></a></td>
+    <td align="center"><a href="https://github.com/ch200203"><b>@ch200203</b></a></td>
+  </tr>
 </table>
