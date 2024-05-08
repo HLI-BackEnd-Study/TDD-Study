@@ -1,7 +1,7 @@
 # 테스트 주도 개발 북 스터디
 --- 
 
-매주 정해진 장 까지 책을 읽은 후, 느낀점이나 궁금한 점을 [ Issues ] 탭에 작성을하고,
+매주 정해진 장 까지 책을 읽은 후, 느낀점이나 궁금한 점을 [Issues](https://github.com/HLI-BackEnd-Study/TDD-Study/issues?q=is%3Aissue+is%3Aclosed) 탭에 작성을하고,
 토론의 날에 모여 다시 한 번 책에 대한 내용을 기반으로 이야기를 나누는 형식으로 진행됩니다.
 
 ## 📚 진행중인 책
