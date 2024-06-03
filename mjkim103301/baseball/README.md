@@ -55,3 +55,34 @@
   test (when adding missing tests)
   chore (maintain)
 ```
+
+## 기능 정의
+### 24.06.03 (월)
+#### 컴퓨터 Computer.java
+1. 랜덤하게 (111 <= x <= 999) 범위의 0이 아닌 난수를 생성한다.
+
+#### 사용자 User.java
+1. 3자리 수를 입력받는다.
+2. 입력받은 값을 정합성 검사한다.
+
+#### 솔루션 Solution.java
+* strike 검사 로직
+* ball 검사 로직
+* nothing 검사 로직
+* 결과 출력 로직
+* isSuccess()
+
+#### 게임창 GamePlay.java
+1. `Computer.java`로부터 난수를 생성한다.
+2. `strkie`, `ball`, `nothing` 변수를 초기화한다.
+3. 로직을 실행한다.
+``` java
+  while(isSuccess()){
+    // 사용자로부터 input 받기
+    // 사용자로부터 받은 input 정합성 검사 하기
+    // strike, ball, nothing 검사 하기
+    // 결과 출력하기
+  };
+```
+4. 몇 번만에 맞췄는지 출력한다.
+5. 재시도여부 `yes or no`를 입력받는다.
