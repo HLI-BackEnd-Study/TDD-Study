@@ -24,5 +24,6 @@ class ComputerTest {
         // then
         assertEquals(3, number.length());
         assertFalse(isInZero);
+        System.out.println(number);
     }
 }
