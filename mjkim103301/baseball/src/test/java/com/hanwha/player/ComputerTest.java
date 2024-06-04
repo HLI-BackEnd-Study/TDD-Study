@@ -7,22 +7,22 @@ import org.junit.jupiter.api.Test;
 class ComputerTest {
 
     @Test
-    makeRandomNumber() {
+    void makeRandomNumber() {
         // given
         Computer computer = new Computer();
         boolean isInZero = false;
 
         // when
-        String number = computer.number();
-        for (int i = 0; i < number.length(); i++) {
-            if (number.charAt(i) == '0') {
+        String number = String.valueOf(computer.getNumber());
+        for (char ch : number.toCharArray()) {
+            if (ch == '0') {
                 isInZero = true;
                 break;
             }
         }
 
         // then
-        assertEquals(3, computer.number.size());
+        assertEquals(3, number.length());
         assertFalse(isInZero);
     }
 }
