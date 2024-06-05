@@ -9,7 +9,6 @@ class UserTest {
     @Test
     void userInputTest() {
         User user = new User(123);
-        assertTrue(user.valid());
+        assertTrue(user.isValid());
     }
-
 }
