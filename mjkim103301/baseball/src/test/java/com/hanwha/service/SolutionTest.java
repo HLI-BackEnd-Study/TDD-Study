@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class SolutionTest {
 
     @Test
-    void countingStrikeValidTest() {
+    void countStrikeTest() {
         // given
         Solution solution = new Solution();
         User user = new User(123);
@@ -30,7 +30,42 @@ class SolutionTest {
     }
 
     @Test
-    void countingBallValidTest() {
+    void threeStrikeTest() {
+        Solution solution = new Solution();
+        Computer computer = new Computer();
+        User user = new User(computer.getNumber());
+
+        // when
+        String answer = String.valueOf(computer.getNumber());
+        String input = String.valueOf(user.number());
+
+        int strike = solution.getStrikeCount(answer, input);
+
+        // then
+        assertEquals(3, strike);
+    }
+
+    @Test
+    void zeroStrikeTest() {
+        Solution solution = new Solution();
+        Computer computer = new Computer();
+        String answer = String.valueOf(computer.getNumber());
+        String input =
+
+        User user = new User(Integer.parseInt(sb.reverse().toString()));
+
+        // when
+        String answer = String.valueOf(computer.getNumber());
+        String input = String.valueOf(user.number());
+
+        int strike = solution.getStrikeCount(answer, input);
+
+        // then
+        assertEquals(0, strike);
+    }
+
+    @Test
+    void countBallTest() {
         // given
         Solution solution = new Solution();
         User user = new User(123);
@@ -49,5 +84,6 @@ class SolutionTest {
         System.out.println("input: " + input);
         System.out.println("ball: " + ball);
     }
+
 
 }
