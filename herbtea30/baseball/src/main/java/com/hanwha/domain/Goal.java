@@ -10,6 +10,15 @@ public class Goal {
     private int secondNumber;
     private int thirdNumber;
     private static final int DUPLICATION_RANDOM_NUMBER_COUNT = 10;
+
+    /**
+     * 임의의 난수 생성로직
+     * 1~9까지의 수
+     * 3자리 숫자
+     * 각 자리수는 중복 되지 않는다.
+     *
+     * @return
+     */
     public int generateRandomNumber() {
         randomNumber = getRandomNum();
         while (true) {
@@ -19,11 +28,13 @@ public class Goal {
                 randomNumber = getRandomNum();
             }
         }
-        addDuplicationNumberList();
         return randomNumber;
     }
 
-    private void addDuplicationNumberList() {
+    /**
+     * 직전 난수 리스트 추가
+     */
+    public void addDuplicationNumberList() {
         System.out.println(" duplication Check List :: "+ randomNumber + " // " + duplicationList);
         if (duplicationList.size() < DUPLICATION_RANDOM_NUMBER_COUNT) {
             duplicationList.add(randomNumber);
@@ -33,10 +44,20 @@ public class Goal {
         }
     }
 
+    /**
+     * 이전 난수리스트에 보함되어있지 않다면 true
+     * 포함 되어 있다면 false
+     * @return
+     */
     private boolean isNotEqualTempRandomNumber() {
         return !duplicationList.contains(randomNumber);
     }
 
+    /**
+     * 3자리 난수 생성(100 ~ 999)
+     * 각 자리수 별 설정
+     * @return
+     */
     private int getRandomNum() {
         int randomNum = (int) (Math.random() * 1000);
         firstNumber = randomNum / 100;
@@ -45,18 +66,34 @@ public class Goal {
         return randomNum;
     }
 
+    /**
+     * 각 자리 수가 다른지 여부
+     * 모두 다르면 true
+     * 하나라도 같으면 false
+     * @return
+     */
     private boolean isDifference() {
         return firstNumber != secondNumber && secondNumber != thirdNumber && firstNumber != thirdNumber;
     }
 
+    /**
+     * 각 자리 수가 양수 여부
+     * @return
+     */
     private boolean isPositive() {
         return firstNumber > 0 && secondNumber > 0 && thirdNumber > 0;
     }
 
+    /**
+     * 난수가 100 ~ 999 까지에 속하는지
+     * @param randomNum
+     * @return
+     */
     private boolean isRightRange(int randomNum) {
-        return randomNum > 99 || randomNum < 999;
+        return randomNum > 99 || randomNum < 1000;
     }
 
+    //Getters
     public int getRandomNumber() {
         return randomNumber;
     }

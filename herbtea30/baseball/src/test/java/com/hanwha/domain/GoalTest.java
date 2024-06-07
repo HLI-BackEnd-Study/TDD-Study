@@ -69,19 +69,18 @@ class GoalTest {
     @Test
     @DisplayName("다시 시작 - 임의의 난수가 직전 난수와 다른지 여부 체크")
     void checkLastNumber() {
-        //직전 난수와 현재 난수가 같은지 여부 체크
-        int tempRandomNum = 0;
+        //직전 난수 리스트(10개)와 현재 난수가 같은지 여부 체크
         for(int i = 0 ; i < 1000 ; i++) {
             int randomNum = goal.generateRandomNumber();
-            assertThat(tempRandomNum).isNotEqualTo(randomNum);
-            tempRandomNum = randomNum;
+            assertThat(goal.getDuplicationList()).doesNotContain(randomNum);
+            goal.addDuplicationNumberList();
         }
     }
 
     @Test
     @DisplayName("서로 다른 숫자인지 체크")
     void checkLastNumber2() {
-        System.out.println("generate RandomNumber :: " + goal.generateRandomNumber());
+        goal.generateRandomNumber();
         assertThat(goal.getFirstNumber()).isNotEqualTo(goal.getSecondNumber());
         assertThat(goal.getSecondNumber()).isNotEqualTo(goal.getThirdNumber());
         assertThat(goal.getFirstNumber()).isNotEqualTo(goal.getThirdNumber());
@@ -90,7 +89,7 @@ class GoalTest {
     @Test
     @DisplayName("0이 없는지 체크")
     void checkLastNumber3() {
-        System.out.println("generate RandomNumber :: " + goal.generateRandomNumber());
+        goal.generateRandomNumber();
         assertThat(goal.getFirstNumber()).isPositive();
         assertThat(goal.getSecondNumber()).isPositive();
         assertThat(goal.getFirstNumber()).isPositive();
