@@ -19,9 +19,9 @@ class GoalTest {
     @DisplayName("숫자 자리수를 체크")
     void checkNumberLength() {
         for(int i = 0 ; i < 1000 ; i++) {
-            int randomNum = goal.generateRandomNumber();
-            assertThat(randomNum).isLessThan(1000);
-            assertThat(randomNum).isGreaterThan(99);
+            Ball ball = goal.getBall();
+            assertThat(ball.getRandomBall()).isLessThan(1000);
+            assertThat(ball.getRandomBall()).isGreaterThan(99);
         }
     }
 
@@ -29,8 +29,8 @@ class GoalTest {
     @DisplayName("숫자 자리수를 체크 - 넘어가는 케이스")
     void checkGreaterNumber() {
         for(int i = 0 ; i < 1000 ; i++) {
-            int randomNum = goal.generateRandomNumber();
-            assertThat(randomNum).isLessThan(1000);
+            Ball ball = goal.getBall();
+            assertThat(ball.getRandomBall()).isLessThan(1000);
         }
 
     }
@@ -39,8 +39,8 @@ class GoalTest {
     @DisplayName("숫자 자리수를 체크 - 작은 케이스")
     void checkLessNumber() {
         for(int i = 0 ; i < 1000 ; i++) {
-            int randomNum = goal.generateRandomNumber();
-            assertThat(randomNum).isGreaterThan(99);
+            Ball ball = goal.getBall();
+            assertThat(ball.getRandomBall()).isGreaterThan(99);
         }
     }
 
@@ -48,20 +48,16 @@ class GoalTest {
     @DisplayName("숫자 각 자리수의 1~9까지 여부와 중복을 체크한다.")
     void checkDuplication() {
         for(int i = 0 ; i < 1000 ; i++) {
-            int randomNum = goal.generateRandomNumber();
-            int firstNumber = randomNum / 100;
-            int secondNumber = (randomNum - (100 * firstNumber)) / 10;
-            int thirdNumber = randomNum - (100 * firstNumber) - (10 * secondNumber);
-
+            Ball ball = goal.getBall();
             //양수 여부 체크(0보다 큰지)
-            assertThat(firstNumber).isPositive();
-            assertThat(secondNumber).isPositive();
-            assertThat(thirdNumber).isPositive();
+            assertThat(ball.getFirstBall()).isPositive();
+            assertThat(ball.getSecondBall()).isPositive();
+            assertThat(ball.getThirdBall()).isPositive();
 
             //중복여부 체크
-            assertThat(firstNumber).isNotEqualTo(secondNumber);
-            assertThat(secondNumber).isNotEqualTo(thirdNumber);
-            assertThat(thirdNumber).isNotEqualTo(firstNumber);
+            assertThat(ball.getFirstBall()).isNotEqualTo(ball.getSecondBall());
+            assertThat(ball.getSecondBall()).isNotEqualTo(ball.getThirdBall());
+            assertThat(ball.getFirstBall()).isNotEqualTo(ball.getThirdBall());
 
         }
     }
@@ -71,8 +67,8 @@ class GoalTest {
     void checkLastNumber() {
         //직전 난수 리스트(10개)와 현재 난수가 같은지 여부 체크
         for(int i = 0 ; i < 1000 ; i++) {
-            int randomNum = goal.generateRandomNumber();
-            assertThat(goal.getDuplicationList()).doesNotContain(randomNum);
+            Ball ball = goal.getBall();
+            assertThat(goal.getDuplicationList()).doesNotContain(ball.getRandomBall());
             goal.addDuplicationNumberList();
         }
     }
@@ -80,19 +76,19 @@ class GoalTest {
     @Test
     @DisplayName("서로 다른 숫자인지 체크")
     void checkLastNumber2() {
-        goal.generateRandomNumber();
-        assertThat(goal.getFirstNumber()).isNotEqualTo(goal.getSecondNumber());
-        assertThat(goal.getSecondNumber()).isNotEqualTo(goal.getThirdNumber());
-        assertThat(goal.getFirstNumber()).isNotEqualTo(goal.getThirdNumber());
+        Ball ball = goal.getBall();
+        assertThat(ball.getFirstBall()).isNotEqualTo(ball.getSecondBall());
+        assertThat(ball.getSecondBall()).isNotEqualTo(ball.getThirdBall());
+        assertThat(ball.getFirstBall()).isNotEqualTo(ball.getThirdBall());
     }
 
     @Test
     @DisplayName("0이 없는지 체크")
     void checkLastNumber3() {
-        goal.generateRandomNumber();
-        assertThat(goal.getFirstNumber()).isPositive();
-        assertThat(goal.getSecondNumber()).isPositive();
-        assertThat(goal.getFirstNumber()).isPositive();
+        Ball ball = goal.getBall();
+        assertThat(ball.getFirstBall()).isPositive();
+        assertThat(ball.getSecondBall()).isPositive();
+        assertThat(ball.getThirdBall()).isPositive();
     }
 }
 

@@ -18,8 +18,8 @@ class BallTest {
     @Test
     @DisplayName("Ball은 3자리 수를 가짐")
     void ballTest1() {
-        assertThat(ball.getTotalBall()).isLessThan(1000);
-        assertThat(ball.getTotalBall()).isGreaterThan(99);
+        assertThat(ball.getRandomBall()).isLessThan(1000);
+        assertThat(ball.getRandomBall()).isGreaterThan(99);
 
         assertThatThrownBy(() -> {
             ball = new Ball(1234);
@@ -36,5 +36,13 @@ class BallTest {
         assertThat(ball.getFirstBall()).isEqualTo(1);
         assertThat(ball.getSecondBall()).isEqualTo(2);
         assertThat(ball.getThirdBall()).isEqualTo(3);
+
+        assertThatThrownBy(() -> {
+            ball = new Ball(102);
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage("각 자리 수는  1 ~ 9 까지만 가능합니다.");
+
+        assertThatThrownBy(() -> {
+            ball = new Ball(112);
+        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("각 자리 수는 중복될 수 업습니다.");
     }
 }

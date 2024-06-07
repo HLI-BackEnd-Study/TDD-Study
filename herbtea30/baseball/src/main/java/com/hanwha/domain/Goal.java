@@ -3,6 +3,9 @@ package com.hanwha.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 랜덤 난수를 생성해서 Ball에 할당 해주는 객체
+ */
 public class Goal {
     private List<Integer> duplicationList = new ArrayList<>();
     private int randomNumber;
@@ -10,6 +13,11 @@ public class Goal {
     private int secondNumber;
     private int thirdNumber;
     private static final int DUPLICATION_RANDOM_NUMBER_COUNT = 10;
+
+
+    public Ball getBall() {
+        return new Ball(generateRandomNumber());
+    }
 
     /**
      * 임의의 난수 생성로직
@@ -19,7 +27,7 @@ public class Goal {
      *
      * @return
      */
-    public int generateRandomNumber() {
+    private int generateRandomNumber() {
         randomNumber = getRandomNum();
         while (true) {
             if ((isRightRange(randomNumber) && isPositive() && isDifference()) && isNotEqualTempRandomNumber()) {
@@ -33,6 +41,7 @@ public class Goal {
 
     /**
      * 직전 난수 리스트 추가
+     * 호출 시점은 게임 다시 시작하기 할때 호출한다.
      */
     public void addDuplicationNumberList() {
         System.out.println(" duplication Check List :: "+ randomNumber + " // " + duplicationList);
@@ -91,23 +100,6 @@ public class Goal {
      */
     private boolean isRightRange(int randomNum) {
         return randomNum > 99 || randomNum < 1000;
-    }
-
-    //Getters
-    public int getRandomNumber() {
-        return randomNumber;
-    }
-
-    public int getFirstNumber() {
-        return firstNumber;
-    }
-
-    public int getSecondNumber() {
-        return secondNumber;
-    }
-
-    public int getThirdNumber() {
-        return thirdNumber;
     }
 
     public List<Integer> getDuplicationList() {
