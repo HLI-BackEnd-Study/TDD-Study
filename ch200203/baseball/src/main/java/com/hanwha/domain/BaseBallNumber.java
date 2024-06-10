@@ -5,10 +5,9 @@ import static com.hanwha.constant.BaseballConstant.MIN_NUMBER;
 
 public class BaseBallNumber {
 
-
     private final int number;
 
-    public static BaseBallNumber of(final int number) {
+    public static BaseBallNumber from(final int number) {
         return new BaseBallNumber(number);
     }
 
