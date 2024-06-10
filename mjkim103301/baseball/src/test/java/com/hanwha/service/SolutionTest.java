@@ -105,10 +105,31 @@ class SolutionTest {
         int strike = solution.getStrikeCount(answer, input);
         int ball = solution.getBallCount(answer, input);
         boolean nothing = solution.isNothing(strike, ball);
+
+        System.out.println("strike: " + strike);
+        System.out.println("ball: " + ball);
+        System.out.println("nothing: " + nothing);
         if (strike == 0 && ball == 0) {
             assertTrue(nothing);
         } else {
             assertFalse(nothing);
+        }
+    }
+
+    @Test
+    void successTest() {
+        Solution solution = new Solution();
+        User user = new User(123);
+        Computer computer = new Computer();
+        String answer = String.valueOf(computer.getNumber());
+        String input = String.valueOf(user.number());
+
+        int strike = solution.getStrikeCount(answer, input);
+        boolean success = solution.isSuccess(answer, input);
+        if (strike == 3) {
+            assertTrue(success);
+        } else {
+            assertFalse(success);
         }
     }
 
