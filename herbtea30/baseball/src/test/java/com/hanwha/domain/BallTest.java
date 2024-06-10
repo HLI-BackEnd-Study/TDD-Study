@@ -18,8 +18,8 @@ class BallTest {
     @Test
     @DisplayName("Ball은 3자리 수를 가짐")
     void ballTest1() {
-        assertThat(ball.getRandomBall()).isLessThan(1000);
-        assertThat(ball.getRandomBall()).isGreaterThan(99);
+        assertThat(ball.getBall()).isLessThan(1000);
+        assertThat(ball.getBall()).isGreaterThan(99);
 
         assertThatThrownBy(() -> {
             ball = new Ball(1234);
