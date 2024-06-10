@@ -7,11 +7,10 @@ import com.hanwha.service.Solution;
 import java.util.Scanner;
 
 public class GamePlay {
-    static Computer computer;
-    static User user;
-    static Solution solution;
-    static boolean isSuccess;
-    static Scanner scanner;
+    private Computer computer;
+    private Solution solution;
+    private boolean isSuccess;
+    private Scanner scanner;
 
     public void init() {
         isSuccess = false;
@@ -32,6 +31,7 @@ public class GamePlay {
     }
 
     public String getUserInput() {
+        User user;
         do {
             System.out.println(Message.USER_INPUT);
             int input = scanner.nextInt();
