@@ -22,4 +22,8 @@ public class Solution {
         }
         return ballCount;
     }
+
+    public boolean isNothing(int strike, int ball) {
+        return strike == 0 && ball == 0;
+    }
 }
