@@ -93,5 +93,24 @@ class SolutionTest {
         System.out.println("ball: " + ball);
     }
 
+    @Test
+    void nothingTest() {
+        Solution solution = new Solution();
+        User user = new User(123);
+        Computer computer = new Computer();
+
+        String answer = String.valueOf(computer.getNumber());
+        String input = String.valueOf(user.number());
+
+        int strike = solution.getStrikeCount(answer, input);
+        int ball = solution.getBallCount(answer, input);
+        boolean nothing = solution.isNothing(strike, ball);
+        if (strike == 0 && ball == 0) {
+            assertTrue(nothing);
+        } else {
+            assertFalse(nothing);
+        }
+    }
+
 
 }
