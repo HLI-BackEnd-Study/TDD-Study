@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.hanwha.constant.BaseballConstant.*;
+
 public class RandomBaseballNumberGenerator implements BaseballNumberGenerator {
 
     private List<Integer> numbers = new ArrayList<>();
 
     public RandomBaseballNumberGenerator() {
-        this.numbers = IntStream.range(1, 9)
+        this.numbers = IntStream.range(MIN_NUMBER, MAX_NUMBER)
                 .boxed()
                 .collect(Collectors.toList());
     }
@@ -19,6 +21,6 @@ public class RandomBaseballNumberGenerator implements BaseballNumberGenerator {
     @Override
     public List<Integer> generate() {
         Collections.shuffle(numbers);
-        return this.numbers.subList(0, 3);
+        return this.numbers.subList(ZERO, GAME_COUNT);
     }
 }

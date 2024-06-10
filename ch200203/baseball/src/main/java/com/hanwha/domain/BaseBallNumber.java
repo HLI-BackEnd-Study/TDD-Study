@@ -1,9 +1,10 @@
 package com.hanwha.domain;
 
+import static com.hanwha.constant.BaseballConstant.MAX_NUMBER;
+import static com.hanwha.constant.BaseballConstant.MIN_NUMBER;
+
 public class BaseBallNumber {
 
-    public static final int MIN_NUMBER = 1;
-    public static final int MAX_NUMBER = 9;
 
     private final int number;
 
