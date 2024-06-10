@@ -20,8 +20,8 @@ class GoalTest {
     void checkNumberLength() {
         for(int i = 0 ; i < 1000 ; i++) {
             Ball ball = goal.getBall();
-            assertThat(ball.getRandomBall()).isLessThan(1000);
-            assertThat(ball.getRandomBall()).isGreaterThan(99);
+            assertThat(ball.getBall()).isLessThan(1000);
+            assertThat(ball.getBall()).isGreaterThan(99);
         }
     }
 
@@ -30,7 +30,7 @@ class GoalTest {
     void checkGreaterNumber() {
         for(int i = 0 ; i < 1000 ; i++) {
             Ball ball = goal.getBall();
-            assertThat(ball.getRandomBall()).isLessThan(1000);
+            assertThat(ball.getBall()).isLessThan(1000);
         }
 
     }
@@ -40,7 +40,7 @@ class GoalTest {
     void checkLessNumber() {
         for(int i = 0 ; i < 1000 ; i++) {
             Ball ball = goal.getBall();
-            assertThat(ball.getRandomBall()).isGreaterThan(99);
+            assertThat(ball.getBall()).isGreaterThan(99);
         }
     }
 
@@ -68,7 +68,7 @@ class GoalTest {
         //직전 난수 리스트(10개)와 현재 난수가 같은지 여부 체크
         for(int i = 0 ; i < 1000 ; i++) {
             Ball ball = goal.getBall();
-            assertThat(goal.getDuplicationList()).doesNotContain(ball.getRandomBall());
+            assertThat(goal.getDuplicationList()).doesNotContain(ball.getBall());
             goal.addDuplicationNumberList();
         }
     }
