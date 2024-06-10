@@ -24,19 +24,31 @@ public class GamePlay {
         init();
         String answer = String.valueOf(computer.getNumber());
         while (!isSuccess) {
+            String input = getUserInput();
+            isSuccess = judge(answer, input);
+            printScore(answer, input);
+        }
+        finish();
+    }
+
+    public String getUserInput() {
+        do {
             System.out.println(Message.USER_INPUT);
             int input = scanner.nextInt();
             user = new User(input);
-            if (solution.isSuccess(answer, String.valueOf(user.number()))) {
-                isSuccess = true;
-                finish();
-                break;
-            }
-            printScore(answer, String.valueOf(user.number()));
-        }
+        } while (!user.isValid());
+        return String.valueOf(user.number());
+    }
+
+    public boolean judge(String answer, String input) {
+        return solution.isSuccess(answer, input);
     }
 
     public void printScore(String answer, String input) {
+        if (isSuccess) {
+            System.out.println(Message.SUCCESS);
+            return;
+        }
         int strike = solution.getStrikeCount(answer, input);
         int ball = solution.getBallCount(answer, input);
         boolean nothing = solution.isNothing(strike, ball);
@@ -48,7 +60,6 @@ public class GamePlay {
     }
 
     public void finish() {
-        System.out.println(Message.SUCCESS);
         System.out.println(Message.RETRY);
         int retry = scanner.nextInt();
         if (retry == 2) {
