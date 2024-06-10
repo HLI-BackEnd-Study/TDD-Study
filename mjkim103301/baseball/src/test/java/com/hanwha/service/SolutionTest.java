@@ -47,18 +47,26 @@ class SolutionTest {
 
     @Test
     void zeroStrikeTest() {
+        // given
         Solution solution = new Solution();
         Computer computer = new Computer();
         String answer = String.valueOf(computer.getNumber());
-        String input =
+        String input = "";
+        for (char ch : answer.toCharArray()) {
+            for (char num = '1'; num <= '9'; num++) {
+                if (ch != num) {
+                    input += num;
+                    break;
+                }
+            }
+        }
 
-        User user = new User(Integer.parseInt(sb.reverse().toString()));
+        User user = new User(Integer.parseInt(input));
 
         // when
-        String answer = String.valueOf(computer.getNumber());
-        String input = String.valueOf(user.number());
+        String inputString = String.valueOf(user.number());
 
-        int strike = solution.getStrikeCount(answer, input);
+        int strike = solution.getStrikeCount(answer, inputString);
 
         // then
         assertEquals(0, strike);
