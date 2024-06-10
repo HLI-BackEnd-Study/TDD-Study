@@ -26,4 +26,11 @@ public class Solution {
     public boolean isNothing(int strike, int ball) {
         return strike == 0 && ball == 0;
     }
+
+    public boolean isSuccess(String answer, String input) {
+        if (answer == null || input == null) {
+            return false;
+        }
+        return answer.equals(input);
+    }
 }
