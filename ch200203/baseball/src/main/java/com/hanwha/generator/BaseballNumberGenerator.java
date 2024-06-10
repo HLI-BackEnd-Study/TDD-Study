@@ -1,9 +1,7 @@
 package com.hanwha.generator;
 
-import com.hanwha.domain.BaseBall;
-
-import java.util.List;
+import java.util.Set;
 
 public interface BaseballNumberGenerator {
-    List<Integer> generate();
+    Set<Integer> generate();
 }

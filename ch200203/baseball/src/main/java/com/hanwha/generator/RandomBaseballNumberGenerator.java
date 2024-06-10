@@ -2,7 +2,9 @@ package com.hanwha.generator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -19,8 +21,8 @@ public class RandomBaseballNumberGenerator implements BaseballNumberGenerator {
     }
 
     @Override
-    public List<Integer> generate() {
+    public Set<Integer> generate() {
         Collections.shuffle(numbers);
-        return this.numbers.subList(ZERO, GAME_COUNT);
+        return new HashSet<>(this.numbers.subList(ZERO, GAME_COUNT));
     }
 }
