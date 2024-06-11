@@ -1,5 +1,7 @@
 package com.hanwha.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -10,6 +12,8 @@ public class Ball {
     private final int firstBall;
     private final int secondBall;
     private final int thirdBall;
+    private final List<Integer> balls = new ArrayList<>();
+
     public Ball(int ball) {
 
         if (ball < 100 || ball > 999) {
@@ -28,6 +32,10 @@ public class Ball {
         if (!isDifference()) {
             throw new IllegalArgumentException("각 자리 수는 중복될 수 업습니다.");
         }
+
+        balls.add(this.firstBall);
+        balls.add(this.secondBall);
+        balls.add(this.thirdBall);
     }
 
     public int getBall() {
@@ -44,6 +52,10 @@ public class Ball {
 
     public int getThirdBall() {
         return thirdBall;
+    }
+
+    public List<Integer> getBalls() {
+        return balls;
     }
 
     /**
