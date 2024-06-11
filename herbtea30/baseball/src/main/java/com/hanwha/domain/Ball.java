@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 랜덤 난수를 가지는 객체
+ * 야구 게임에 사용 하는 공 객체
  */
 public class Ball {
     private final int ball;

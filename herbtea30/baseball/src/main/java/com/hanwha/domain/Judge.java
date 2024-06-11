@@ -2,19 +2,29 @@ package com.hanwha.domain;
 
 import java.util.List;
 
+/**
+ * 투수가 던진 공을 판정하는 심판 객체
+ */
 public class Judge {
     private final Ball goalBall;
     public Judge(Ball goalBall) {
         this.goalBall = goalBall;
     }
 
+    /**
+     * 판별 메소드
+     * @param pitchBall
+     * @return 판별
+     */
     public Result compareBall(Ball pitchBall) {
-        int strikeCount = getStrikeCount(pitchBall);
-        int ballCount = getBallCount(pitchBall);
-
-        return new Result(strikeCount, ballCount);
+        return new Result(getStrikeCount(pitchBall), getBallCount(pitchBall));
     }
 
+    /**
+     * 볼 판별하는 메소드
+     * @param pitchBall
+     * @return
+     */
     private int getBallCount(Ball pitchBall) {
         int ballCount = 0;
         List<Integer> goalBallList = goalBall.getBalls();
@@ -27,6 +37,11 @@ public class Judge {
         return ballCount;
     }
 
+    /**
+     * 스트라이크 판별 메소드
+     * @param pitchBall
+     * @return 스트라이크 수
+     */
     private int getStrikeCount(Ball pitchBall) {
         int strikeCount = 0;
         List<Integer> goalBallList = goalBall.getBalls();
@@ -39,6 +54,9 @@ public class Judge {
         return strikeCount;
     }
 
+    /**
+     * 야구게 임 결과 객체
+     */
     public static class Result {
         private int strikeCount;
         private int ballCount;

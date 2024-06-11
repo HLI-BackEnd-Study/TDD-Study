@@ -3,6 +3,9 @@ package com.hanwha.domain;
 import com.hanwha.domain.Judge.Result;
 import java.util.Scanner;
 
+/**
+ * 야구 게임의 입력 및 출력 메세징을 담당하는 게임 객체
+ */
 public class Game {
 
     public static void main(String[] args) {
