@@ -34,8 +34,6 @@ public class BaseballNumber {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BaseballNumber baseballNumber = (BaseballNumber) o;
-        System.out.println("baseballNumber = " + baseballNumber.number);
-        System.out.println("number = " + number);
         return number == baseballNumber.number;
     }
 

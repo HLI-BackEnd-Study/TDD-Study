@@ -22,7 +22,6 @@ class ComputerBaseballsTest {
 
         ComputerBaseballs computerBaseballs = ComputerBaseballs.fromGenerate(baseballNumberGenerator);
         List<Baseball> baseballList = computerBaseballs.getBaseballs().getBaseballs();
-
         List<Baseball> expectedBaseballs = List.of(
                 Baseball.create(1, 0), Baseball.create(2, 1), Baseball.create(3, 2)
         );
