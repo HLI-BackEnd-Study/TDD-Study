@@ -10,7 +10,6 @@ public class InputView {
 
     private static final Scanner scan = new Scanner(System.in);
 
-
     public String inputNumbers() {
         System.out.println(INPUT_MESSAGE);
         String input = scan.nextLine();

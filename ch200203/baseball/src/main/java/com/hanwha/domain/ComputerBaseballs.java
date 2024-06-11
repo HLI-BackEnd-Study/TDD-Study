@@ -16,11 +16,7 @@ public class ComputerBaseballs {
         List<Integer> generatedNumbers = baseballNumberGenerator.generate().stream().toList();
 
         List<Baseball> generateBaseballs = generatedNumbers.stream()
-                .map(number -> {
-                    System.out.println("number = " + number);
-                    System.out.println("index = " + generatedNumbers.indexOf(number));
-                    return Baseball.create(number, generatedNumbers.indexOf(number));
-                })
+                .map(number -> Baseball.create(number, generatedNumbers.indexOf(number)))
                 .toList();
 
         return new ComputerBaseballs(Baseballs.from(generateBaseballs));

@@ -21,6 +21,10 @@ public class Baseball {
         return position;
     }
 
+    public BaseballNumber getBaseBallNumber() {
+        return baseBallNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
