@@ -1,6 +1,5 @@
 package com.hanwha.domain;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +7,7 @@ import java.util.List;
 
 import static com.hanwha.constant.MessageConstant.DUPLICATE_NUMBER_EXCEPTION;
 import static com.hanwha.constant.MessageConstant.NUMBER_COUNT_EXCEPTION;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
@@ -60,4 +59,45 @@ class BaseballsTest {
                 .hasMessage(DUPLICATE_NUMBER_EXCEPTION);
     }
 
+    @Test
+    @DisplayName("두 Baseballs 를 비교하여 스트라이크 갯수를 반환한다.")
+    void testStrike() {
+        List<Baseball> actualBaseballs = List.of(
+                Baseball.create(1, 0),
+                Baseball.create(2, 1),
+                Baseball.create(3, 2)
+        );
+
+        List<Baseball> expectedBaseballs = List.of(
+                Baseball.create(1, 0),
+                Baseball.create(2, 1),
+                Baseball.create(3, 2)
+        );
+
+        Baseballs actual = Baseballs.from(actualBaseballs);
+        Baseballs expected = Baseballs.from(expectedBaseballs);
+
+        assertThat(actual.getStrikeCount(expected)).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("두 Baseballs 를 비교하여 볼 갯수를 반환한다.")
+    void testBall() {
+        List<Baseball> actualBaseballs = List.of(
+                Baseball.create(1, 0),
+                Baseball.create(2, 1),
+                Baseball.create(3, 2)
+        );
+
+        List<Baseball> expectedBaseballs = List.of(
+                Baseball.create(1, 2),
+                Baseball.create(2, 0),
+                Baseball.create(3, 1)
+        );
+
+        Baseballs actual = Baseballs.from(actualBaseballs);
+        Baseballs expected = Baseballs.from(expectedBaseballs);
+
+        assertThat(actual.getBallCount(expected)).isEqualTo(3);
+    }
 }

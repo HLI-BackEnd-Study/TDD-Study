@@ -12,7 +12,7 @@ public class ComputerBaseballs {
         this.baseballs = baseballs;
     }
 
-    public static ComputerBaseballs fromGenerate(BaseballNumberGenerator baseballNumberGenerator) {
+    public static ComputerBaseballs generateComputerBaseballs(BaseballNumberGenerator baseballNumberGenerator) {
         List<Integer> generatedNumbers = baseballNumberGenerator.generate().stream().toList();
 
         List<Baseball> generateBaseballs = generatedNumbers.stream()
@@ -21,6 +21,7 @@ public class ComputerBaseballs {
 
         return new ComputerBaseballs(Baseballs.from(generateBaseballs));
     }
+
 
     public Baseballs getBaseballs() {
         return baseballs;

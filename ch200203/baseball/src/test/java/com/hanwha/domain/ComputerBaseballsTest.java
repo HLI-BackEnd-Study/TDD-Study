@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,7 +19,7 @@ class ComputerBaseballsTest {
         Set<Integer> numbers = new HashSet<>(List.of(1, 2, 3));
         TestBaseballNumberGenerator baseballNumberGenerator = new TestBaseballNumberGenerator(numbers);
 
-        ComputerBaseballs computerBaseballs = ComputerBaseballs.fromGenerate(baseballNumberGenerator);
+        ComputerBaseballs computerBaseballs = ComputerBaseballs.generateComputerBaseballs(baseballNumberGenerator);
         List<Baseball> baseballList = computerBaseballs.getBaseballs().getBaseballs();
         List<Baseball> expectedBaseballs = List.of(
                 Baseball.create(1, 0), Baseball.create(2, 1), Baseball.create(3, 2)
@@ -30,6 +29,7 @@ class ComputerBaseballsTest {
         assertThat(baseballList).hasSize(3);
         assertThat(baseballList).extracting("position").containsExactly(0, 1, 2);
         assertThat(computerBaseballs.getBaseballs().equals(expected)).isTrue();
+
 
     }
 }

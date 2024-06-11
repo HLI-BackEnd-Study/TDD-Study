@@ -32,4 +32,36 @@ class BaseBallTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
+    @Test
+    @DisplayName("BaseballNumber 비교하여 같은 숫자인 경우 true 를 반환한다.")
+    void isSameNumberTest() {
+        BaseballNumber baseballNumber = BaseballNumber.from(1);
+        Baseball baseball = Baseball.create(1, 2);
+        assertThat(baseball.isSameNumber(baseballNumber)).isTrue();
+    }
+
+    @Test
+    @DisplayName("BaseballNumber 비교하여 다른 숫자인 경우 false 를 반환한다.")
+    void isSameNumberFalseTest() {
+        BaseballNumber baseballNumber = BaseballNumber.from(3);
+        Baseball baseball = Baseball.create(1, 2);
+        assertThat(baseball.isSameNumber(baseballNumber)).isFalse();
+    }
+
+    @Test
+    @DisplayName("Position 을 비교하여 같은 자리인 경우 true 를 반환한다.")
+    void isSamePositionTest() {
+        int position = 2;
+        Baseball baseball = Baseball.create(1, 2);
+        assertThat(baseball.isSamePosition(position)).isTrue();
+    }
+
+    @Test
+    @DisplayName("Position 을 비교하여 같은 자리인 경우 false 를 반환한다.")
+    void isSamePositionFalseTest() {
+        int position = 3;
+        Baseball baseball = Baseball.create(1, 2);
+        assertThat(baseball.isSamePosition(position)).isFalse ();
+    }
+
 }

@@ -25,6 +25,22 @@ public class Baseball {
         return baseBallNumber;
     }
 
+
+    public boolean isStrike(Baseball other) {
+        return isSameNumber(other.getBaseBallNumber()) && isSamePosition(other.position);
+    }
+    public boolean isBall(Baseball other) {
+        return isSameNumber(other.getBaseBallNumber()) && !isSamePosition(other.position);
+    }
+
+    public boolean isSameNumber(BaseballNumber baseballNumber) {
+        return this.baseBallNumber.equals(baseballNumber);
+    }
+
+    public boolean isSamePosition(int position) {
+        return this.position == position;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

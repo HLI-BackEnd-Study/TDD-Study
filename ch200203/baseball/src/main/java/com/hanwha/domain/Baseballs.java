@@ -13,7 +13,7 @@ public class Baseballs {
 
     private final List<Baseball> baseballs;
 
-    private Baseballs(List<Baseball> baseballs) {
+    Baseballs(List<Baseball> baseballs) {
         validCount(baseballs);
         validDuplicate(baseballs);
         this.baseballs = new ArrayList<>(baseballs);
@@ -48,7 +48,17 @@ public class Baseballs {
         }
     }
 
+    public int getStrikeCount(Baseballs other) {
+        return (int) baseballs.stream()
+                .filter(baseball -> baseball.isStrike(other.baseballs.get(baseball.getPosition())))
+                .count();
+    }
 
+    public int getBallCount(Baseballs other) {
+        return (int) baseballs.stream()
+                .filter(baseball -> other.baseballs.stream().anyMatch(baseball::isBall))
+                .count();
+    }
 
     @Override
     public boolean equals(Object o) {
