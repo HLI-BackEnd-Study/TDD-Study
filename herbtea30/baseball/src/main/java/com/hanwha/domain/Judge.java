@@ -9,7 +9,6 @@ public class Judge {
     }
 
     public Result compareBall(Ball pitchBall) {
-        System.out.println(pitchBall.getBall() + "//" + goalBall.getBall());
         int strikeCount = getStrikeCount(pitchBall);
         int ballCount = getBallCount(pitchBall);
 
@@ -41,8 +40,8 @@ public class Judge {
     }
 
     public static class Result {
-        int strikeCount;
-        int ballCount;
+        private int strikeCount;
+        private int ballCount;
 
         public int getStrikeCount() {
             return strikeCount;
@@ -74,6 +73,23 @@ public class Judge {
 
         public boolean isNothing() {
             return strikeCount == 0  && ballCount == 0;
+        }
+
+        public String getResultString() {
+            String result = "";
+
+            if (ballCount > 0) {
+                result = result + ballCount + "볼 ";
+            }
+
+            if (strikeCount > 0) {
+                result = result + strikeCount + "스트라이크";
+            }
+
+            if (strikeCount == 0 && ballCount == 0) {
+                result = "낫싱";
+            }
+            return result;
         }
     }
 }

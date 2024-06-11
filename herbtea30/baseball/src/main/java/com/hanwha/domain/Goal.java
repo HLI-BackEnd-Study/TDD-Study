@@ -15,7 +15,7 @@ public class Goal {
     private static final int DUPLICATION_RANDOM_NUMBER_COUNT = 10;
 
 
-    public Ball getBall() {
+    public Ball getRandomBall() {
         return new Ball(generateRandomNumber());
     }
 

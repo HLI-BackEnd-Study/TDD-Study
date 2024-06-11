@@ -14,7 +14,7 @@ public class JudgeTest {
     void test1() {
         Goal goal = new Goal();
         Ball pitchBall = new Ball(123);
-        Ball goalBall = goal.getBall();
+        Ball goalBall = goal.getRandomBall();
 
         Judge judge = new Judge(goalBall);
         assertThat(judge.compareBall(pitchBall)).isNotNull();
@@ -71,7 +71,7 @@ public class JudgeTest {
     }
 
     @Test
-    @DisplayName("판정 관련 테스트 - 낫씽")
+    @DisplayName("판정 관련 테스트 - 오류 케이스")
     void test6() {
         assertThatThrownBy(() -> {
             Ball pitchBall = new Ball(0);

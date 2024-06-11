@@ -17,7 +17,7 @@ public class Ball {
     public Ball(int ball) {
 
         if (ball < 100 || ball > 999) {
-            throw new IllegalArgumentException("볼은 3자리 숫자만 입력할 수 없습니다.");
+            throw new IllegalArgumentException("볼은 3자리 숫자만 입력할 수 있습니다.");
         }
 
         this.ball = ball;

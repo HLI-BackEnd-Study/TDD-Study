@@ -1,14 +1,20 @@
 package com.hanwha.domain;
 
 import com.hanwha.domain.Judge.Result;
+import java.util.Optional;
 
 public class Catcher {
     private Judge judge;
-    private final Ball goalBall;
+    private final Goal goal;
+    private Ball goalBall;
 
     public Catcher() {
-        Goal goal = new Goal();
-        goalBall = goal.getBall();
+        goal = new Goal();
+        goalBall = Optional.ofNullable(goalBall).orElse(goal.getRandomBall());
+    }
+
+    public void setRandomBall() {
+        goalBall = goal.getRandomBall();
     }
 
     public Result catchBall(Ball ball) {
