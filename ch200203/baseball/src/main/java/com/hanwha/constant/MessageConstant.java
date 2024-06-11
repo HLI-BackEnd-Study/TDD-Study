@@ -9,7 +9,7 @@ public class MessageConstant {
 
     public static final String INPUT_MESSAGE = "숫자를 입력해주세요.";
 
-    public static final String NOTHING = "%d 낫싱";
+    public static final String NOTHING = "낫싱";
     public static final String STRIKE = "%d 스트라이크";
     public static final String BALL = "%d 볼";
     public static final String SPACE = " ";
