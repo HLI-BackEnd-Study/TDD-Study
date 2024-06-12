@@ -12,6 +12,7 @@ public class BaseballComparator {
         Baseballs computerBalls = computerBaseballs.getBaseballs();
         int strikes = userBalls.getStrikeCount(computerBalls);
         int balls = userBalls.getBallCount(computerBalls);
+
         return new GameResult(strikes, balls);
     }
 

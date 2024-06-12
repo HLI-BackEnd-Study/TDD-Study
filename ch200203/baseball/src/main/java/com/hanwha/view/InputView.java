@@ -9,19 +9,18 @@ import static com.hanwha.constant.MessageConstant.*;
 
 public class InputView {
 
+    private static final InputView instance = new InputView();
     private static final Scanner scan = new Scanner(System.in);
+
+    public static InputView getInstance() {
+        return instance;
+    }
 
     public String inputNumbers() {
         printMessage(INPUT_MESSAGE);
         String input = scan.nextLine();
         validInputNumbers(input);
-        return scan.nextLine();
-    }
-
-    public GameCommand inputCommand() {
-        printMessage("게임을 다시 시작하시겠습니까? (1: 재시작, 2: 종료): ");
-        String input = scan.nextLine();
-        return GameCommand.from(Integer.parseInt(input));
+        return input;
     }
 
     private void validInputNumbers(String numbers) {
@@ -33,4 +32,11 @@ public class InputView {
             throw new IllegalArgumentException(INVALID_INPUT_EXCEPTION);
         }
     }
+
+    public GameCommand inputCommand() {
+        printMessage(GAME_COMMAND_MESSAGE);
+        String input = scan.nextLine();
+        return GameCommand.from(Integer.parseInt(input));
+    }
+
 }
