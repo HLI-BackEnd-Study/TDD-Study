@@ -3,14 +3,18 @@ package com.hanwha.player;
 public record User(int number) {
 
     public boolean isValid() {
-        if (number < 100 || number > 999) {
+        String input = String.valueOf(number);
+        if (input.length() != 3) {
             return false;
         }
-        String temp = String.valueOf(number);
-        for (char ch : temp.toCharArray()) {
-            if (ch == '0') {
+
+        boolean[] used = new boolean[10];
+        for (char ch : input.toCharArray()) {
+            int index = ch - '0';
+            if (index == 0 || used[index]) {
                 return false;
             }
+            used[index] = true;
         }
         return true;
     }

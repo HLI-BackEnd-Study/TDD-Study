@@ -49,10 +49,10 @@ class UserInputTest {
         assertFalse(nothing);
     }
 
-    @ParameterizedTest
-    @ValueSource(ints = {111, 333, 666, 777, 888, 999})
-    void nothingTest(int user) {
+    @Test
+    void nothingTest() {
         int answer = 425;
+        int user = 178;
         boolean nothing = false;
 
         int strike = getStrike(String.valueOf(answer), String.valueOf(user));
@@ -88,7 +88,7 @@ class UserInputTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {111, 999, 123, 234, 345, 987})
+    @ValueSource(ints = {123, 987})
     void validInputTest(int user) {
         boolean result = isValidInput(user);
         System.out.println("정상적인 입력값입니다.");
@@ -96,23 +96,26 @@ class UserInputTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {0, 100, 800, 709, 909})
-    void unvalidInputTest(int user) {
+    @ValueSource(ints = {0, 100, 709, 970, 111, 999})
+    void invalidInputTest(int user) {
         boolean result = isValidInput(user);
-        System.out.println("111 이상 999 이하의 숫자만 입력해 주세요. 각 자리는 1부터 9까지의 숫자만 올 수 있습니다.");
+        System.out.println("1~9까지의 서로 다른 3자리 수로 구성해주세요.");
         assertFalse(result);
     }
 
     boolean isValidInput(int user) {
-        if (user < 111 || user > 999) {
+        boolean[] used = new boolean[10];
+
+        String input = String.valueOf(user);
+        if (input.length() != 3) {
             return false;
         }
-        String input = String.valueOf(user);
-        for (int i = 0; i < input.length(); i++) {
-            char ch = input.charAt(i);
-            if (ch < '1' || ch > '9') {
+        for (char ch : input.toCharArray()) {
+            int index = ch - '0';
+            if (index == 0 || used[index]) {
                 return false;
             }
+            used[index] = true;
         }
         return true;
     }
