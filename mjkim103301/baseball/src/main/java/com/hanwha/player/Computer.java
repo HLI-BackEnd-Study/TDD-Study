@@ -12,11 +12,20 @@ public class Computer {
     }
 
     private int getRandomNumber() {
-        int randomNumber = 0;
+        StringBuilder randomBuilder = new StringBuilder();
+        boolean[] used = new boolean[10];
         for (int i = 0; i < 3; i++) {
-            randomNumber += (int) ((random.nextInt(9) + 1) * Math.pow(10, i));
+            int temp = 0;
+            while (true) {
+                temp = random.nextInt(9) + 1;
+                if (!used[temp]) {
+                    used[temp] = true;
+                    break;
+                }
+            }
+            randomBuilder.append(temp);
         }
-        return randomNumber;
+        return Integer.parseInt(randomBuilder.toString());
     }
 
     public int getNumber() {
