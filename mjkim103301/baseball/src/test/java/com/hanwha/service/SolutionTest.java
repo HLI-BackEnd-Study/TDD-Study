@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.hanwha.player.Computer;
 import com.hanwha.player.User;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class SolutionTest {
@@ -93,12 +94,15 @@ class SolutionTest {
         System.out.println("ball: " + ball);
     }
 
+    @DisplayName("사용자의 숫자 중 1개라도 정답에 있으면 nothing false test")
     @Test
     void nothingTest() {
+        // given
         Solution solution = new Solution();
-        User user = new User(123);
         Computer computer = new Computer();
+        User user = new User(computer.getNumber());
 
+        // when
         String answer = String.valueOf(computer.getNumber());
         String input = String.valueOf(user.number());
 
@@ -106,31 +110,25 @@ class SolutionTest {
         int ball = solution.getBallCount(answer, input);
         boolean nothing = solution.isNothing(strike, ball);
 
+        // then
         System.out.println("strike: " + strike);
         System.out.println("ball: " + ball);
         System.out.println("nothing: " + nothing);
-        if (strike == 0 && ball == 0) {
-            assertTrue(nothing);
-        } else {
-            assertFalse(nothing);
-        }
+        assertFalse(nothing);
+
     }
 
+    @DisplayName("사용자의 숫자가 정답과 일치하면 성공 테스트")
     @Test
     void successTest() {
         Solution solution = new Solution();
-        User user = new User(123);
         Computer computer = new Computer();
+        User user = new User(computer.getNumber());
         String answer = String.valueOf(computer.getNumber());
         String input = String.valueOf(user.number());
 
-        int strike = solution.getStrikeCount(answer, input);
         boolean success = solution.isSuccess(answer, input);
-        if (strike == 3) {
-            assertTrue(success);
-        } else {
-            assertFalse(success);
-        }
+        assertTrue(success);
     }
 
 
