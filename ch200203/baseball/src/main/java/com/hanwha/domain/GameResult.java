@@ -13,8 +13,8 @@ public class GameResult {
         this.balls = balls;
     }
 
-    public boolean isGameWin() {
-        return strikes == GAME_COUNT;
+    public boolean isWrong() {
+        return strikes != GAME_COUNT;
     }
 
     private String formatGameResult(int strikes, int balls) {

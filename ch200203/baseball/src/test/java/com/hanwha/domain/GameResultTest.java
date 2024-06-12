@@ -36,9 +36,9 @@ class GameResultTest {
     }
 
     @Test
-    @DisplayName("3 스트라이크 인 경우 참을 반환한다.")
+    @DisplayName("숫자를 다 맞추지 못 한 경우 False 를 반환한다.")
     void gameWin() {
         GameResult result = new GameResult(3, 0);
-        assertThat(result.isGameWin()).isTrue();
+        assertThat(result.isWrong()).isFalse();
     }
 }
