@@ -14,39 +14,24 @@ class UserInputTest {
     @ValueSource(ints = {542, 254})
     void threeBallTest(int user) {
         int answer = 425;
-        boolean nothing = false;
 
         int strike = getStrike(String.valueOf(answer), String.valueOf(user));
         int ball = getBall(String.valueOf(answer), String.valueOf(user));
 
-        if (strike == 0 && ball == 0) {
-            nothing = true;
-        }
-
-        if (nothing) {
-            System.out.println("일치하는 숫자가 하나도 없습니다.");
-        } else {
-            System.out.println("strike : " + strike);
-            System.out.println("ball : " + ball);
-        }
-
         assertEquals(3, ball);
         assertEquals(0, strike);
-        assertFalse(nothing);
     }
 
     @Test
     void threeStrikeTest() {
         int answer = 425;
         int user = 425;
-        boolean nothing = false;
 
         int strike = getStrike(String.valueOf(user), String.valueOf(user));
         int ball = getBall(String.valueOf(user), String.valueOf(user));
 
         assertEquals(3, strike);
         assertEquals(0, ball);
-        assertFalse(nothing);
     }
 
     @Test
