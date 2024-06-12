@@ -36,16 +36,16 @@ class GameResultTest {
     }
 
     @Test
-    @DisplayName("숫자를 다 맞추지 못 한 경우 True 를 반환한다.")
+    @DisplayName("숫자를 다 맞추지 못 한 경우 False 를 반환한다.")
     void gameLose() {
         GameResult result = new GameResult(1, 2);
-        assertThat(result.isWrong()).isTrue();
+        assertThat(result.isWin()).isFalse();
     }
 
     @Test
-    @DisplayName("숫자를 다 맞춘 경우 False 를 반환한다.")
+    @DisplayName("숫자를 다 맞춘 경우 True 를 반환한다.")
     void gameWin() {
         GameResult result = new GameResult( 3, 0);
-        assertThat(result.isWrong()).isFalse();
+        assertThat(result.isWin()).isTrue();
     }
 }

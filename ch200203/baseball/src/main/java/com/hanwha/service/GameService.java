@@ -19,7 +19,7 @@ public class GameService {
         OutputView.welcomeMessage();
         // 1. 컴퓨터 난수 생성
         ComputerBaseballs computerBaseballs = ComputerBaseballs.generateComputerBaseballs(generator);
-        do {
+        while (true) {
             // 2. 유저 숫자 입력
             List<Integer> userInput = parseNumbers(inputView.inputNumbers());
             UserBaseballs userBaseballs = UserBaseballs.generateUserBaseballs(userInput);
@@ -31,7 +31,11 @@ public class GameService {
 
             // 치트~ (로컬에서 빠른 확인을 위해...)
             cheat(computerBaseballs);
-        } while (gameResult.isWrong());
+
+            if (gameResult.isWin()) {
+                break;
+            }
+        }
     }
 
     private void cheat(ComputerBaseballs computerBaseballs) {
