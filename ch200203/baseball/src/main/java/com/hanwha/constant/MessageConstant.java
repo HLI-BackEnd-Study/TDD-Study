@@ -9,10 +9,12 @@ public class MessageConstant {
     public static final String INVALID_INPUT_EXCEPTION = "올바르지 않은 입력입니다. 다시 확인해주세요.";
     public static final String INVALID_COMMAND_EXCEPTION = "유효하지 않은 명령어입니다: %d";
 
-
-    private static final String START_MESSAGE = "숫자 야구 게임을 시작합니다.";
+    public static final String WELCOME_MESSAGE = "숫자 야구 게임을 시작합니다.";
     public static final String INPUT_MESSAGE = "숫자를 입력해주세요. : ";
     public static final String SUCCESS_MESSAGE = "숫자를 모두 맞추셨습니다.";
+
+    public static final String GAME_COMMAND_MESSAGE = "게임을 다시 시작하시겠습니까? (1: 재시작, 2: 종료): )";
+
 
     public static final String NOTHING = "낫싱";
     public static final String STRIKE = "%d 스트라이크";

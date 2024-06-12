@@ -34,4 +34,11 @@ class GameResultTest {
         GameResult result = new GameResult(0, 0);
         assertThat(result.toString()).isEqualTo("낫싱");
     }
+
+    @Test
+    @DisplayName("3 스트라이크 인 경우 참을 반환한다.")
+    void gameWin() {
+        GameResult result = new GameResult(3, 0);
+        assertThat(result.isGameWin()).isTrue();
+    }
 }

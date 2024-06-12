@@ -1,5 +1,6 @@
 package com.hanwha.domain;
 
+import static com.hanwha.constant.BaseballConstant.GAME_COUNT;
 import static com.hanwha.constant.MessageConstant.*;
 
 public class GameResult {
@@ -10,6 +11,10 @@ public class GameResult {
     public GameResult(int strikes, int balls) {
         this.strikes = strikes;
         this.balls = balls;
+    }
+
+    public boolean isGameWin() {
+        return strikes == GAME_COUNT;
     }
 
     private String formatGameResult(int strikes, int balls) {
