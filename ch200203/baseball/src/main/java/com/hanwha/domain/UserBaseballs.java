@@ -4,7 +4,7 @@ import java.util.List;
 
 public class UserBaseballs {
 
-    private Baseballs baseballs;
+    private final Baseballs baseballs;
 
     private UserBaseballs(Baseballs baseballs) {
         this.baseballs = baseballs;

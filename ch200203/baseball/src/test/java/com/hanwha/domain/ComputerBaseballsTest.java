@@ -2,6 +2,7 @@ package com.hanwha.domain;
 
 
 import com.hanwha.generator.BaseballNumberGenerator;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -26,11 +27,11 @@ class ComputerBaseballsTest {
         );
         Baseballs expected = Baseballs.from(expectedBaseballs);
 
-        assertThat(baseballList).hasSize(3);
-        assertThat(baseballList).extracting("position").containsExactly(0, 1, 2);
-        assertThat(computerBaseballs.getBaseballs().equals(expected)).isTrue();
-
-
+        SoftAssertions.assertSoftly(softly ->{
+            softly.assertThat(baseballList).hasSize(3);
+            softly.assertThat(baseballList).extracting("position").containsExactly(0, 1, 2);
+            softly.assertThat(computerBaseballs.getBaseballs().equals(expected)).isTrue();
+        });
     }
 }
 
