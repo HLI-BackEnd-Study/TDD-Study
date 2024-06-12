@@ -15,4 +15,8 @@ public class OutputView {
     public static void gameSuccess() {
         printMessage(SUCCESS_MESSAGE);
     }
+
+    public static void end() {
+        printMessage(END_MESSAGE);
+    }
 }

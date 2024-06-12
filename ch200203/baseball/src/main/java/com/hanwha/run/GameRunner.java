@@ -5,6 +5,7 @@ import com.hanwha.generator.BaseballNumberGenerator;
 import com.hanwha.generator.RandomBaseballNumberGenerator;
 import com.hanwha.service.GameService;
 import com.hanwha.view.InputView;
+import com.hanwha.view.OutputView;
 
 public class GameRunner {
 
@@ -16,8 +17,10 @@ public class GameRunner {
 
         do {
             gameService.playGame(generator);
+            OutputView.gameSuccess();
         } while (askToRestart());
 
+        OutputView.end();
     }
 
     private boolean askToRestart() {

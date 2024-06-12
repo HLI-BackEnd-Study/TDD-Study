@@ -17,11 +17,9 @@ public class GameService {
     public void playGame(BaseballNumberGenerator generator) {
         GameResult gameResult;
         OutputView.welcomeMessage();
-
+        // 1. 컴퓨터 난수 생성
+        ComputerBaseballs computerBaseballs = ComputerBaseballs.generateComputerBaseballs(generator);
         do {
-            // 1. 컴퓨터 난수 생성
-            ComputerBaseballs computerBaseballs = ComputerBaseballs.generateComputerBaseballs(generator);
-
             // 2. 유저 숫자 입력
             List<Integer> userInput = parseNumbers(inputView.inputNumbers());
             UserBaseballs userBaseballs = UserBaseballs.generateUserBaseballs(userInput);
@@ -30,7 +28,14 @@ public class GameService {
             gameResult = new BaseballComparator().compare(userBaseballs, computerBaseballs);
             // 4. 결과 확인
             OutputView.gameResult(gameResult.toString());
+
+            // 치트~ (로컬에서 빠른 확인을 위해...)
+            cheat(computerBaseballs);
         } while (gameResult.isWrong());
+    }
+
+    private void cheat(ComputerBaseballs computerBaseballs) {
+        computerBaseballs.getBaseballs().getBaseballs().forEach(System.out::println);
     }
 
 }
