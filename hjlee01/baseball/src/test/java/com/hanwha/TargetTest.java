@@ -12,6 +12,6 @@ public class TargetTest {
         assertTrue(1 <= t.ball1 && t.ball1 <= 9);
         assertTrue(1 <= t.ball2 && t.ball2 <= 9);
         assertTrue(1 <= t.ball3 && t.ball3 <= 9);
-        assertTrue(t.ball1 != t.ball2 && t.ball2 != t.ball3);
+        assertTrue(t.ball1 != t.ball2 && t.ball2 != t.ball3 && t.ball1 != t.ball3);
     }
 }
