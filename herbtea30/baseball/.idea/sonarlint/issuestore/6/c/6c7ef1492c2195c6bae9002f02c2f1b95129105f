@@ -1,0 +1,16 @@
+
+Z
+java:S5786
+"Remove this 'public' modifier.(—²‚ØJ$6e444abe-49ed-456b-9226-2c462247f999
+P
+java:S5838 "Use isZero() instead.(ÊìëJ$438fe64c-0110-483e-9e05-69a6a7d6b585
+P
+java:S58388"Use isZero() instead.(ÊìëJ$363b530c-6713-4314-9ee3-d9e9d5da40b8
+Q
+java:S5838D"Use isZero() instead.(ÍäˆÕJ$a5f0eeb1-b404-4a61-afa9-d940d827a3f7
+P
+java:S5838E"Use isZero() instead.(ÊìëJ$3b9204d5-862b-42da-bff7-8fc801e0d0f6
+
+java:S5778L"bRefactor the code of the lambda to have only one invocation possibly throwing a runtime exception.(®±J$a271fd38-7594-4fa8-8d15-854c880b89b5
+l
+java:S1481Q"+Remove this unused "result" local variable.(‹†­¶úÿÿÿÿJ$dd671c61-ada1-45ed-b949-006b753e308b

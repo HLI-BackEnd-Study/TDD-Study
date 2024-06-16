@@ -6,9 +6,11 @@ import java.util.List;
  * 투수가 던진 공을 판정하는 심판 객체
  */
 public class Judge {
-    private final Ball goalBall;
-    public Judge(Ball goalBall) {
-        this.goalBall = goalBall;
+    private Ball goalBall;
+
+    public Judge() {
+        Goal goal = new Goal();
+        goalBall = goal.getRandomBall();
     }
 
     /**
@@ -52,6 +54,14 @@ public class Judge {
             }
         }
         return strikeCount;
+    }
+
+    /**
+     * 야구게임 다시 진행시, GoalBall 생성
+     * @param randomBall
+     */
+    public void setGoalBall(Ball randomBall) {
+        goalBall = randomBall;
     }
 
     /**

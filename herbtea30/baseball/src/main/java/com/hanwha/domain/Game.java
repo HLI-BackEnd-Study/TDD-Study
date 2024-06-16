@@ -1,39 +1,18 @@
 package com.hanwha.domain;
 
-import com.hanwha.domain.Judge.Result;
-import java.util.Scanner;
+import com.hanwha.service.BaseBallService;
 
 /**
  * 야구 게임의 입력 및 출력 메세징을 담당하는 게임 객체
  */
 public class Game {
 
-    public static void main(String[] args) {
+    public void playBall() {
+        BaseBallService baseBallService = new BaseBallService();
+        baseBallService.play();
+    }
 
-        Catcher catcher = new Catcher();
-
-        while (true) {
-            System.out.println("숫자를 입력해 주세요.");
-            Scanner sc = new Scanner(System.in);
-            try {
-                Pitcher pitcher =  new Pitcher();
-
-                String str = sc.next();
-                Ball pitchBall = pitcher.pitch(Integer.parseInt(str));
-                Result result = catcher.catchBall(pitchBall);
-                System.out.println(result.getResultString());
-
-                if (result.isStrikeOut()) {
-                    System.out.println("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
-                    System.out.println("게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.");
-                    if (sc.next().equals("2")) {
-                        break;
-                    }
-                    catcher.setRandomBall();
-                }
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
+    public static void createNewGame(Judge judge, Goal goal) {
+        judge.setGoalBall(goal.getRandomBall());
     }
 }
