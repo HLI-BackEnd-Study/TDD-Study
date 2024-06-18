@@ -17,6 +17,7 @@ class ComputerTest {
         int length = String.valueOf(computer.getNumber()).length();
 
         // then
+        System.out.println(computer.getNumber());
         assertEquals(3, length);
     }
 
