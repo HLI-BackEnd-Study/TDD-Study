@@ -7,6 +7,7 @@ import com.hanwha.service.Solution;
 import java.util.Scanner;
 
 public class GamePlay {
+
     private Computer computer;
     private Solution solution;
     private boolean isSuccess;
@@ -32,11 +33,17 @@ public class GamePlay {
 
     public String getUserInput() {
         User user;
-        do {
-            System.out.println(Message.USER_INPUT);
-            int input = scanner.nextInt();
-            user = new User(input);
-        } while (!user.isValid());
+        while (true) {
+            try {
+                println(Message.USER_INPUT);
+                int input = scanner.nextInt();
+                user = new User(input);
+                user.checkValidInput();
+                break;
+            } catch (IllegalArgumentException e) {
+                println(e.getMessage());
+            }
+        }
         return String.valueOf(user.number());
     }
 
@@ -46,26 +53,30 @@ public class GamePlay {
 
     public void printScore(String answer, String input) {
         if (isSuccess) {
-            System.out.println(Message.SUCCESS);
+            println(Message.SUCCESS);
             return;
         }
         int strike = solution.getStrikeCount(answer, input);
         int ball = solution.getBallCount(answer, input);
         boolean nothing = solution.isNothing(strike, ball);
         if (nothing) {
-            System.out.println(Message.NOTHING);
+            println(Message.NOTHING);
             return;
         }
-        System.out.println(strike + Message.STRIKE + ", " + ball + Message.BALL);
+        println(strike + Message.STRIKE + ", " + ball + Message.BALL);
     }
 
     public void finish() {
-        System.out.println(Message.RETRY);
+        println(Message.RETRY);
         int retry = scanner.nextInt();
         if (retry == 2) {
             return;
         }
         play();
+    }
+
+    private void println(String message) {
+        System.out.println(message);
     }
 
 }
