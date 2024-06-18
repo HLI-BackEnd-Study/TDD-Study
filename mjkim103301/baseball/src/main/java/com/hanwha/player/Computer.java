@@ -8,7 +8,6 @@ import java.util.Random;
 public class Computer {
 
     private final int number;
-    private final Random random = new Random();
     private final List<Integer> numbers = new ArrayList<>(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9));
 
     public Computer() {
