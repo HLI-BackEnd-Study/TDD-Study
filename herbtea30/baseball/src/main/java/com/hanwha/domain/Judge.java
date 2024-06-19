@@ -10,7 +10,11 @@ public class Judge {
 
     public Judge() {
         Goal goal = new Goal();
-        goalBall = goal.getRandomBall();
+        this.goalBall = goal.getRandomBall();
+    }
+
+    public Judge(Ball goalBall) {
+        this.goalBall = goalBall;
     }
 
     /**

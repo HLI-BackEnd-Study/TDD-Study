@@ -3,6 +3,7 @@ package com.hanwha.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.hanwha.consts.Message;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,19 +16,19 @@ public class PitcherTest {
 
         assertThatThrownBy(() -> {
             pitcher.pitch(1234);
-        }).isInstanceOf(IllegalArgumentException.class).hasMessage("볼은 3자리 숫자만 입력할 수 없습니다.");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(Message.BALL_HAS_THREE_DIGITS);
 
         assertThatThrownBy(() -> {
             pitcher.pitch(1);
-        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("볼은 3자리 숫자만 입력할 수 없습니다.");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining(Message.BALL_HAS_THREE_DIGITS);
 
 
         assertThatThrownBy(() -> {
             pitcher.pitch(102);
-        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("각 자리 수는  1 ~ 9 까지만 가능합니다.");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining(Message.BALL_RANGE_1_TO_9);
 
         assertThatThrownBy(() -> {
             pitcher.pitch(112);
-        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("각 자리 수는 중복될 수 업습니다.");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining(Message.DUPLICATION_NOT_ALLOWED);
     }
 }

@@ -3,6 +3,7 @@ package com.hanwha.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.hanwha.consts.Message;
 import com.hanwha.domain.Judge.Result;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,11 +13,8 @@ public class JudgeTest {
     @Test
     @DisplayName("투수가 투구한 볼과 포수의 볼을 비교한다.")
     void test1() {
-        Goal goal = new Goal();
         Ball pitchBall = new Ball(123);
-        Ball goalBall = goal.getRandomBall();
-
-        Judge judge = new Judge(goalBall);
+        Judge judge = new Judge();
         assertThat(judge.compareBall(pitchBall)).isNotNull();
     }
 
@@ -79,7 +77,7 @@ public class JudgeTest {
 
             Judge judge = new Judge(sameGoalBall);
             Result result = judge.compareBall(pitchBall);
-        }).isInstanceOf(IllegalArgumentException.class).hasMessage("볼은 3자리 숫자만 입력할 수 없습니다.");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(Message.BALL_HAS_THREE_DIGITS);
     }
 
 }

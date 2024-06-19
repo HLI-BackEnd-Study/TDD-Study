@@ -16,7 +16,7 @@ public class CatcherTest {
         Ball ball2 = pitcher.pitch(456);
         Ball ball3 = pitcher.pitch(789);
 
-        Catcher catcher = new Catcher();
+        Catcher catcher = new Catcher(new Judge());
         Result result = catcher.catchBall(ball);
         assertThat(result).isNotNull();
 

@@ -1,5 +1,6 @@
 package com.hanwha.domain;
 
+import com.hanwha.consts.Message;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,7 +18,7 @@ public class Ball {
     public Ball(int ball) {
 
         if (ball < 100 || ball > 999) {
-            throw new IllegalArgumentException("볼은 3자리 숫자만 입력할 수 있습니다.");
+            throw new IllegalArgumentException(Message.BALL_HAS_THREE_DIGITS);
         }
 
         this.ball = ball;
@@ -26,11 +27,11 @@ public class Ball {
         this.thirdBall = ball - (firstBall * 100) - (secondBall * 10);
 
         if (!isPositive()) {
-            throw new IllegalArgumentException("각 자리 수는  1 ~ 9 까지만 가능합니다.");
+            throw new IllegalArgumentException(Message.BALL_RANGE_1_TO_9);
         }
 
         if (!isDifference()) {
-            throw new IllegalArgumentException("각 자리 수는 중복될 수 업습니다.");
+            throw new IllegalArgumentException(Message.DUPLICATION_NOT_ALLOWED);
         }
 
         balls.add(this.firstBall);
