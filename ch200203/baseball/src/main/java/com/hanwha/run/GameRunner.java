@@ -27,7 +27,9 @@ public class GameRunner {
                 break;
             }
         }
+
         OutputView.end();
+        System.exit(0);
     }
 
     private boolean askQuit() {
