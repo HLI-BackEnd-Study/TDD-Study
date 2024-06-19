@@ -7,11 +7,19 @@ import com.hanwha.service.BaseBallService;
  */
 public class Game {
 
+    /**
+     * 게임을 시작
+     */
     public void playBall() {
         BaseBallService baseBallService = new BaseBallService();
         baseBallService.play();
     }
 
+    /**
+     * 새로운 게임을 생성
+     * @param judge
+     * @param goal
+     */
     public static void createNewGame(Judge judge, Goal goal) {
         judge.setGoalBall(goal.getRandomBall());
     }

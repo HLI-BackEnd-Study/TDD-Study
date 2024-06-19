@@ -13,6 +13,11 @@ public class Catcher {
         this.judge = judge;
     }
 
+    /**
+     * 공을 받아 심판에서 판정 요청
+     * @param ball
+     * @return result 판정 결과
+     */
     public Result catchBall(Ball ball) {
         return judge.compareBall(ball);
     }
