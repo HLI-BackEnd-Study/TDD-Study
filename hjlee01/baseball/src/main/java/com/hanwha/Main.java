@@ -33,9 +33,12 @@ public class Main {
 
     public static void game() {
         System.out.println("숫자를 입력해 주세요 : ");
-        number = Stream.of(String.valueOf(sc.nextInt()).split("")).mapToInt(Integer::parseInt).toArray();
-        game = new Direction(number[0], number[1], number[2]).locate(target);
-        System.out.println(game.strike + "S " + game.ball + "B");
+
+        Direction direction = new Direction(sc.nextInt());
+        if (direction.isValidDiffrentBalls()) {
+            game = direction.locate(target);
+            System.out.println(game.strike + "S " + game.ball + "B");
+        }
 
         innings++;
     }
