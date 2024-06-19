@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 class SolutionTest {
 
+    @DisplayName("스트라이크 개수는 0 이상 3 이하다.")
     @Test
     void countStrikeTest() {
         // given
@@ -30,6 +31,7 @@ class SolutionTest {
         System.out.println("strike: " + strike);
     }
 
+    @DisplayName("컴퓨터 숫자와 사용자 입력 숫자가 같으면 3스트라이크다.")
     @Test
     void threeStrikeTest() {
         Solution solution = new Solution();
@@ -46,6 +48,7 @@ class SolutionTest {
         assertEquals(3, strike);
     }
 
+    @DisplayName("0 스트라이크 테스트")
     @Test
     void zeroStrikeTest() {
         // given
@@ -73,6 +76,7 @@ class SolutionTest {
         assertEquals(0, strike);
     }
 
+    @DisplayName("볼의 개수는 0 이상 3 이하여야 한다.")
     @Test
     void countBallTest() {
         // given
