@@ -1,6 +1,6 @@
 package com.hanwha.service;
 
-public class Solution {
+public class JudgeService {
 
 
     public int getStrikeCount(String answer, String input) {
