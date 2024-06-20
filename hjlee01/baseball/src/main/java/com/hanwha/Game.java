@@ -29,23 +29,14 @@ public abstract class Game {
      * 3자리 수인지 검증
      */
     public boolean isValidThreeBalls() {
-        if (111 <= this.balls && this.balls <= 999) {
-            return true;
-        }
-
-        return false;
+        return 111 <= this.balls && this.balls <= 999;
     }
 
     /**
      * 각각 다른 수의 공인지 검증
-     * @return
      */
     public boolean isValidDiffrentBalls() {
-        if (this.ball1 != this.ball2 && this.ball2 != ball3 && ball1 != ball3) {
-            return true;
-        }
-
-        return false;
+        return this.ball1 != this.ball2 && this.ball2 != ball3 && ball1 != ball3;
     }
 
     int strike = 0;
@@ -53,8 +44,6 @@ public abstract class Game {
 
     /**
      * 위치 결과
-     * @param o
-     * @return
      */
     public Game locate(Object o) {
         Game game = (Game) o;

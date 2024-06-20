@@ -1,13 +1,11 @@
 package com.hanwha;
 
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 public class Main {
     static Scanner sc = new Scanner(System.in);
     static Game game;
     static Target target = new Target();
-    static int[] number;
     static int innings = 0;
     static int newGame = 1;
 
@@ -44,7 +42,7 @@ public class Main {
     }
 
     public static void success() {
-        if (new Ball(3, 0).equals(game)) {
+        if (game.strike == 3) {
             System.out.println("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
             finish();
         }

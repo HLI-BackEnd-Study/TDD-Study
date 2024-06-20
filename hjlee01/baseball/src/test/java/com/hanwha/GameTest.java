@@ -26,19 +26,19 @@ public class GameTest {
 
         // 1회차 - 3아웃
         Game game = new Direction(4, 8, 5).locate(target);
-        assertTrue(new Ball(0, 0).equals(game));
+        assertTrue(game.strike == 0 && game.ball == 0);
         // 2회차 - 1볼
         game = new Direction(9, 3, 1).locate(target);
-        assertTrue(new Ball(0, 1).equals(game));
+        assertTrue(game.strike == 0 && game.ball == 1);
         // 3회차 - 1스트라이크 1볼
         game = new Direction(2, 1, 6).locate(target);
-        assertTrue(new Ball(1, 1).equals(game));
+        assertTrue(game.strike == 1 && game.ball == 1);
         // 4회차 - 1스트라이크 2볼
         game = new Direction(1, 6, 7).locate(target);
-        assertTrue(new Ball(1, 2).equals(game));
+        assertTrue(game.strike == 1 && game.ball == 2);
         // 5회차 - 3스트라이크
         game = new Direction(1, 7, 6).locate(target);
-        assertTrue(new Ball(3, 0).equals(game));
+        assertTrue(game.strike == 3 && game.ball == 0);
     }
 
 }

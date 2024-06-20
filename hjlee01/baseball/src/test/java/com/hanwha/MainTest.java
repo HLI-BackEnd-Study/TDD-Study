@@ -3,8 +3,8 @@ package com.hanwha;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class MainTest {
     /*
@@ -18,9 +18,8 @@ public class MainTest {
     @Test
     @Description("게임 시작 시 0 이닝인지 테스트")
     void startTest() {
-        Main main = new Main();
-        main.start();
-        assertTrue(main.innings == 0);
-        assertFalse(main.innings == 1);
+        Main.start();
+        assertEquals(0, Main.innings);
+        assertNotEquals(1, Main.innings);
     }
 }
