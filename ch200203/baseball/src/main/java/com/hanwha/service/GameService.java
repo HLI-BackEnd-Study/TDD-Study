@@ -12,7 +12,7 @@ import java.util.List;
 import static com.hanwha.utils.ParseNumbers.parseNumbers;
 
 public class GameService {
-    private final InputView inputView = new InputView();
+    private final InputView inputView = InputView.getInstance();
 
     public void playGame(BaseballNumberGenerator generator) {
         GameResult gameResult;
