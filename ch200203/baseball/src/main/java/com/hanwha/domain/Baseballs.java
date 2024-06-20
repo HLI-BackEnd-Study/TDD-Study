@@ -23,6 +23,20 @@ public class Baseballs {
         return new Baseballs(baseballs);
     }
 
+    public static Baseballs newFrom(List<Integer> numbers) {
+        List<Baseball> generateBaseballs = generateBaseballs(numbers);
+        return new Baseballs(generateBaseballs);
+    }
+
+    /**
+     * 입력받은 숫자를 바탕으로 Baseball List 를 만들어 반환한다.
+     */
+    private static List<Baseball> generateBaseballs(List<Integer> numbers) {
+        return numbers.stream()
+                .map(number -> Baseball.create(number, numbers.indexOf(number)))
+                .toList();
+    }
+
     public List<Baseball> getBaseballs() {
         return Collections.unmodifiableList(baseballs);
     }

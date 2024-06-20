@@ -33,6 +33,7 @@ class ComputerBaseballsTest {
             softly.assertThat(computerBaseballs.getBaseballs().equals(expected)).isTrue();
         });
     }
+
 }
 
 

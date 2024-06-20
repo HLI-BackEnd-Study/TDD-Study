@@ -38,6 +38,10 @@ public class GameService {
         }
     }
 
+    /**
+     *
+     * @param computerBaseballs
+     */
     private void cheat(ComputerBaseballs computerBaseballs) {
         computerBaseballs.getBaseballs().getBaseballs().forEach(System.out::println);
     }

@@ -14,7 +14,7 @@ public class ComputerBaseballs {
 
     public static ComputerBaseballs generateComputerBaseballs(BaseballNumberGenerator baseballNumberGenerator) {
         List<Integer> generatedNumbers = baseballNumberGenerator.generate().stream().toList();
-
+        
         List<Baseball> generateBaseballs = generatedNumbers.stream()
                 .map(number -> Baseball.create(number, generatedNumbers.indexOf(number)))
                 .toList();
@@ -22,6 +22,11 @@ public class ComputerBaseballs {
         return new ComputerBaseballs(Baseballs.from(generateBaseballs));
     }
 
+
+    public static ComputerBaseballs generateComputerBaseballs(BaseballNumberGenerator baseballNumberGenerator, String s) {
+        List<Integer> generatedNumbers = baseballNumberGenerator.generate().stream().toList();
+        return new ComputerBaseballs(Baseballs.newFrom(generatedNumbers));
+    }
 
     public Baseballs getBaseballs() {
         return baseballs;
