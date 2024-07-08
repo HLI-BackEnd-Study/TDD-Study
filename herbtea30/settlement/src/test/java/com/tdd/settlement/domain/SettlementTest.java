@@ -16,7 +16,7 @@ public class SettlementTest {
         Settlement settlement = new Settlement();
         Amount requestAmount = new Amount(100000L);
         List<User> userList = List.of(new User("kdh"), new User("leehj"), new User("kimmj"), new User("inch"));
-        settlement.requestSettlement(requestAmount);
+        settlement.requestSettlement(requestAmount, userList);
     }
 
     @DisplayName("정산 요청하기 - 지정")
@@ -24,8 +24,7 @@ public class SettlementTest {
     public void test1() {
         Settlement settlement = new Settlement();
         List<User> userList = List.of(new User("kangdh", 30000L), new User("leehj", 25000L), new User("kimmj", 25000L), new User("inch", 20000L));
-        Amount requestAmount = new Amount(10000L);
-        settlement.requestSettlement(requestAmount);
+        settlement.requestSettlement(userList);
     }
 
     @DisplayName("정산 금액 보내기")
