@@ -8,9 +8,9 @@ import lombok.Getter;
  */
 @Getter
 public class Amount {
-    private long totalAmount;
+    private int amount;
 
-    public Amount(long totalAmount) {
-        this.totalAmount = totalAmount;
+    public Amount(int amount) {
+        this.amount = amount;
     }
 }

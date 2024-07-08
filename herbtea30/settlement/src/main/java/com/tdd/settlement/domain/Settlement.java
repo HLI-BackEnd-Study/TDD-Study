@@ -15,6 +15,13 @@ public class Settlement {
         this.requestAmount = requestAmount;
     }
 
-    public void requestSettlement(List<User> userList) {
+    public User getOwner() {
+        return owner;
+    }
+
+    public List<User> requestSettlement(List<User> userList) {
+        return userList.stream().map(m -> {
+            return new User(m.getId(), new Amount(requestAmount.getAmount()/userList.size()));
+        }).toList();
     }
 }
