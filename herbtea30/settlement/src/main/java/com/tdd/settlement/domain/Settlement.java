@@ -7,6 +7,11 @@ import java.util.List;
  * Description : Create a description.
  */
 public class Settlement {
+    private User owner;
+    public Settlement(User owner) {
+        this.owner = owner;
+    }
+
     public void requestSettlement(Amount requestAmount, List<User> userList) {
     }
 

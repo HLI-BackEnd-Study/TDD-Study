@@ -2,7 +2,6 @@ package com.tdd.settlement.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
@@ -13,17 +12,19 @@ public class SettlementTest {
     @DisplayName("정산 요청하기 - N빵")
     @Test
     public void test1() {
-        Settlement settlement = new Settlement();
+        User owner = new User("kdh");
+        Settlement settlement = new Settlement(owner);
         Amount requestAmount = new Amount(100000L);
-        List<User> userList = List.of(new User("kdh"), new User("leehj"), new User("kimmj"), new User("inch"));
+        List<User> userList = List.of(new User("leehj"), new User("kimmj"), new User("inch"));
         settlement.requestSettlement(requestAmount, userList);
     }
 
     @DisplayName("정산 요청하기 - 지정")
     @Test
     public void test1_1() {
-        Settlement settlement = new Settlement();
-        List<User> userList = List.of(new User("kangdh", new Amount(30000L)), new User("leehj", new Amount(25000L)), new User("kimmj", new Amount(25000L)), new User("inch", new Amount(20000L)));
+        User owner = new User("kangdh");
+        Settlement settlement = new Settlement(owner);
+        List<User> userList = List.of(new User("leehj", new Amount(25000L)), new User("kimmj", new Amount(25000L)), new User("inch", new Amount(20000L)));
         settlement.requestSettlement(userList);
     }
 
