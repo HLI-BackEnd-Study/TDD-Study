@@ -20,8 +20,15 @@ public class Settlement {
     }
 
     public List<User> requestSettlement(List<User> userList) {
+        if (requestAmount.getAmount() != userList.stream().mapToInt(m -> m.getRequestAmount().getAmount()).sum()) {
+            throw new RuntimeException("정산 요청금액과 세부 금액 합계가 맞지 않습니다.");
+        }
+
         return userList.stream().map(m -> {
-            return new User(m.getId(), new Amount(requestAmount.getAmount()/userList.size()));
+            if (m.getRequestAmount() == null) {
+                return new User(m.getId(), new Amount(this.requestAmount.getAmount() / userList.size()));
+            }
+            return m;
         }).toList();
     }
 }

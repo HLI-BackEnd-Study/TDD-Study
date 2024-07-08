@@ -34,7 +34,31 @@ public class SettlementTest {
         Amount requestAmount = new Amount(70000);
         Settlement settlement = new Settlement(owner, requestAmount);
         List<User> userList = List.of(new User("leehj", new Amount(25000)), new User("kimmj", new Amount(25000)), new User("inch", new Amount(20000)));
-        settlement.requestSettlement(userList);
+        List<User> settlementRequestList = settlement.requestSettlement(userList);
+        assertThat(settlementRequestList).hasSize(3);
+        assertThat(settlementRequestList.get(0).getId()).isEqualTo("leehj");
+        assertThat(settlementRequestList.get(0).getRequestAmount().getAmount()).isEqualTo(25000);
+        assertThat(settlementRequestList.get(1).getRequestAmount().getAmount()).isEqualTo(25000);
+        assertThat(settlementRequestList.get(2).getRequestAmount().getAmount()).isEqualTo(20000);
+        assertThat(settlementRequestList.stream().mapToInt(m -> m.getRequestAmount().getAmount()).sum()).isEqualTo(requestAmount.getAmount());
+        assertThat(settlement.getOwner().getId()).isEqualTo("kangdh");
+    }
+
+    @DisplayName("정산 요청하기 - 지정 금액 합계 오류")
+    @Test
+    public void test1_2() {
+        User owner = new User("kangdh");
+        Amount requestAmount = new Amount(80000);
+        Settlement settlement = new Settlement(owner, requestAmount);
+        List<User> userList = List.of(new User("leehj", new Amount(25000)), new User("kimmj", new Amount(25000)), new User("inch", new Amount(20000)));
+        List<User> settlementRequestList = settlement.requestSettlement(userList);
+        assertThat(settlementRequestList).hasSize(3);
+        assertThat(settlementRequestList.get(0).getId()).isEqualTo("leehj");
+        assertThat(settlementRequestList.get(0).getRequestAmount().getAmount()).isEqualTo(25000);
+        assertThat(settlementRequestList.get(1).getRequestAmount().getAmount()).isEqualTo(25000);
+        assertThat(settlementRequestList.get(2).getRequestAmount().getAmount()).isEqualTo(20000);
+        assertThat(settlementRequestList.stream().mapToInt(m -> m.getRequestAmount().getAmount()).sum()).isEqualTo(requestAmount.getAmount());
+        assertThat(settlement.getOwner().getId()).isEqualTo("kangdh");
     }
 
     @DisplayName("정산 금액 보내기")
