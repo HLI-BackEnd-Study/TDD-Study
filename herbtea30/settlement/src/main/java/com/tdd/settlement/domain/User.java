@@ -5,4 +5,10 @@ package com.tdd.settlement.domain;
  * Description : Create a description.
  */
 public class User {
+    private String id;
+    public User(String id) {
+    }
+
+    public User(String id, Amount requestAmount) {
+    }
 }

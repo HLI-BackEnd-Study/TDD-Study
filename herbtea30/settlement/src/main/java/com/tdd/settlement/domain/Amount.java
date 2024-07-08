@@ -5,4 +5,9 @@ package com.tdd.settlement.domain;
  * Description : Create a description.
  */
 public class Amount {
+    private long totalAmount;
+
+    public Amount(long totalAmount) {
+        this.totalAmount = totalAmount;
+    }
 }

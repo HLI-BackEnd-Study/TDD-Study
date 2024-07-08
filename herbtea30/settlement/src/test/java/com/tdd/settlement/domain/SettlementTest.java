@@ -21,9 +21,9 @@ public class SettlementTest {
 
     @DisplayName("정산 요청하기 - 지정")
     @Test
-    public void test1() {
+    public void test1_1() {
         Settlement settlement = new Settlement();
-        List<User> userList = List.of(new User("kangdh", 30000L), new User("leehj", 25000L), new User("kimmj", 25000L), new User("inch", 20000L));
+        List<User> userList = List.of(new User("kangdh", new Amount(30000L)), new User("leehj", new Amount(25000L)), new User("kimmj", new Amount(25000L)), new User("inch", new Amount(20000L)));
         settlement.requestSettlement(userList);
     }
 
