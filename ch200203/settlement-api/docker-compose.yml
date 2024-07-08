@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+    mysql:
+        image: mysql:latest
+        platform: linux/arm64
+        restart: always
+        volumes:
+          - ./db/mysql/data:/var/lib/mysql
+          - ./db/mysql/init:/docker-entrypoint-initdb.d
+        ports:
+          - 3306:3306
+        environment:
+          MYSQL_ROOT_PASSWORD: root1234
+          TZ: Asia/Seoul
+          MYSQL_DATABASE: myDb
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: testuser1234
+
+    redis_container:
+      image: redis:latest
+      container_name: redis_test
+      ports:
+        - 6379:6379
+      volumes:
+        - ./redis/data:/data
+        - ./redis/conf/redis.conf:/usr/local/conf/redis.conf
+      labels:
+        - "name=redis"
+        - "mode=standalone"
+      restart: always
+      command: redis-server /usr/local/conf/redis.conf
