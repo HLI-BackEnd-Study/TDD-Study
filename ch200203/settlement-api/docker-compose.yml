@@ -13,7 +13,7 @@ services:
         environment:
           MYSQL_ROOT_PASSWORD: root1234
           TZ: Asia/Seoul
-          MYSQL_DATABASE: myDb
+          MYSQL_DATABASE: settlement
           MYSQL_USER: testuser
           MYSQL_PASSWORD: testuser1234
 
