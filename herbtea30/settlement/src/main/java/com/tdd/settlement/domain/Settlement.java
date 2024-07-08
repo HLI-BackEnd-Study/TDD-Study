@@ -8,11 +8,11 @@ import java.util.List;
  */
 public class Settlement {
     private User owner;
-    public Settlement(User owner) {
-        this.owner = owner;
-    }
+    private Amount requestAmount;
 
-    public void requestSettlement(Amount requestAmount, List<User> userList) {
+    public Settlement(User owner, Amount requestAmount) {
+        this.owner = owner;
+        this.requestAmount = requestAmount;
     }
 
     public void requestSettlement(List<User> userList) {

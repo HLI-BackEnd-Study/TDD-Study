@@ -13,17 +13,18 @@ public class SettlementTest {
     @Test
     public void test1() {
         User owner = new User("kdh");
-        Settlement settlement = new Settlement(owner);
-        Amount requestAmount = new Amount(100000L);
+        Amount requestAmount = new Amount(70000L);
+        Settlement settlement = new Settlement(owner, requestAmount);
         List<User> userList = List.of(new User("leehj"), new User("kimmj"), new User("inch"));
-        settlement.requestSettlement(requestAmount, userList);
+        settlement.requestSettlement(userList);
     }
 
     @DisplayName("정산 요청하기 - 지정")
     @Test
     public void test1_1() {
         User owner = new User("kangdh");
-        Settlement settlement = new Settlement(owner);
+        Amount requestAmount = new Amount(70000L);
+        Settlement settlement = new Settlement(owner, requestAmount);
         List<User> userList = List.of(new User("leehj", new Amount(25000L)), new User("kimmj", new Amount(25000L)), new User("inch", new Amount(20000L)));
         settlement.requestSettlement(userList);
     }
