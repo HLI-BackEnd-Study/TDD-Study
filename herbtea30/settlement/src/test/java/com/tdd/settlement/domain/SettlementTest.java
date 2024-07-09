@@ -18,9 +18,9 @@ public class SettlementTest {
     public void test1() {
         User owner = new User("kangdh");
         Amount requestAmount = new Amount(70000);
-        Settlement settlement = new Settlement(owner, requestAmount);
         List<User> userList = List.of(new User("leehj"), new User("kimmj"), new User("inch"));
-        List<User> settlementRequestList = settlement.requestSettlement(userList);
+        Settlement settlement = new Settlement(owner, userList, requestAmount);
+        List<User> settlementRequestList = settlement.requestDivSettlement();
         assertThat(settlementRequestList).hasSize(3);
         assertThat(settlementRequestList.get(0).getId()).isEqualTo("leehj");
         assertThat(settlementRequestList.get(0).getRequestAmount().getAmount()).isEqualTo(23333);
@@ -32,9 +32,9 @@ public class SettlementTest {
     public void test1_1() {
         User owner = new User("kangdh");
         Amount requestAmount = new Amount(70000);
-        Settlement settlement = new Settlement(owner, requestAmount);
         List<User> userList = List.of(new User("leehj", new Amount(25000)), new User("kimmj", new Amount(25000)), new User("inch", new Amount(20000)));
-        List<User> settlementRequestList = settlement.requestSettlement(userList);
+        Settlement settlement = new Settlement(owner, userList, requestAmount);
+        List<User> settlementRequestList = settlement.requestSettlement();
         assertThat(settlementRequestList).hasSize(3);
         assertThat(settlementRequestList.get(0).getId()).isEqualTo("leehj");
         assertThat(settlementRequestList.get(0).getRequestAmount().getAmount()).isEqualTo(25000);
@@ -49,10 +49,10 @@ public class SettlementTest {
     public void test1_2() {
         User owner = new User("kangdh");
         Amount requestAmount = new Amount(80000);
-        Settlement settlement = new Settlement(owner, requestAmount);
         List<User> userList = List.of(new User("leehj", new Amount(25000)), new User("kimmj", new Amount(25000)), new User("inch", new Amount(20000)));
+        Settlement settlement = new Settlement(owner, userList, requestAmount);
         assertThatThrownBy(() -> {
-            settlement.requestSettlement(userList);
+            settlement.requestSettlement();
         }).isInstanceOf(RuntimeException.class).hasMessageContaining("정산 요청금액과 세부 금액 합계가 맞지 않습니다.");
 
     }
