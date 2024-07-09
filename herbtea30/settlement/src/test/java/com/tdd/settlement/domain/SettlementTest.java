@@ -51,14 +51,10 @@ public class SettlementTest {
         Amount requestAmount = new Amount(80000);
         Settlement settlement = new Settlement(owner, requestAmount);
         List<User> userList = List.of(new User("leehj", new Amount(25000)), new User("kimmj", new Amount(25000)), new User("inch", new Amount(20000)));
-        List<User> settlementRequestList = settlement.requestSettlement(userList);
-        assertThat(settlementRequestList).hasSize(3);
-        assertThat(settlementRequestList.get(0).getId()).isEqualTo("leehj");
-        assertThat(settlementRequestList.get(0).getRequestAmount().getAmount()).isEqualTo(25000);
-        assertThat(settlementRequestList.get(1).getRequestAmount().getAmount()).isEqualTo(25000);
-        assertThat(settlementRequestList.get(2).getRequestAmount().getAmount()).isEqualTo(20000);
-        assertThat(settlementRequestList.stream().mapToInt(m -> m.getRequestAmount().getAmount()).sum()).isEqualTo(requestAmount.getAmount());
-        assertThat(settlement.getOwner().getId()).isEqualTo("kangdh");
+        assertThatThrownBy(() -> {
+            settlement.requestSettlement(userList);
+        }).isInstanceOf(RuntimeException.class).hasMessageContaining("정산 요청금액과 세부 금액 합계가 맞지 않습니다.");
+
     }
 
     @DisplayName("정산 금액 보내기")
