@@ -1,10 +1,20 @@
 package com.hanwha.settlement.settlements.model;
 
 import com.hanwha.settlement.users.User;
-import jakarta.persistence.*;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-import java.util.List;
-
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Settlement {
 
     @Id
@@ -22,20 +32,22 @@ public class Settlement {
     @Embedded
     private SettlementReceives settlementReceives;
 
-    private Settlement(User requestUser, SettlementReceives settlementReceives, int totalAmount) {
+    private Settlement(User requestUser, int totalAmount) {
         this.requestUser = requestUser;
-        this.settlementReceives = settlementReceives;
         this.totalAmount = totalAmount;
         this.requestStatus = RequestStatus.PENDING;
-        validateSettlement(totalAmount);
     }
 
-    public static Settlement create(User requestUser, List<SettlementReceive> settlementReceiveList, int totalAmount) {
-        SettlementReceives settlementReceives = new SettlementReceives(settlementReceiveList);
-        return new Settlement(requestUser, settlementReceives, totalAmount);
+    public static Settlement create(User requestUser, int totalAmount) {
+        return new Settlement(requestUser, totalAmount);
     }
 
-    private void validateSettlement(int totalAmount) {
+    public void addSettlementReceives(SettlementReceives settlementReceives) {
+        validateSettlement(settlementReceives);
+        this.settlementReceives = settlementReceives;
+    }
+
+    private void validateSettlement(SettlementReceives settlementReceives) {
         int calculatedTotalAmount = settlementReceives.calculateTotalAmount();
 
         if (calculatedTotalAmount != totalAmount) {

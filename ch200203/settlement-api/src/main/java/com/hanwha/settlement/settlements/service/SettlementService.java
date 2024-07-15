@@ -21,10 +21,12 @@ public class SettlementService {
         User requestUser = findUser(request.userId());
 
         // 2. 정산 객체 생성
+        Settlement settlement = Settlement.create(requestUser, request.totalAmount());
 
         // 2-1. 정산 요청 받을 유저 객체 생성
-        Settlement settlement = Settlement.create(requestUser, null, request.totalAmount());
         createReceive(request.requestReceives(), settlement);
+
+
 
     }
 
@@ -33,10 +35,13 @@ public class SettlementService {
      */
     private List<SettlementReceive> createReceive(List<CreateRequest.RequestReceive> requestReceives, Settlement settlement) {
         List<SettlementReceive> receives = new ArrayList<>();
+
         for (CreateRequest.RequestReceive receive : requestReceives) {
             User receiveUser = findUser(receive.userId());
-            SettlementReceive.create(settlement, receiveUser, receive.amount());
+            receives.add(SettlementReceive.create(settlement, receiveUser, receive.amount()));
         }
+
+        return receives;
     }
 
 

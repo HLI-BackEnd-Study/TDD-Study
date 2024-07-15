@@ -2,6 +2,8 @@ package com.hanwha.settlement.settlements.model;
 
 import com.hanwha.settlement.users.User;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -15,10 +17,11 @@ import lombok.NoArgsConstructor;
 public class SettlementReceive {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "settlement_id")
     private Settlement settlement;
 
     private User user;
@@ -37,6 +40,5 @@ public class SettlementReceive {
     public static SettlementReceive create(Settlement settlement, User user, int amount) {
         return new SettlementReceive(settlement, user, amount);
     }
-
 
 }

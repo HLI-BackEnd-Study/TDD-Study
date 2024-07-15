@@ -6,8 +6,6 @@ import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.RetentionPolicy;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,9 +15,13 @@ public class SettlementReceives {
     @OneToMany(mappedBy = "settlement", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SettlementReceive> settlementReceives;
 
-    public SettlementReceives(List<SettlementReceive> settlementReceives) {
+    private SettlementReceives(List<SettlementReceive> settlementReceives) {
         validateSettlement(settlementReceives);
         this.settlementReceives = settlementReceives;
+    }
+
+    public static SettlementReceives of(List<SettlementReceive> settlementReceives) {
+        return new SettlementReceives(settlementReceives);
     }
 
     public int calculateTotalAmount() {
