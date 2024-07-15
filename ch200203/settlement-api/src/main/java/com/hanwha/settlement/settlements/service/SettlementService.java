@@ -3,10 +3,12 @@ package com.hanwha.settlement.settlements.service;
 import com.hanwha.settlement.settlements.dto.CreateRequest;
 import com.hanwha.settlement.settlements.model.Settlement;
 import com.hanwha.settlement.settlements.model.SettlementReceive;
+import com.hanwha.settlement.settlements.repository.SettlementRepository;
 import com.hanwha.settlement.users.User;
 import com.hanwha.settlement.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SettlementService {
 
+    private final SettlementRepository settlementRepository;
     private final UserRepository userRepository;
+
     public void request(CreateRequest request) {
         // 1. 정산 요청 유저
         User requestUser = findUser(request.userId());
@@ -25,8 +29,6 @@ public class SettlementService {
 
         // 2-1. 정산 요청 받을 유저 객체 생성
         createReceive(request.requestReceives(), settlement);
-
-
 
     }
 
@@ -44,8 +46,8 @@ public class SettlementService {
         return receives;
     }
 
-
-    private User findUser(final long id) {
+    @Transactional(readOnly = true)
+    public User findUser(final long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저 입니다 : " + id));
     }
