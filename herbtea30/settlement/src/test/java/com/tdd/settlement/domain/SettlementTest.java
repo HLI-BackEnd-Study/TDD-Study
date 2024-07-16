@@ -1,5 +1,6 @@
 package com.tdd.settlement.domain;
 
+import com.tdd.settlement.exception.SettlementException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,16 +12,21 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.util.List;
 
 @SpringBootTest
-public class SettlementTest {
+class SettlementTest {
 
     @DisplayName("정산 요청하기 - N빵")
     @Test
-    public void test1() {
+    void test1() {
+        //정산요청자
         User owner = new User("kangdh");
+        //정산 총액
         Amount requestAmount = new Amount(70000);
+
+        //정산 대상에게 요청하기
         List<User> userList = List.of(new User("leehj"), new User("kimmj"), new User("inch"));
         Settlement settlement = new Settlement(owner, userList, requestAmount);
         List<User> settlementRequestList = settlement.requestDivSettlement();
+
         assertThat(settlementRequestList).hasSize(3);
         assertThat(settlementRequestList.get(0).getId()).isEqualTo("leehj");
         assertThat(settlementRequestList.get(0).getRequestAmount().getAmount()).isEqualTo(23333);
@@ -29,12 +35,17 @@ public class SettlementTest {
 
     @DisplayName("정산 요청하기 - 지정")
     @Test
-    public void test1_1() {
+    void test1_1() {
+        //정산요청자
         User owner = new User("kangdh");
+        //정산 총액
         Amount requestAmount = new Amount(70000);
+
+        //정산 대상에게 요청하기
         List<User> userList = List.of(new User("leehj", new Amount(25000)), new User("kimmj", new Amount(25000)), new User("inch", new Amount(20000)));
         Settlement settlement = new Settlement(owner, userList, requestAmount);
         List<User> settlementRequestList = settlement.requestSettlement();
+
         assertThat(settlementRequestList).hasSize(3);
         assertThat(settlementRequestList.get(0).getId()).isEqualTo("leehj");
         assertThat(settlementRequestList.get(0).getRequestAmount().getAmount()).isEqualTo(25000);
@@ -46,34 +57,32 @@ public class SettlementTest {
 
     @DisplayName("정산 요청하기 - 지정 금액 합계 오류")
     @Test
-    public void test1_2() {
+    void test1_2() {
         User owner = new User("kangdh");
         Amount requestAmount = new Amount(80000);
         List<User> userList = List.of(new User("leehj", new Amount(25000)), new User("kimmj", new Amount(25000)), new User("inch", new Amount(20000)));
         Settlement settlement = new Settlement(owner, userList, requestAmount);
-        assertThatThrownBy(() -> {
-            settlement.requestSettlement();
-        }).isInstanceOf(RuntimeException.class).hasMessageContaining("정산 요청금액과 세부 금액 합계가 맞지 않습니다.");
+        assertThatThrownBy(settlement::requestSettlement).isInstanceOf(SettlementException.class).hasMessageContaining("정산 요청금액과 세부 금액 합계가 맞지 않습니다.");
 
     }
 
     @DisplayName("정산 금액 보내기")
     @Test
-    public void test2() {
+    void test2() {
     }
 
     @DisplayName("정신 금액 받기")
     @Test
-    public void test3() {
+    void test3() {
     }
 
     @DisplayName("정산 요청내역")
     @Test
-    public void test4(){
+    void test4(){
     }
 
     @DisplayName("정산 보낸내역")
     @Test
-    public void test5() {
+    void test5() {
     }
 }

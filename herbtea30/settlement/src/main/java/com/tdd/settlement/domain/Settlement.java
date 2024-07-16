@@ -1,12 +1,16 @@
 package com.tdd.settlement.domain;
 
+import com.tdd.settlement.exception.ExceptionMessage;
+import com.tdd.settlement.exception.SettlementException;
 import java.util.List;
+import lombok.Getter;
 
 /**
  * Name : Settlement <br/>
  * Description : Create a description.
  */
 public class Settlement {
+    @Getter
     private User owner;
     private Amount requestAmount;
     private List<User> userList;
@@ -17,16 +21,11 @@ public class Settlement {
         this.userList = userList;
     }
 
-    public User getOwner() {
-        return owner;
-    }
-
     public List<User> requestSettlement() {
         if (this.requestAmount.getAmount() != this.userList.stream().mapToInt(m -> m.getRequestAmount().getAmount()).sum()) {
-            throw new RuntimeException("정산 요청금액과 세부 금액 합계가 맞지 않습니다.");
+            throw new SettlementException(ExceptionMessage.SETTLEMENT_AMOUNT_NOT_MATCH);
         }
-
-        return this.userList.stream().toList();
+src/        return this.userList.stream().toList();
     }
 
     public List<User> requestDivSettlement() {
