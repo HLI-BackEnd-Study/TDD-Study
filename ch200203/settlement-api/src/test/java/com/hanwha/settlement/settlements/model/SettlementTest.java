@@ -1,4 +1,4 @@
-package com.hanwha.settlement.settlements;
+package com.hanwha.settlement.settlements.model;
 
 import com.hanwha.settlement.settlements.model.Settlement;
 import com.hanwha.settlement.settlements.model.SettlementReceive;

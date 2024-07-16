@@ -1,13 +1,11 @@
 spring:
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:13306/homework?serverTimezone=Asia/Seoul
-    username: testuser
-    password: testuser1234
+    url: jdbc:mysql://localhost:13306/test?serverTimezone=Asia/Seoul
+    username: root
+    password: root
 
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: true
     hibernate:
       ddl-auto: update
@@ -16,6 +14,7 @@ spring:
         show_sql: true
         format_sql: true
         default_batch_fetch_size: 1000
+        dialect: org.hibernate.dialect.MySQLDialect
     logging:
       level:
         org.hibernate.SQL: info

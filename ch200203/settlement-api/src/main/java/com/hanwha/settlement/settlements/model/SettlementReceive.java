@@ -24,6 +24,8 @@ public class SettlementReceive {
     @JoinColumn(name = "settlement_id")
     private Settlement settlement;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     private int amount; // 정산해야할 금액
@@ -31,6 +33,7 @@ public class SettlementReceive {
     private boolean status; // 정산 완료 상태
 
     private SettlementReceive(Settlement settlement, User user, int amount) {
+        validateAmount(amount);
         this.settlement = settlement;
         this.user = user;
         this.amount = amount;
@@ -39,6 +42,17 @@ public class SettlementReceive {
 
     public static SettlementReceive create(Settlement settlement, User user, int amount) {
         return new SettlementReceive(settlement, user, amount);
+    }
+
+    private void validateAmount(int amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("정산금액은 0원 보다 커야합니다.");
+        }
+    }
+
+    // 송금 완료인 경우 상태를 true 로 변경한다.
+    public void completePayment() {
+        this.status = true;
     }
 
 }
