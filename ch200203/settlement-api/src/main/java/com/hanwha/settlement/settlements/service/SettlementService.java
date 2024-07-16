@@ -50,4 +50,7 @@ public class SettlementService {
     }
 
 
+    public void completePayment(Long settlementReceiveId) {
+
+    }
 }
