@@ -25,7 +25,7 @@ public class Settlement {
         if (this.requestAmount.getAmount() != this.userList.stream().mapToInt(m -> m.getRequestAmount().getAmount()).sum()) {
             throw new SettlementException(ExceptionMessage.SETTLEMENT_AMOUNT_NOT_MATCH);
         }
-src/        return this.userList.stream().toList();
+        return this.userList.stream().toList();
     }
 
     public List<User> requestDivSettlement() {
