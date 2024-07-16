@@ -8,7 +8,7 @@ import lombok.ToString
 
 @ToString
 @Entity
-open class User(
+class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,

@@ -1,1 +1,1 @@
-rootProject.name = "pay-seperatly"
+rootProject.name = "pay-separately"

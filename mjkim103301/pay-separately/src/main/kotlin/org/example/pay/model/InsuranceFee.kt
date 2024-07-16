@@ -8,12 +8,12 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @Entity
-open class InsuranceFee(
+class InsuranceFee(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
     val userId: Long = 0,
     val premium: BigDecimal? = null,
     val paymentCompleted: Boolean = false,
-    var completedDateTime: LocalDateTime? = null
+    val completedDateTime: LocalDateTime? = null
 )
