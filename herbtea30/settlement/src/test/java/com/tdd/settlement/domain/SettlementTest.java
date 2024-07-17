@@ -1,5 +1,6 @@
 package com.tdd.settlement.domain;
 
+import com.tdd.settlement.exception.ExceptionMessage;
 import com.tdd.settlement.exception.SettlementException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,8 +25,8 @@ class SettlementTest {
 
         //정산 대상에게 요청하기
         List<User> userList = List.of(new User("leehj"), new User("kimmj"), new User("inch"));
-        Settlement settlement = new Settlement(owner, userList, requestAmount);
-        List<User> settlementRequestList = settlement.requestDivSettlement();
+        Settlement settlement = new Settlement(owner, requestAmount);
+        List<User> settlementRequestList = settlement.requestDivSettlement(userList);
 
         assertThat(settlementRequestList).hasSize(3);
         assertThat(settlementRequestList.get(0).getId()).isEqualTo("leehj");
@@ -43,8 +44,8 @@ class SettlementTest {
 
         //정산 대상에게 요청하기
         List<User> userList = List.of(new User("leehj", new Amount(25000)), new User("kimmj", new Amount(25000)), new User("inch", new Amount(20000)));
-        Settlement settlement = new Settlement(owner, userList, requestAmount);
-        List<User> settlementRequestList = settlement.requestSettlement();
+        Settlement settlement = new Settlement(owner, requestAmount);
+        List<User> settlementRequestList = settlement.requestSettlement(userList);
 
         assertThat(settlementRequestList).hasSize(3);
         assertThat(settlementRequestList.get(0).getId()).isEqualTo("leehj");
@@ -61,8 +62,8 @@ class SettlementTest {
         User owner = new User("kangdh");
         Amount requestAmount = new Amount(80000);
         List<User> userList = List.of(new User("leehj", new Amount(25000)), new User("kimmj", new Amount(25000)), new User("inch", new Amount(20000)));
-        Settlement settlement = new Settlement(owner, userList, requestAmount);
-        assertThatThrownBy(settlement::requestSettlement).isInstanceOf(SettlementException.class).hasMessageContaining("정산 요청금액과 세부 금액 합계가 맞지 않습니다.");
+        Settlement settlement = new Settlement(owner, requestAmount);
+        assertThatThrownBy(() -> settlement.requestSettlement(userList)).isInstanceOf(SettlementException.class).hasMessageContaining(ExceptionMessage.SETTLEMENT_AMOUNT_NOT_MATCH);
 
     }
 
@@ -76,14 +77,14 @@ class SettlementTest {
 
         //정산 대상에게 요청하기
         List<User> userList = List.of(new User("leehj", new Amount(25000)), new User("kimmj", new Amount(25000)), new User("inch", new Amount(20000)));
-        Settlement settlement = new Settlement(owner, userList, requestAmount);
-        List<User> settlementRequestList = settlement.requestSettlement();
+        Settlement settlement = new Settlement(owner, requestAmount);
+        List<User> settlementRequestList = settlement.requestSettlement(userList);
 
-        assertThat(owner.getRequestSettlement()).hasSize(1);
-        assertThat(owner.getRequestSettlement().get(0).getRequestAmount().getAmount()).isEqualTo(70000);
+        assertThat(owner.getRequestSettlements()).hasSize(1);
+        assertThat(owner.getRequestSettlements().get(0).getRequestAmount().getAmount()).isEqualTo(70000);
     }
 
-    @DisplayName("정산 보낸내역")
+    @DisplayName("정산 보낸 내역")
     @Test
     void test6() {
     }

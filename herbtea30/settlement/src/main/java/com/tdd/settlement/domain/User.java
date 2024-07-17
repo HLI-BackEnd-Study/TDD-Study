@@ -14,19 +14,26 @@ public class User {
     private String id;
     private Amount requestAmount;
     private List<Settlement> requestSettlements;
+    private List<Settlement> responseSettlements;
 
     public User(String id) {
         this.id = id;
         this.requestSettlements = new ArrayList<>();
+        this.responseSettlements = new ArrayList<>();
     }
 
     public User(String id, Amount requestAmount) {
         this.id = id;
         this.requestAmount = requestAmount;
         this.requestSettlements = new ArrayList<>();
+        this.responseSettlements = new ArrayList<>();
     }
 
-    public List<Settlement> getRequestSettlement() {
+    public List<Settlement> getRequestSettlements() {
         return this.requestSettlements;
+    }
+
+    public List<Settlement> getResponseSettlements() {
+        return this.responseSettlements;
     }
 }
