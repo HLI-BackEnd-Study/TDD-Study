@@ -69,6 +69,18 @@ class SettlementTest {
     @DisplayName("정산 요청내역")
     @Test
     void test5() {
+        //정산요청자
+        User owner = new User("kangdh");
+        //정산 총액
+        Amount requestAmount = new Amount(70000);
+
+        //정산 대상에게 요청하기
+        List<User> userList = List.of(new User("leehj", new Amount(25000)), new User("kimmj", new Amount(25000)), new User("inch", new Amount(20000)));
+        Settlement settlement = new Settlement(owner, userList, requestAmount);
+        List<User> settlementRequestList = settlement.requestSettlement();
+
+        assertThat(owner.getRequestSettlement()).hasSize(1);
+
     }
 
     @DisplayName("정산 보낸내역")
