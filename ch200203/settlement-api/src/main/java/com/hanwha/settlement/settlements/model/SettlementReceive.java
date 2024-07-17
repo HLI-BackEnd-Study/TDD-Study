@@ -50,9 +50,15 @@ public class SettlementReceive {
         }
     }
 
-    // 송금 완료인 경우 상태를 true 로 변경한다.
-    public void completePayment() {
-        this.status = true;
+    // 요청한 정산금액을 정산한다.
+    public void paid(int requestAmount) {
+        validatePayAmount(requestAmount);
+        this.status = true; // 정산완료로 변경
     }
 
+    private void validatePayAmount(int requestAmount) {
+        if (this.amount == requestAmount) {
+            throw new IllegalArgumentException("정산할 금액이 일치 하지 않습니다.");
+        }
+    }
 }

@@ -1,9 +1,11 @@
 package com.hanwha.settlement.settlements.service;
 
 import com.hanwha.settlement.settlements.dto.CreateRequest;
+import com.hanwha.settlement.settlements.dto.TransferRequest;
 import com.hanwha.settlement.settlements.model.Settlement;
 import com.hanwha.settlement.settlements.model.SettlementReceive;
 import com.hanwha.settlement.settlements.model.SettlementReceives;
+import com.hanwha.settlement.settlements.repository.SettlementReceiveRepository;
 import com.hanwha.settlement.settlements.repository.SettlementRepository;
 import com.hanwha.settlement.users.User;
 import com.hanwha.settlement.users.service.UserService;
@@ -16,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SettlementService {
 
+    private final SettlementReceiveRepository settlementReceiveRepository;
     private final SettlementRepository settlementRepository;
     private final UserService userService;
 
@@ -49,8 +52,15 @@ public class SettlementService {
         return SettlementReceives.of(settlementReceives);
     }
 
+    public void transferPay(Long settlementReceiveId, TransferRequest request) {
+        // 1. 정산할 객체 확인
+        SettlementReceive settlementReceive = settlementReceiveRepository.findById(settlementReceiveId).orElseThrow(() -> new IllegalArgumentException("정산할 객체를 찾을 수 없습니다."));
 
-    public void completePayment(Long settlementReceiveId) {
+        // 2. 정산완료
+        settlementReceive.paid(request.amount());
+
+        // 3. 전체정산 확인
+        Settlement settlement = settlementRepository.findById(settlementReceive.getId()).orElseThrow(() -> new IllegalArgumentException("정산 객체를 찾을 수 없습니다."));
 
     }
 }

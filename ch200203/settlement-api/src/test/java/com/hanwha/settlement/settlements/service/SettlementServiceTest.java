@@ -36,16 +36,12 @@ class SettlementServiceTest {
     @Mock
     private UserService userService;
 
-    private User requester;
-    private User participant1;
-    private User participant2;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        requester = new User(1L, "requester");
-        participant1 = new User(2L, "participant1");
-        participant2 = new User(3L, "participant2");
+        User requester = new User(1L, "requester");
+        User participant1 = new User(2L, "participant1");
+        User participant2 = new User(3L, "participant2");
     }
 
     @Test
@@ -64,10 +60,11 @@ class SettlementServiceTest {
         when(userService.getUserById(1L)).thenReturn(requestUser);
         when(userService.getUserById(2L)).thenReturn(receiveUser1);
         when(userService.getUserById(3L)).thenReturn(receiveUser2);
-        when(settlementRepository.save(any(Settlement.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(settlementRepository.save(any(Settlement.class))).thenAnswer(it -> it.getArgument(0));
 
         // When
         Settlement result = settlementService.request(createRequest);
+        // FIXME
     }
 
 

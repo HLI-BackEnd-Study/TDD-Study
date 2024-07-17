@@ -55,4 +55,5 @@ public class Settlement {
             throw new IllegalArgumentException("정산 요청한 금액과 참가자들의 금액 합계가 일치하지 않습니다");
         }
     }
+
 }

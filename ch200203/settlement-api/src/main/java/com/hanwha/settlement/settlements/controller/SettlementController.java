@@ -1,6 +1,7 @@
 package com.hanwha.settlement.settlements.controller;
 
 import com.hanwha.settlement.settlements.dto.CreateRequest;
+import com.hanwha.settlement.settlements.dto.TransferRequest;
 import com.hanwha.settlement.settlements.model.Settlement;
 import com.hanwha.settlement.settlements.service.SettlementService;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +25,12 @@ public class SettlementController {
         return ResponseEntity.ok(settlement);
     }
 
-    @PostMapping("/complete/{settlementReceiveId}")
-    public ResponseEntity<Void> completePayment(@PathVariable Long settlementReceiveId) {
-        settlementService.completePayment(settlementReceiveId);
+    /**
+     * 전달 받은 금액을 정산한다.
+     */
+    @PostMapping("/{settlementReceiveId}/transfer")
+    public ResponseEntity<Void> transferPay(@PathVariable Long settlementReceiveId, @RequestBody TransferRequest request) {
+        settlementService.transferPay(settlementReceiveId, request);
         return ResponseEntity.ok().build();
     }
 
