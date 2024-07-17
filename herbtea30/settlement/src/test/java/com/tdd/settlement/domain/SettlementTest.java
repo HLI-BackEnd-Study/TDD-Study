@@ -66,23 +66,25 @@ class SettlementTest {
 
     }
 
-    @DisplayName("정산 금액 보내기")
-    @Test
-    void test2() {
-    }
-
-    @DisplayName("정신 금액 받기")
-    @Test
-    void test3() {
-    }
-
     @DisplayName("정산 요청내역")
     @Test
-    void test4(){
+    void test5() {
     }
 
     @DisplayName("정산 보낸내역")
     @Test
-    void test5() {
+    void test6() {
     }
+
+    @DisplayName("정산 금액 보내기")
+    @Test
+    void test3() {
+
+    }
+
+    @DisplayName("정신 금액 받기")
+    @Test
+    void test4() {
+    }
+
 }
