@@ -12,7 +12,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 
-@SpringBootTest
 class SettlementTest {
 
     @DisplayName("정산 요청하기 - N빵")
@@ -78,7 +77,7 @@ class SettlementTest {
         //정산 대상에게 요청하기
         List<User> userList = List.of(new User("leehj", new Amount(25000)), new User("kimmj", new Amount(25000)), new User("inch", new Amount(20000)));
         Settlement settlement = new Settlement(owner, requestAmount);
-        List<User> settlementRequestList = settlement.requestSettlement(userList);
+        settlement.requestSettlement(userList);
 
         assertThat(owner.getRequestSettlements()).hasSize(1);
         assertThat(owner.getRequestSettlements().get(0).getRequestAmount().getAmount()).isEqualTo(70000);
