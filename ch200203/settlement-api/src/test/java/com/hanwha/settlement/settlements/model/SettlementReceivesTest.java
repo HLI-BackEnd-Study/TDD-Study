@@ -56,19 +56,29 @@ class SettlementReceivesTest {
     }
 
     @Test
-    void 정산하는_금액이_0보다_커야_한다() {
-        // given
+    void 개별정산이_모두_완료된_경우_참을_반환한다() {
+        // Given
         List<SettlementReceive> settlementReceiveList = new ArrayList<>();
-        SettlementReceive settlementReceive = SettlementReceive.create(settlement, participant1, 25_000);
-        SettlementReceive invalid = SettlementReceive.create(settlement, participant2, 0);
+        settlementReceiveList.add(SettlementReceive.create(settlement, participant1, 25_000));
+        settlementReceiveList.add(SettlementReceive.create(settlement, participant2, 25_000));
+        settlementReceiveList.forEach(it  ->  it.paid(25_000));
+        SettlementReceives settlementReceives = SettlementReceives.of(settlementReceiveList);
 
-        settlementReceiveList.add(settlementReceive);
-        settlementReceiveList.add(invalid);
+        // When & Then
+        assertThat(settlementReceives.isComplete()).isTrue();
+    }
 
-        // when & then
-        assertThatThrownBy(() -> SettlementReceives.of(settlementReceiveList))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("모든 참가자에 대해 금액은 0보다 커야 합니다");
+    @Test
+    void 개별정산이_모두_완료되지_않았다면_거짓을_반환한다() {
+        // Given
+        List<SettlementReceive> settlementReceiveList = new ArrayList<>();
+        settlementReceiveList.add(SettlementReceive.create(settlement, participant1, 25_000));
+        settlementReceiveList.add(SettlementReceive.create(settlement, participant2, 25_000));
+        settlementReceiveList.forEach(it  ->  it.paid(25_000));
+        SettlementReceives settlementReceives = SettlementReceives.of(settlementReceiveList);
+
+        // When & Then
+        assertThat(settlementReceives.isComplete()).isTrue();
     }
 
 }

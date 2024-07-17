@@ -43,7 +43,7 @@ class SettlementReceiveTest {
     }
 
     @Test
-    void 정산금액이_0보다_작거나_같으면_예외를_던진다() {
+    void 정산금액이_0보다_작거나_같으면_예외를_반환한다() {
         // Given
         int invalidAmount = 0;
 
@@ -60,10 +60,31 @@ class SettlementReceiveTest {
         SettlementReceive settlementReceive = SettlementReceive.create(settlement, participant, amount);
 
         // When
-        settlementReceive.completePayment();
+        settlementReceive.paid(amount);
 
         // Then
         assertThat(settlementReceive.isStatus()).isTrue();
+    }
+
+    @Test
+    void 정산_금액이_일치하지_않는_경우_예외를_반환한다() {
+        // Given
+        int amount = 50_000;
+        SettlementReceive settlementReceive = SettlementReceive.create(settlement, participant, amount);
+
+        // When
+        int requestAmount = 49_000;
+
+        // Then
+        assertSoftly(softtly -> {
+            softtly.assertThatThrownBy(() -> settlementReceive.paid(requestAmount))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("정산할 금액이 일치 하지 않습니다.");
+
+            softtly.assertThat(settlementReceive.isPaid()).isFalse();
+        });
+
+
     }
 
 }

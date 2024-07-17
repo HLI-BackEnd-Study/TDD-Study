@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SettlementReceiveRepository extends JpaRepository<SettlementReceive, Long> {
+
 }

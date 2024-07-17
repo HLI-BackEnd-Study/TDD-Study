@@ -52,6 +52,7 @@ public class SettlementService {
         return SettlementReceives.of(settlementReceives);
     }
 
+    // 뭘 반환해줘야 할까....
     public void transferPay(Long settlementReceiveId, TransferRequest request) {
         // 1. 정산할 객체 확인
         SettlementReceive settlementReceive = settlementReceiveRepository.findById(settlementReceiveId).orElseThrow(() -> new IllegalArgumentException("정산할 객체를 찾을 수 없습니다."));
@@ -61,6 +62,13 @@ public class SettlementService {
 
         // 3. 전체정산 확인
         Settlement settlement = settlementRepository.findById(settlementReceive.getId()).orElseThrow(() -> new IllegalArgumentException("정산 객체를 찾을 수 없습니다."));
+
+        // 4. 전체 유저가 정산을 완료했는지 확인
+        settlement.complete();
+    }
+
+    public void getSettlements(Long receiveUserId) {
+        User receiveUser = userService.getUserById(receiveUserId);
 
     }
 }

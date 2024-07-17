@@ -44,4 +44,9 @@ public class SettlementReceives {
             }
         }
     }
+
+    public boolean isComplete() {
+        return settlementReceives.stream()
+                .allMatch(SettlementReceive::isPaid);
+    }
 }

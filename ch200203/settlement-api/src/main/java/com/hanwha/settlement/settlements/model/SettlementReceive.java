@@ -52,13 +52,23 @@ public class SettlementReceive {
 
     // 요청한 정산금액을 정산한다.
     public void paid(int requestAmount) {
-        validatePayAmount(requestAmount);
-        this.status = true; // 정산완료로 변경
+        // validatePayAmount(requestAmount);
+        if (this.amount == requestAmount) {
+            this.status = true; // 정산완료로 변경
+            return; // early return?
+        }
+
+        throw new IllegalArgumentException("정산할 금액이 일치 하지 않습니다.");
     }
 
+    @Deprecated
     private void validatePayAmount(int requestAmount) {
-        if (this.amount == requestAmount) {
+        if (this.amount != requestAmount) {
             throw new IllegalArgumentException("정산할 금액이 일치 하지 않습니다.");
         }
+    }
+
+    public boolean isPaid() {
+        return status;
     }
 }

@@ -56,4 +56,12 @@ public class Settlement {
         }
     }
 
+    /**
+     * 모든 유저가 정산을 완료한 경우 정산 완료 상태로 변경한다.
+     */
+    public void complete() {
+        if (settlementReceives.isComplete()) {
+            this.requestStatus = RequestStatus.COMPLETE;
+        }
+    }
 }
