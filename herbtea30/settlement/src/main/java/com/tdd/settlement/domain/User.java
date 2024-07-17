@@ -11,10 +11,10 @@ import java.util.List;
  */
 @Getter
 public class User {
-    private String id;
+    private final String id;
     private Amount requestAmount;
-    private List<Settlement> requestSettlements;
-    private List<Settlement> responseSettlements;
+    private final List<Settlement> requestSettlements;
+    private final List<Settlement> responseSettlements;
 
     public User(String id) {
         this.id = id;
@@ -27,13 +27,5 @@ public class User {
         this.requestAmount = requestAmount;
         this.requestSettlements = new ArrayList<>();
         this.responseSettlements = new ArrayList<>();
-    }
-
-    public List<Settlement> getRequestSettlements() {
-        return this.requestSettlements;
-    }
-
-    public List<Settlement> getResponseSettlements() {
-        return this.responseSettlements;
     }
 }

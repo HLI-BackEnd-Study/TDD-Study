@@ -11,23 +11,25 @@ import lombok.Getter;
  */
 @Getter
 public class Settlement {
-    private User owner;
-    private Amount requestAmount;
+    private final User owner;
+    private final Amount requestAmount;
+    private final List<User> userList;
 
-    public Settlement(User owner, Amount requestAmount) {
+    public Settlement(User owner, Amount requestAmount, List<User> userList) {
         this.owner = owner;
         this.requestAmount = requestAmount;
+        this.userList = userList;
     }
 
-    public List<User> requestSettlement(List<User> userList) {
-        if (this.requestAmount.getAmount() != userList.stream().mapToInt(m -> m.getRequestAmount().getAmount()).sum()) {
+    public List<User> requestSettlement() {
+        if (this.requestAmount.getAmount() != this.userList.stream().mapToInt(m -> m.getRequestAmount().getAmount()).sum()) {
             throw new SettlementException(ExceptionMessage.SETTLEMENT_AMOUNT_NOT_MATCH);
         }
         this.owner.getRequestSettlements().add(this);
-        return userList.stream().toList();
+        return this.userList.stream().toList();
     }
 
-    public List<User> requestDivSettlement(List<User> userList) {
-        return userList.stream().map(m ->  new User(m.getId(), new Amount(this.requestAmount.getAmount() / userList.size()))).toList();
+    public List<User> requestDivSettlement() {
+        return userList.stream().map(m ->  new User(m.getId(), new Amount(this.requestAmount.getAmount() / this.userList.size()))).toList();
     }
 }
