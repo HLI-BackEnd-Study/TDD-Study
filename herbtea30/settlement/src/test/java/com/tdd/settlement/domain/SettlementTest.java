@@ -80,7 +80,7 @@ class SettlementTest {
         List<User> settlementRequestList = settlement.requestSettlement();
 
         assertThat(owner.getRequestSettlement()).hasSize(1);
-
+        assertThat(owner.getRequestSettlement().get(0).getRequestAmount().getAmount()).isEqualTo(70000);
     }
 
     @DisplayName("정산 보낸내역")
