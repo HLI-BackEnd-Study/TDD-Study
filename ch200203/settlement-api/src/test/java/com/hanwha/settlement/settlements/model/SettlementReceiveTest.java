@@ -83,8 +83,6 @@ class SettlementReceiveTest {
 
             softtly.assertThat(settlementReceive.isPaid()).isFalse();
         });
-
-
     }
 
 }

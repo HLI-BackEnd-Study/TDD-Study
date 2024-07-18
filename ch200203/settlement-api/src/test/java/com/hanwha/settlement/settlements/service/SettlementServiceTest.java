@@ -1,7 +1,9 @@
 package com.hanwha.settlement.settlements.service;
 
 import com.hanwha.settlement.settlements.dto.CreateRequest;
+import com.hanwha.settlement.settlements.mapper.SettlementMapper;
 import com.hanwha.settlement.settlements.model.Settlement;
+import com.hanwha.settlement.settlements.model.SettlementReceive;
 import com.hanwha.settlement.settlements.repository.SettlementReceiveRepository;
 import com.hanwha.settlement.settlements.repository.SettlementRepository;
 import com.hanwha.settlement.users.User;
@@ -17,7 +19,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -29,6 +32,9 @@ class SettlementServiceTest {
     private SettlementService settlementService;
 
     @Mock
+    SettlementMapper mapper;
+
+    @Mock
     private SettlementRepository settlementRepository;
 
     @Mock
@@ -37,29 +43,29 @@ class SettlementServiceTest {
     @Mock
     private UserService userService;
 
+    private User requester;
+    private User participant1;
+    private User participant2;
+
     @BeforeEach
     void setUp() {
-        User requester = new User(1L, "requester");
-        User participant1 = new User(2L, "participant1");
-        User participant2 = new User(3L, "participant2");
+        requester = new User(1L, "requester");
+        participant1 = new User(2L, "participant1");
+        participant2 = new User(3L, "participant2");
     }
 
     @Test
     void 정산_엔티티를_생성한다() {
         // Given
-        User requestUser = new User(1L, "Request User");
-        User receiveUser1 = new User(2L, "Receive User 1");
-        User receiveUser2 = new User(3L, "Receive User 2");
-
         CreateRequest.RequestReceive receive1 = new CreateRequest.RequestReceive(2L, 50);
         CreateRequest.RequestReceive receive2 = new CreateRequest.RequestReceive(3L, 50);
         List<CreateRequest.RequestReceive> requestReceives = Arrays.asList(receive1, receive2);
 
         CreateRequest createRequest = new CreateRequest(1L, 100, requestReceives);
 
-        when(userService.getUserById(1L)).thenReturn(requestUser);
-        when(userService.getUserById(2L)).thenReturn(receiveUser1);
-        when(userService.getUserById(3L)).thenReturn(receiveUser2);
+        when(userService.getUserById(1L)).thenReturn(requester);
+        when(userService.getUserById(2L)).thenReturn(participant1);
+        when(userService.getUserById(3L)).thenReturn(participant2);
         when(settlementRepository.save(any(Settlement.class))).thenAnswer(it -> it.getArgument(0));
 
         // When
@@ -67,11 +73,11 @@ class SettlementServiceTest {
 
         // Then
         assertSoftly(softly -> {
-            softly.assertThat(result.getRequestUser()).isEqualTo(requestUser);
+            softly.assertThat(result.getRequestUser()).isEqualTo(requester);
             softly.assertThat(result.getTotalAmount()).isEqualTo(100);
             softly.assertThat(result.getSettlementReceives().getSettlementReceives()).hasSize(2);
-            softly.assertThat(result.getSettlementReceives().getSettlementReceives().get(0).getUser()).isEqualTo(receiveUser1);
-            softly.assertThat(result.getSettlementReceives().getSettlementReceives().get(1).getUser()).isEqualTo(receiveUser2);
+            softly.assertThat(result.getSettlementReceives().getSettlementReceives().get(0).getUser()).isEqualTo(participant1);
+            softly.assertThat(result.getSettlementReceives().getSettlementReceives().get(1).getUser()).isEqualTo(participant2);
             softly.assertThat(result).isNotNull();
         });
     }
@@ -144,4 +150,27 @@ class SettlementServiceTest {
 
     }
 
+    @Test
+    void 요청받은_사람은_자신이_요청받은_정산하기_전체_리스트를_확인할_수_있다() { // 행위를 기반으로 테스트 메서드 명을 작성
+        // Given
+        Settlement settlement1 = Settlement.create(requester, 50_000);
+        Settlement settlement2 = Settlement.create(requester, 45_000);
+        SettlementReceive settlementReceive1 = SettlementReceive.create(settlement1, participant1, 50_0000);
+        SettlementReceive settlementReceive2 = SettlementReceive.create(settlement2, participant1, 45_0000);
+
+        // When
+        when(settlementReceiveRepository.findSettlementReceivesByUserId(participant1.getId())).thenReturn(List.of(settlementReceive1, settlementReceive2));
+
+        // Then
+        assertSoftly(softly -> {
+            softly.assertThat(settlementService.getSettlementReceives(participant1.getId())).isNotNull();
+            softly.assertThat(settlementService.getSettlementReceives(participant1.getId()))
+                    .contains(mapper.settlementReceiveToResponse(settlementReceive1), mapper.settlementReceiveToResponse(settlementReceive2));
+            softly.assertThat(settlementService.getSettlementReceives(participant1.getId())).hasSize(2);
+        });
+    }
+
+
 }
+
+

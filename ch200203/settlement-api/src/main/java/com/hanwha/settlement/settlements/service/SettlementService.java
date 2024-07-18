@@ -1,7 +1,9 @@
 package com.hanwha.settlement.settlements.service;
 
 import com.hanwha.settlement.settlements.dto.CreateRequest;
+import com.hanwha.settlement.settlements.dto.SettlementReceivesResponse;
 import com.hanwha.settlement.settlements.dto.TransferRequest;
+import com.hanwha.settlement.settlements.mapper.SettlementMapper;
 import com.hanwha.settlement.settlements.model.Settlement;
 import com.hanwha.settlement.settlements.model.SettlementReceive;
 import com.hanwha.settlement.settlements.model.SettlementReceives;
@@ -11,6 +13,7 @@ import com.hanwha.settlement.users.User;
 import com.hanwha.settlement.users.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +24,7 @@ public class SettlementService {
     private final SettlementReceiveRepository settlementReceiveRepository;
     private final SettlementRepository settlementRepository;
     private final UserService userService;
+    private final SettlementMapper mapper;
 
     public Settlement request(CreateRequest request) {
         // 1. 정산 요청 유저
@@ -67,8 +71,14 @@ public class SettlementService {
         settlement.complete();
     }
 
-    public void getSettlements(Long receiveUserId) {
-        User receiveUser = userService.getUserById(receiveUserId);
-
+    @Transactional(readOnly = true)
+    public List<SettlementReceivesResponse> getSettlementReceives(Long receiveUserId) {
+        List<SettlementReceive> settlementReceives = settlementReceiveRepository.findSettlementReceivesByUserId(receiveUserId);
+        // TODO 고민 1 DTO -> Entity 는 어느레이어에서 변환하는 것이 좋을까요...?
+        return settlementReceives.stream()
+                .map(mapper::settlementReceiveToResponse)
+                .toList();
     }
+
+
 }
