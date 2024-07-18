@@ -1,10 +1,22 @@
 package com.hanwha.settlement.settlements.model;
 
 import com.hanwha.settlement.users.User;
-import jakarta.persistence.*;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.util.List;
-
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Settlement {
 
     @Id
@@ -22,24 +34,34 @@ public class Settlement {
     @Embedded
     private SettlementReceives settlementReceives;
 
-    private Settlement(User requestUser, SettlementReceives settlementReceives, int totalAmount) {
+    private Settlement(User requestUser, int totalAmount) {
         this.requestUser = requestUser;
-        this.settlementReceives = settlementReceives;
         this.totalAmount = totalAmount;
         this.requestStatus = RequestStatus.PENDING;
-        validateSettlement(totalAmount);
     }
 
-    public static Settlement create(User requestUser, List<SettlementReceive> settlementReceiveList, int totalAmount) {
-        SettlementReceives settlementReceives = new SettlementReceives(settlementReceiveList);
-        return new Settlement(requestUser, settlementReceives, totalAmount);
+    public static Settlement create(User requestUser, int totalAmount) {
+        return new Settlement(requestUser, totalAmount);
     }
 
-    private void validateSettlement(int totalAmount) {
+    public void addSettlementReceives(SettlementReceives settlementReceives) {
+        validateSettlement(settlementReceives);
+        this.settlementReceives = settlementReceives;
+    }
+
+    private void validateSettlement(SettlementReceives settlementReceives) {
         int calculatedTotalAmount = settlementReceives.calculateTotalAmount();
-
         if (calculatedTotalAmount != totalAmount) {
             throw new IllegalArgumentException("정산 요청한 금액과 참가자들의 금액 합계가 일치하지 않습니다");
+        }
+    }
+
+    /**
+     * 모든 유저가 정산을 완료한 경우 정산 완료 상태로 변경한다.
+     */
+    public void complete() {
+        if (settlementReceives.isComplete()) {
+            this.requestStatus = RequestStatus.COMPLETE;
         }
     }
 }
