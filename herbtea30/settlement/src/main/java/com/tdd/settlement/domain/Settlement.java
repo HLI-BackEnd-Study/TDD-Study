@@ -1,7 +1,5 @@
 package com.tdd.settlement.domain;
 
-import com.tdd.settlement.exception.ExceptionMessage;
-import com.tdd.settlement.exception.SettlementException;
 import java.util.List;
 import lombok.Getter;
 
@@ -13,23 +11,29 @@ import lombok.Getter;
 public class Settlement {
     private final User owner;
     private final Amount requestAmount;
-    private final List<User> userList;
+    private final SettlementDetail settlementDetail;
 
     public Settlement(User owner, Amount requestAmount, List<User> userList) {
         this.owner = owner;
         this.requestAmount = requestAmount;
-        this.userList = userList;
+        this.settlementDetail = new SettlementDetail(requestAmount, userList);
     }
 
     public List<User> requestSettlement() {
-        if (this.requestAmount.getAmount() != this.userList.stream().mapToInt(m -> m.getRequestAmount().getAmount()).sum()) {
-            throw new SettlementException(ExceptionMessage.SETTLEMENT_AMOUNT_NOT_MATCH);
-        }
+        List<User> userList = settlementDetail.requestSettlement();
         this.owner.getRequestSettlements().add(this);
-        return this.userList.stream().toList();
+        return userList.stream().toList();
     }
 
     public List<User> requestDivSettlement() {
-        return userList.stream().map(m ->  new User(m.getId(), new Amount(this.requestAmount.getAmount() / this.userList.size()))).toList();
+        return settlementDetail.requestDivSettlement();
+    }
+
+    public void sendSettlementAmount(String id) {
+        settlementDetail.sendSettlementAmount(id);
+    }
+
+    public List<SettlementDetail> getSendSettlementDetail(String id) {
+        return settlementDetail.getSendSettlementDetail(id);
     }
 }

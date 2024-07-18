@@ -13,19 +13,21 @@ import java.util.List;
 public class User {
     private final String id;
     private Amount requestAmount;
+    private boolean send = Boolean.FALSE;
     private final List<Settlement> requestSettlements;
-    private final List<Settlement> responseSettlements;
 
     public User(String id) {
         this.id = id;
         this.requestSettlements = new ArrayList<>();
-        this.responseSettlements = new ArrayList<>();
     }
 
     public User(String id, Amount requestAmount) {
         this.id = id;
         this.requestAmount = requestAmount;
         this.requestSettlements = new ArrayList<>();
-        this.responseSettlements = new ArrayList<>();
+    }
+
+    public void setSend(boolean send) {
+        this.send = send;
     }
 }

@@ -79,25 +79,60 @@ class SettlementTest {
 
         assertThat(owner.getRequestSettlements()).hasSize(1);
         assertThat(owner.getRequestSettlements().get(0).getRequestAmount().getAmount()).isEqualTo(70000);
-        assertThat(owner.getRequestSettlements().get(0).getUserList()).hasSize(userList.size());
-        assertThat(owner.getRequestSettlements().get(0).getUserList().stream().mapToInt(m -> m.getRequestAmount().getAmount()).sum()).isEqualTo(requestAmount.getAmount());
+        assertThat(owner.getRequestSettlements().get(0).getSettlementDetail().getUserList()).hasSize(userList.size());
+        assertThat(owner.getRequestSettlements().get(0).getSettlementDetail().getUserList().stream().mapToInt(m -> m.getRequestAmount().getAmount()).sum()).isEqualTo(requestAmount.getAmount());
+        assertThat(owner.getRequestSettlements().get(0).getSettlementDetail().getUserList().get(0).isSend()).isEqualTo(Boolean.FALSE);
 
     }
 
     @DisplayName("정산 금액 보내기")
     @Test
     void test6() {
+        //정산요청자
+        User owner = new User("kangdh");
+        //정산 총액
+        Amount requestAmount = new Amount(70000);
 
+        //정산 대상에게 요청하기
+        List<User> userList = List.of(new User("leehj", new Amount(25000)), new User("kimmj", new Amount(25000)), new User("inch", new Amount(20000)));
+        Settlement settlement = new Settlement(owner, requestAmount, userList);
+        settlement.requestSettlement();
+
+        assertThat(owner.getRequestSettlements().get(0).getSettlementDetail().getUserList().get(0).isSend()).isEqualTo(Boolean.FALSE);
+        assertThat(owner.getRequestSettlements().get(0).getSettlementDetail().getUserList().get(1).isSend()).isEqualTo(Boolean.FALSE);
+        assertThat(owner.getRequestSettlements().get(0).getSettlementDetail().getUserList().get(2).isSend()).isEqualTo(Boolean.FALSE);
+
+        settlement.sendSettlementAmount("leehj");
+        settlement.sendSettlementAmount("kimmj");
+        settlement.sendSettlementAmount("inch");
+
+        assertThat(owner.getRequestSettlements().get(0).getSettlementDetail().getUserList().get(0).isSend()).isEqualTo(Boolean.TRUE);
+        assertThat(owner.getRequestSettlements().get(0).getSettlementDetail().getUserList().get(1).isSend()).isEqualTo(Boolean.TRUE);
+        assertThat(owner.getRequestSettlements().get(0).getSettlementDetail().getUserList().get(2).isSend()).isEqualTo(Boolean.TRUE);
+
+        assertThatThrownBy(() -> settlement.sendSettlementAmount("leehj2")).isInstanceOf(SettlementException.class).hasMessageContaining(ExceptionMessage.NOT_FOUND_USER_ID);
+        assertThatThrownBy(() -> settlement.sendSettlementAmount("kimmj3")).isInstanceOf(SettlementException.class).hasMessageContaining(ExceptionMessage.NOT_FOUND_USER_ID);
+        assertThatThrownBy(() -> settlement.sendSettlementAmount("inch4")).isInstanceOf(SettlementException.class).hasMessageContaining(ExceptionMessage.NOT_FOUND_USER_ID);
     }
 
     @DisplayName("정산 보낸 내역")
     @Test
     void test7() {
-    }
+        //정산요청자
+        User owner = new User("kangdh");
+        //정산 총액
+        Amount requestAmount = new Amount(70000);
 
-    @DisplayName("정신 금액 받기")
-    @Test
-    void test8() {
+        //정산 대상에게 요청하기
+        List<User> userList = List.of(new User("leehj", new Amount(25000)), new User("kimmj", new Amount(25000)), new User("inch", new Amount(20000)));
+        Settlement settlement = new Settlement(owner, requestAmount, userList);
+        settlement.requestSettlement();
+
+        settlement.sendSettlementAmount("leehj");
+        settlement.sendSettlementAmount("kimmj");
+        settlement.sendSettlementAmount("inch");
+
+        settlement.getSendSettlementDetail("leehj");
     }
 
 }
