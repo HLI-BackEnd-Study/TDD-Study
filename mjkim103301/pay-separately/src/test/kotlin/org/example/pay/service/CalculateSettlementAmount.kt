@@ -27,11 +27,19 @@ class CalculateSettlementAmount {
         assertThrows<ArithmeticException> { insuranceFee.divide(BigDecimal(people)) }
     }
 
-//    @Test
-//    fun `정산금을 동일한 금액으로 나눌 수 없는 경우, 원금에 더해야 하는 최소 금액 계산하는 테스트`(){
-//        val insuranceFee : BigDecimal = BigDecimal.valueOf(5_000)
-//        val people : Int = 3
-//
-//        val settlementAmount = insuranceFee.divide(BigDecimal(people))
-//    }
+    @Test
+    fun `정산금을 동일한 금액으로 나눌 수 없는 경우, 원금에 더해야 하는 최소 금액 계산하는 테스트`(){
+        val insuranceFee : BigDecimal = BigDecimal.valueOf(5_000)
+        val people : Int = 7
+
+        val remain = BigDecimal(people).minus(insuranceFee.remainder(BigDecimal(people)));
+        println("나머지: $remain")
+        val settlement = insuranceFee.add(remain).divide(BigDecimal(people));
+        println("보험료 정산금: $settlement")
+
+        assertSoftly {
+            assertThat(remain).isEqualTo(BigDecimal(5))
+            assertThat(settlement.multiply(BigDecimal(people))).isEqualTo(insuranceFee.plus(remain))
+        }
+    }
 }
