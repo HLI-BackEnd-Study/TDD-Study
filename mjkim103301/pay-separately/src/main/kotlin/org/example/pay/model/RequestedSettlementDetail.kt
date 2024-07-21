@@ -5,18 +5,12 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @Entity
-class SettlementRequest(
+class RequestedSettlementDetail(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-    val requestName: String,
-    val requesterId: Long,
     val amount: BigDecimal,
-    val requestDateTime: LocalDateTime,
+    val requestedPersonId: Long,
+    var isCompleted: Boolean = false,
     val completionDateTime: LocalDateTime? = null,
-    val insuranceId: Long,
-    @OneToMany(fetch = FetchType.LAZY)
-    val requestDetails: List<SettlementRequestDetail>
-
-) {
-}
+)
