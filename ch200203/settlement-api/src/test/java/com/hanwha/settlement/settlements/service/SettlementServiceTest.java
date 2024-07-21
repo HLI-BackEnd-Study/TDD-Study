@@ -1,6 +1,8 @@
 package com.hanwha.settlement.settlements.service;
 
+import com.hanwha.settlement.accounts.service.AccountService;
 import com.hanwha.settlement.settlements.dto.CreateRequest;
+import com.hanwha.settlement.settlements.dto.TransferRequest;
 import com.hanwha.settlement.settlements.mapper.SettlementMapper;
 import com.hanwha.settlement.settlements.model.Settlement;
 import com.hanwha.settlement.settlements.model.SettlementReceive;
@@ -18,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -39,6 +42,9 @@ class SettlementServiceTest {
 
     @Mock
     private SettlementReceiveRepository settlementReceiveRepository;
+
+    @Mock
+    private AccountService accountService;
 
     @Mock
     private UserService userService;
@@ -170,6 +176,56 @@ class SettlementServiceTest {
         });
     }
 
+    @Test
+    void 유저가_요청한_정산_리스트를_확인_할_수_있다() {
+        // Given
+        Settlement settlement1 = Settlement.create(requester, 50_000);
+        Settlement settlement2 = Settlement.create(requester, 45_000);
+        SettlementReceive settlementReceive1 = SettlementReceive.create(settlement1, participant1, 50_0000);
+        SettlementReceive settlementReceive2 = SettlementReceive.create(settlement2, participant1, 45_0000);
+
+        // When
+        when(settlementRepository.findSettlementByRequestUser(requester)).thenReturn(List.of(settlement1, settlement2));
+
+        // Then
+        assertSoftly(softly -> {
+            softly.assertThat(settlementService.getSettlements(requester.getId())).isNotNull();
+            softly.assertThat(settlementService.getSettlements(requester.getId()))
+                    .contains(mapper.settlementToResponse(settlement1), mapper.settlementToResponse(settlement2));
+            softly.assertThat(settlementService.getSettlements(requester.getId())).hasSize(2);
+        });
+    }
+
+    @Test
+    void 정산할_객체를_찾지_못한_경우_예외를_던진다() {
+        // Given
+        Long invalidId = 99L;
+        TransferRequest transferRequest = new TransferRequest(invalidId, 500);
+
+        when(settlementReceiveRepository.findById(invalidId)).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThatThrownBy(() -> settlementService.transferPay(invalidId, transferRequest))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("정산할 객체를 찾을 수 없습니다.");
+    }
+
+    @Test
+    void 정산완료_후_정산상태를_변경한다() {
+        // Given
+        Long validId = 1L;
+        TransferRequest transferRequest = new TransferRequest(50);
+
+        when(settlementReceiveRepository.findById(validId)).thenReturn(Optional.of(settlementReceive));
+        when(settlementRepository.findById(settlementReceive.getSettlement().getId())).thenReturn(Optional.of(settlement));
+
+        // When
+        settlementService.transferPay(validId, transferRequest);
+
+        // Then
+        assertThat(settlementReceive.isStatus()).isTrue();
+        verify(settlementRepository, times(1)).save(settlement);
+    }
 
 }
 

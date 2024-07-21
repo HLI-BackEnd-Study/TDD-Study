@@ -93,7 +93,7 @@ public class SettlementService {
         // 1. 유저 조회
         User user = userService.getUserById(userId);
         // 2. 유저가 정산받을 목록을 조회하여 반환한다.
-        List<Settlement> settlements = settlementRepository.findSettlementByRequestUser(user);
+       List<Settlement> settlements = settlementRepository.findSettlementByRequestUser(user);
 
         return settlements.stream()
                 .map(mapper::settlementToResponse)
