@@ -1,7 +1,9 @@
 package com.hanwha.settlement.settlements.service;
 
+import com.hanwha.settlement.accounts.service.AccountService;
 import com.hanwha.settlement.settlements.dto.CreateRequest;
 import com.hanwha.settlement.settlements.dto.SettlementReceivesResponse;
+import com.hanwha.settlement.settlements.dto.SettlementResponse;
 import com.hanwha.settlement.settlements.dto.TransferRequest;
 import com.hanwha.settlement.settlements.mapper.SettlementMapper;
 import com.hanwha.settlement.settlements.model.Settlement;
@@ -24,6 +26,7 @@ public class SettlementService {
     private final SettlementReceiveRepository settlementReceiveRepository;
     private final SettlementRepository settlementRepository;
     private final UserService userService;
+    private final AccountService accountService;
     private final SettlementMapper mapper;
 
     public Settlement request(CreateRequest request) {
@@ -61,22 +64,39 @@ public class SettlementService {
         // 1. 정산할 객체 확인
         SettlementReceive settlementReceive = settlementReceiveRepository.findById(settlementReceiveId).orElseThrow(() -> new IllegalArgumentException("정산할 객체를 찾을 수 없습니다."));
 
-        // 2. 정산완료
+        // 2. 유저계좌에서 출금
+        int withdrawResult = accountService.withdraw(request.userId(), request.amount());
+
+        // 3. 전달할 유저에게 입금
+        accountService.deposit(settlementReceive.getSettlement().getRequestUser().getId(), request.amount());
+
+        // 4. 정산완료
         settlementReceive.paid(request.amount());
 
-        // 3. 전체정산 확인
+        // 5. 전체정산 확인
         Settlement settlement = settlementRepository.findById(settlementReceive.getId()).orElseThrow(() -> new IllegalArgumentException("정산 객체를 찾을 수 없습니다."));
 
-        // 4. 전체 유저가 정산을 완료했는지 확인
+        // 6. 전체 유저가 정산을 완료했는지 확인
         settlement.complete();
     }
 
     @Transactional(readOnly = true)
     public List<SettlementReceivesResponse> getSettlementReceives(Long receiveUserId) {
         List<SettlementReceive> settlementReceives = settlementReceiveRepository.findSettlementReceivesByUserId(receiveUserId);
-        // TODO 고민 1 DTO -> Entity 는 어느레이어에서 변환하는 것이 좋을까요...?
         return settlementReceives.stream()
                 .map(mapper::settlementReceiveToResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<SettlementResponse> getSettlements(Long userId) {
+        // 1. 유저 조회
+        User user = userService.getUserById(userId);
+        // 2. 유저가 정산받을 목록을 조회하여 반환한다.
+        List<Settlement> settlements = settlementRepository.findSettlementByRequestUser(user);
+
+        return settlements.stream()
+                .map(mapper::settlementToResponse)
                 .toList();
     }
 
