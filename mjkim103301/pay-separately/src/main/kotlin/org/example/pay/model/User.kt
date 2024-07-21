@@ -11,6 +11,6 @@ import lombok.ToString
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
-    val name: String? = null
+    val id: Long? = null,
+    val name: String
 )

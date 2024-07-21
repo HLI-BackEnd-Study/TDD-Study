@@ -1,9 +1,6 @@
 package org.example.pay.model
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -11,13 +8,15 @@ import java.time.LocalDateTime
 class SettlementRequest(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = 0,
+    val id: Long? = null,
     val requestName: String,
-    val requesterId:Long,
+    val requesterId: Long,
     val amount: BigDecimal,
     val requestDateTime: LocalDateTime,
-    val completionDateTime: LocalDateTime? =null,
-    val insuranceId:Long
+    val completionDateTime: LocalDateTime? = null,
+    val insuranceId: Long,
+    @OneToMany(fetch = FetchType.LAZY)
+    val requestDetails: List<SettlementRequestDetail>
 
-    ) {
+) {
 }

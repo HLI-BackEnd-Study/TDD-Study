@@ -1,16 +1,14 @@
 package org.example.pay.model
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 import java.math.BigDecimal
 
 @Entity
 class Account(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
-    val userId: Long = 0,
-    val balance: BigDecimal? = null
+    val id: Long? = null,
+    @OneToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    val user: User,
+    val balance: BigDecimal
 )

@@ -11,9 +11,9 @@ import java.time.LocalDateTime
 class InsuranceFee(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
-    val userId: Long = 0,
-    val premium: BigDecimal? = null,
+    val id: Long?=null,
+    val userId: Long,
+    val premium: BigDecimal,
     val paymentCompleted: Boolean = false,
     val completedDateTime: LocalDateTime? = null
 )
