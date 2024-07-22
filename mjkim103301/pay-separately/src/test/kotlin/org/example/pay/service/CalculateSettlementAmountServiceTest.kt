@@ -62,6 +62,7 @@ class CalculateSettlementAmountServiceTest {
 
         // Alice -> Bob, Charlie, Dave, Minji에게 보험료 정산을 요청함.
         // Alice의 보험료는 30,000 원이며, 각 사람들에게 10,000원씩 요청함.
+        // Alice가 다른 사람들한테 받은 정산금 총합: 40,000원.
         val insuranceFee = BigDecimal.valueOf(30_000)
         val requestedSettlements = listOf(
             RequestedSettlementDetailDto(
