@@ -1,8 +1,10 @@
 package org.example.pay.model
 
 import jakarta.persistence.*
+import lombok.ToString
 import java.math.BigDecimal
 import java.time.LocalDateTime
+
 
 @Entity
 class RequestedSettlement(
@@ -14,7 +16,6 @@ class RequestedSettlement(
     val amount: BigDecimal,
     val requestDateTime: LocalDateTime,
     val completionDateTime: LocalDateTime? = null,
-    val insuranceId: Long,
     @OneToMany(fetch = FetchType.LAZY)
     val requestDetails: List<RequestedSettlementDetail>
 

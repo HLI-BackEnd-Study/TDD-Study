@@ -3,7 +3,7 @@ package org.example.pay.dto
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
-class InsuranceFeeDto(
+data class InsuranceFeeDto(
     val id: Long? = null,
     val userId: Long,
     val premium: BigDecimal,

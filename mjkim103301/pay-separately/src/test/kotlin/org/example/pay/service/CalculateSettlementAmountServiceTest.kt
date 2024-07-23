@@ -2,10 +2,13 @@ package org.example.pay.service
 
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions.assertSoftly
+import org.example.pay.dto.InsuranceFeeDto
 import org.example.pay.dto.RequestedSettlementDetailDto
 import org.example.pay.dto.UserDto
 import org.example.pay.model.RequestedSettlement
 import org.example.pay.model.User
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.math.BigDecimal
@@ -13,7 +16,14 @@ import java.math.BigDecimal
 /**
  * 정산금 계산 서비스 테스트
  */
-class CalculateSettlementAmountServiceTest {
+class CalculateSettlementAmountServiceTest() {
+    private lateinit var settlementAmountService: CalculateSettlementAmountService
+
+    @BeforeEach
+    fun setUp() {
+        settlementAmountService = CalculateSettlementAmountService()
+    }
+
     @Test
     fun `정산금 동일한 금액으로 딱 떨어지게 계산하는 테스트`() {
         val insuranceFee: BigDecimal = BigDecimal.valueOf(120_000)
@@ -35,18 +45,17 @@ class CalculateSettlementAmountServiceTest {
     }
 
     @Test
-    fun `정산금을 동일한 금액으로 나눌 수 없는 경우, 원금에 더해야 하는 최소 금액 계산하는 테스트`() {
+    fun `정산금을 동일한 금액으로 나눌 수 없는 경우, 최소 할인 금액 계산하는 테스트`() {
         val insuranceFee: BigDecimal = BigDecimal.valueOf(5_000)
         val people: Int = 7
 
-        val remain = BigDecimal(people).minus(insuranceFee.remainder(BigDecimal(people)));
+        val remain = insuranceFee.remainder(BigDecimal(people))
         println("나머지: $remain")
-        val settlement = insuranceFee.add(remain).divide(BigDecimal(people));
+        val settlement = insuranceFee.minus(remain).divide(BigDecimal(people));
         println("보험료 정산금: $settlement")
 
         assertSoftly {
-            assertThat(remain).isEqualTo(BigDecimal(5))
-            assertThat(settlement.multiply(BigDecimal(people))).isEqualTo(insuranceFee.plus(remain))
+            assertThat(settlement.multiply(BigDecimal(people)).plus(remain)).isEqualTo(insuranceFee)
         }
     }
 
@@ -94,5 +103,46 @@ class CalculateSettlementAmountServiceTest {
         println("총 보험료: $insuranceFee")
         println("요청한 정산금 총합 $requestedSettlementAmount")
         assertThat(insuranceFee >= requestedSettlementAmount).isFalse()
+    }
+
+
+    @Test
+    fun `송금인에게 요청할 정산금(총 보험료를 동일한 금액으로 나눔)을 계산한다`() {
+        val ownerInsuranceFee =
+            InsuranceFeeDto(id = 1, userId = 1, premium = BigDecimal(10_000), paymentCompleted = false)
+
+        val remitters = listOf(
+            UserDto(1, "Alice"),
+            UserDto(2, "Bob"),
+            UserDto(3, "Charlie"),
+            UserDto(4, "David")
+        )
+
+        val amount = settlementAmountService.calculateAmountDivideByEqual(ownerInsuranceFee.premium, remitters.size)
+
+        assertThat(ownerInsuranceFee.premium >= amount.multiply(BigDecimal(remitters.size))).isTrue()
+    }
+
+
+    @Test
+    fun `각 송금인에게 요청할 정산금을 계산한다`() {
+        val ownerInsuranceFee =
+            InsuranceFeeDto(id = 1, userId = 1, premium = BigDecimal(30_000), paymentCompleted = false)
+
+        val remitters = listOf(
+            RequestedSettlementDetailDto(1, BigDecimal(15_000), 1),
+            RequestedSettlementDetailDto(1, BigDecimal(5_000), 2),
+            RequestedSettlementDetailDto(1, BigDecimal(5_000), 3),
+            RequestedSettlementDetailDto(1, BigDecimal(5_000), 4)
+        )
+
+        val remitterAmountList = remitters.stream()
+            .map { it.amount }
+            .toList()
+
+        val possible: Boolean =
+            settlementAmountService.calculateDifferentAmount(ownerInsuranceFee.premium, remitterAmountList)
+
+        assertTrue(possible)
     }
 }

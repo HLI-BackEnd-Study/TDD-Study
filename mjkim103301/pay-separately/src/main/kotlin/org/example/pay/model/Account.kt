@@ -8,7 +8,7 @@ class Account(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-    @OneToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    @OneToOne(fetch = FetchType.EAGER)
     val user: User,
     val balance: BigDecimal
 )
