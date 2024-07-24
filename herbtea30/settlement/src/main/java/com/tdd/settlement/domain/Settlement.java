@@ -33,7 +33,7 @@ public class Settlement {
         settlementDetail.sendSettlementAmount(id);
     }
 
-    public List<SettlementDetail> getSendSettlementDetail(String id) {
+    public SettlementDetail getSendSettlementDetail(String id) {
         return settlementDetail.getSendSettlementDetail(id);
     }
 }

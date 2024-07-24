@@ -41,7 +41,11 @@ public class SettlementDetail {
 
     }
 
-    public List<SettlementDetail> getSendSettlementDetail(String id) {
-        return null;
+    public SettlementDetail getSendSettlementDetail(String id) {
+        User user = this.userList.stream()
+                .filter(f -> f.getId().equals(id))
+                .findAny().orElse(null);
+
+        return user != null ? this : null;
     }
 }

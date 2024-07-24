@@ -132,7 +132,13 @@ class SettlementTest {
         settlement.sendSettlementAmount("kimmj");
         settlement.sendSettlementAmount("inch");
 
-        settlement.getSendSettlementDetail("leehj");
+        SettlementDetail settlementDetail = settlement.getSendSettlementDetail("leehj");
+        assertThat(settlementDetail.getUserList().stream().filter(f -> f.getId().equals("leehj")).count()).isEqualTo(1);
+        assertThat(settlementDetail.getUserList().stream().filter(f -> f.getId().equals("leehj")).findAny().get().getRequestAmount().getAmount()).isEqualTo(25000);
+        assertThat(settlementDetail.getUserList().stream().filter(f -> f.getId().equals("kimmj")).count()).isEqualTo(1);
+        assertThat(settlementDetail.getUserList().stream().filter(f -> f.getId().equals("kimmj")).findAny().get().getRequestAmount().getAmount()).isEqualTo(25000);
+        assertThat(settlementDetail.getUserList().stream().filter(f -> f.getId().equals("inch")).count()).isEqualTo(1);
+        assertThat(settlementDetail.getUserList().stream().filter(f -> f.getId().equals("inch")).findAny().get().getRequestAmount().getAmount()).isEqualTo(20000);
     }
 
 }
