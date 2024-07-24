@@ -1,7 +1,9 @@
 package com.hanwha.settlement.settlements.model;
 
 import com.hanwha.settlement.users.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,7 +22,11 @@ public class SettlementReceive {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(
+            targetEntity = Settlement.class,
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
     @JoinColumn(name = "settlement_id")
     private Settlement settlement;
 

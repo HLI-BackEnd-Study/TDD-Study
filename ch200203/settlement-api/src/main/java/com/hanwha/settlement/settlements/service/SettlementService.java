@@ -59,13 +59,13 @@ public class SettlementService {
         return SettlementReceives.of(settlementReceives);
     }
 
-    // 뭘 반환해줘야 할까....
+    @Transactional
     public void transferPay(Long settlementReceiveId, TransferRequest request) {
         // 1. 정산할 객체 확인
         SettlementReceive settlementReceive = settlementReceiveRepository.findById(settlementReceiveId).orElseThrow(() -> new IllegalArgumentException("정산할 객체를 찾을 수 없습니다."));
 
         // 2. 유저계좌에서 출금
-        int withdrawResult = accountService.withdraw(request.userId(), request.amount());
+        // int withdrawResult = accountService.withdraw(request.userId(), request.amount());
 
         // 3. 전달할 유저에게 입금
         accountService.deposit(settlementReceive.getSettlement().getRequestUser().getId(), request.amount());
