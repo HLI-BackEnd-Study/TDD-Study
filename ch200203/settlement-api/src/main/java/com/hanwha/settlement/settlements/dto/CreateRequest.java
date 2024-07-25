@@ -6,7 +6,6 @@ public record CreateRequest(
 
         long userId,
         int totalAmount,
-
         List<RequestReceive> requestReceives
 ) {
 

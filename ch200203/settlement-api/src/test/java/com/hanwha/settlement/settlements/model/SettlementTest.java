@@ -1,8 +1,5 @@
-package com.hanwha.settlement.settlements;
+package com.hanwha.settlement.settlements.model;
 
-import com.hanwha.settlement.settlements.model.Settlement;
-import com.hanwha.settlement.settlements.model.SettlementReceive;
-import com.hanwha.settlement.settlements.model.SettlementReceives;
 import com.hanwha.settlement.users.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -51,6 +48,23 @@ class SettlementTest {
         assertThatThrownBy(() -> settlement.addSettlementReceives(settlementReceives))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("정산 요청한 금액과 참가자들의 금액 합계가 일치하지 않습니다");
+    }
+
+    @Test
+    void 모든_유저가_정산을_완료한_경우_정산_완료_상태로_변경한다() {
+        // Given
+        Settlement settlement = Settlement.create(requester, 100);
+        SettlementReceive settlementReceive = SettlementReceive.create(settlement, participant1, 100);
+        SettlementReceives settlementReceives = SettlementReceives.of(List.of(settlementReceive));
+        settlement.addSettlementReceives(settlementReceives);
+
+        // when
+        settlementReceive.paid(100);
+
+        // Then
+        settlement.complete();
+        assertThat(settlement.getRequestStatus()).isEqualTo(RequestStatus.COMPLETE);
+
     }
 
 }

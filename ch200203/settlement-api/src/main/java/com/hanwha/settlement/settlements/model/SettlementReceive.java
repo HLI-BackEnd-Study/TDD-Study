@@ -1,7 +1,9 @@
 package com.hanwha.settlement.settlements.model;
 
 import com.hanwha.settlement.users.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,10 +22,16 @@ public class SettlementReceive {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(
+            targetEntity = Settlement.class,
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
     @JoinColumn(name = "settlement_id")
     private Settlement settlement;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     private int amount; // 정산해야할 금액
@@ -31,6 +39,7 @@ public class SettlementReceive {
     private boolean status; // 정산 완료 상태
 
     private SettlementReceive(Settlement settlement, User user, int amount) {
+        validateAmount(amount);
         this.settlement = settlement;
         this.user = user;
         this.amount = amount;
@@ -41,4 +50,31 @@ public class SettlementReceive {
         return new SettlementReceive(settlement, user, amount);
     }
 
+    private void validateAmount(int amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("정산금액은 0원 보다 커야합니다.");
+        }
+    }
+
+    // 요청한 정산금액을 정산한다.
+    public void paid(int requestAmount) {
+        // validatePayAmount(requestAmount);
+        if (this.amount == requestAmount) {
+            this.status = true; // 정산완료로 변경
+            return; // early return?
+        }
+
+        throw new IllegalArgumentException("정산할 금액이 일치 하지 않습니다.");
+    }
+
+    @Deprecated
+    private void validatePayAmount(int requestAmount) {
+        if (this.amount != requestAmount) {
+            throw new IllegalArgumentException("정산할 금액이 일치 하지 않습니다.");
+        }
+    }
+
+    public boolean isPaid() {
+        return status;
+    }
 }

@@ -11,9 +11,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Settlement {
 
@@ -49,9 +51,17 @@ public class Settlement {
 
     private void validateSettlement(SettlementReceives settlementReceives) {
         int calculatedTotalAmount = settlementReceives.calculateTotalAmount();
-
         if (calculatedTotalAmount != totalAmount) {
             throw new IllegalArgumentException("정산 요청한 금액과 참가자들의 금액 합계가 일치하지 않습니다");
+        }
+    }
+
+    /**
+     * 모든 유저가 정산을 완료한 경우 정산 완료 상태로 변경한다.
+     */
+    public void complete() {
+        if (settlementReceives.isComplete()) {
+            this.requestStatus = RequestStatus.COMPLETE;
         }
     }
 }
