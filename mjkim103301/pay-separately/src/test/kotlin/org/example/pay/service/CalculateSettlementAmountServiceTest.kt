@@ -45,7 +45,7 @@ class CalculateSettlementAmountServiceTest() {
     }
 
     @Test
-    fun `정산금을 동일한 금액으로 나눌 수 없는 경우, 최소 할인 금액 계산하는 테스트`() {
+    fun `정산금을 동일한 금액으로 나눌 수 없는 경우, 최소 한화생명이 지급하는 금액 계산하는 테스트`() {
         val insuranceFee: BigDecimal = BigDecimal.valueOf(5_000)
         val people: Int = 7
 
