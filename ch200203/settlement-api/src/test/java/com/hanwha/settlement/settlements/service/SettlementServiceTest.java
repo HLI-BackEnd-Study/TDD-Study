@@ -1,9 +1,12 @@
 package com.hanwha.settlement.settlements.service;
 
+import com.hanwha.settlement.accounts.service.AccountService;
 import com.hanwha.settlement.settlements.dto.CreateRequest;
+import com.hanwha.settlement.settlements.dto.TransferRequest;
 import com.hanwha.settlement.settlements.mapper.SettlementMapper;
 import com.hanwha.settlement.settlements.model.Settlement;
 import com.hanwha.settlement.settlements.model.SettlementReceive;
+import com.hanwha.settlement.settlements.model.SettlementReceives;
 import com.hanwha.settlement.settlements.repository.SettlementReceiveRepository;
 import com.hanwha.settlement.settlements.repository.SettlementRepository;
 import com.hanwha.settlement.users.User;
@@ -18,11 +21,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,11 +47,15 @@ class SettlementServiceTest {
     private SettlementReceiveRepository settlementReceiveRepository;
 
     @Mock
+    private AccountService accountService;
+
+    @Mock
     private UserService userService;
 
     private User requester;
     private User participant1;
     private User participant2;
+
 
     @BeforeEach
     void setUp() {
@@ -170,6 +180,63 @@ class SettlementServiceTest {
         });
     }
 
+    @Test
+    void 유저가_요청한_정산_리스트를_확인_할_수_있다() {
+        // Given
+        Settlement settlement1 = Settlement.create(requester, 50_000);
+        Settlement settlement2 = Settlement.create(requester, 45_000);
+        SettlementReceive settlementReceive1 = SettlementReceive.create(settlement1, participant1, 50_000);
+        SettlementReceive settlementReceive2 = SettlementReceive.create(settlement2, participant1, 45_000);
+
+        when(settlementRepository.findSettlementByRequestUser(any())).thenReturn(List.of(settlement1, settlement2));
+
+        // Then
+        assertSoftly(softly -> {
+            softly.assertThat(settlementService.getSettlements(requester.getId())).isNotNull();
+            softly.assertThat(settlementService.getSettlements(requester.getId()))
+                    .contains(mapper.settlementToResponse(settlement1), mapper.settlementToResponse(settlement2));
+            softly.assertThat(settlementService.getSettlements(requester.getId())).hasSize(2);
+        });
+    }
+
+    @Test
+    void 정산할_객체를_찾지_못한_경우_예외를_던진다() {
+        // Given
+        Long id = 99L;
+        TransferRequest transferRequest = new TransferRequest(id, 500);
+
+        when(settlementReceiveRepository.findById(id)).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThatThrownBy(() -> settlementService.transferPay(id, transferRequest))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("정산할 객체를 찾을 수 없습니다.");
+    }
+
+    @Test
+    void 정산완료_후_정산상태를_변경한다() {
+        // Given
+        Long settlementId = 1L;
+        Long receiveId = 1L;
+        TransferRequest transferRequest = new TransferRequest(receiveId, 50_000);
+
+        Settlement settlement = Settlement.create(requester, 50_000);
+        SettlementReceive settlementReceive = SettlementReceive.create(settlement, participant1, 50_000);
+        SettlementReceives settlementReceives = SettlementReceives.of(List.of(settlementReceive));
+        settlement.addSettlementReceives(settlementReceives);
+
+        settlementRepository.save(settlement);
+
+        when(settlementReceiveRepository.findById(settlementId)).thenReturn(Optional.of(settlementReceive));
+        when(settlementRepository.findById(receiveId)).thenReturn(Optional.of(settlement));
+
+        // When
+        settlementService.transferPay(receiveId, transferRequest);
+
+        // Then
+        assertThat(settlementReceive.isStatus()).isTrue();
+        verify(settlementRepository).save(settlement);
+    }
 
 }
 

@@ -2,6 +2,7 @@ package com.hanwha.settlement.settlements.controller;
 
 import com.hanwha.settlement.settlements.dto.CreateRequest;
 import com.hanwha.settlement.settlements.dto.SettlementReceivesResponse;
+import com.hanwha.settlement.settlements.dto.SettlementResponse;
 import com.hanwha.settlement.settlements.dto.TransferRequest;
 import com.hanwha.settlement.settlements.model.Settlement;
 import com.hanwha.settlement.settlements.service.SettlementService;
@@ -43,5 +44,12 @@ public class SettlementController {
         List<SettlementReceivesResponse> settlementReceivesResponses = settlementService.getSettlementReceives(userId);
         return ResponseEntity.ok().body(settlementReceivesResponses);
     }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<SettlementResponse>> getSettlements(@PathVariable Long userId) {
+        List<SettlementResponse> settlementReceivesResponses = settlementService.getSettlements(userId);
+        return ResponseEntity.ok().body(settlementReceivesResponses);
+    }
+
 
 }

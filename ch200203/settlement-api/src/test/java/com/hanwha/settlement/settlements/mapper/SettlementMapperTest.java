@@ -14,7 +14,7 @@ class SettlementMapperTest {
     SettlementMapper settlementMapper = new SettlementMapper();
 
     @Test
-    void 엔티티를_반환DTO로_변환하여_반환한다() {
+    void 엔티티를_반환_DTO로_변환하여_반환한다() {
         //Given
         Settlement settlement = mock(Settlement.class);
         User user = new User(1L, "메시");
