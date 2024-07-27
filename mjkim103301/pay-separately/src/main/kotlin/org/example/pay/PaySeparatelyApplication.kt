@@ -8,5 +8,4 @@ class PaySeparatelyApplication
 
 fun main(args: Array<String>) {
 	runApplication<PaySeparatelyApplication>(*args)
-	println("hello")
 }
