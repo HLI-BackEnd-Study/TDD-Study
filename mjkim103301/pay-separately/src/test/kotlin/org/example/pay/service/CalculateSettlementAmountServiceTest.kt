@@ -145,4 +145,28 @@ class CalculateSettlementAmountServiceTest() {
 
         assertTrue(possible)
     }
+
+    @Test
+    fun `송금인에게 요청하는 금액은 0원 이상이어야 한다`() {
+        val ownerInsuranceFee =
+            InsuranceFeeDto(id = 1, userId = 1, premium = BigDecimal(30_000), paymentCompleted = false)
+
+        val remitters = listOf(
+            RequestedSettlementDetailDto(1, BigDecimal(15_000), 1),
+            RequestedSettlementDetailDto(1, BigDecimal(5_000), 2),
+            RequestedSettlementDetailDto(1, BigDecimal(6_000), 3),
+            RequestedSettlementDetailDto(1, BigDecimal(-1_000), 4)
+        )
+
+        val remitterAmountList = remitters.stream()
+            .map { it.amount }
+            .toList()
+
+        assertThrows<IllegalArgumentException> {
+            settlementAmountService.calculateDifferentAmount(
+                ownerInsuranceFee.premium,
+                remitterAmountList
+            )
+        }
+    }
 }
