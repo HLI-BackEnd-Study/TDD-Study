@@ -49,9 +49,9 @@ class CalculateSettlementAmountServiceTest() {
         val insuranceFee: BigDecimal = BigDecimal.valueOf(5_000)
         val people: Int = 7
 
-        val remain = insuranceFee.remainder(BigDecimal(people))
+        val remain = settlementAmountService.calculateRemain(insuranceFee, people)
         println("나머지: $remain")
-        val settlement = insuranceFee.minus(remain).divide(BigDecimal(people));
+        val settlement = settlementAmountService.calculateAmountDivideByEqual(insuranceFee, people)
         println("보험료 정산금: $settlement")
 
         assertSoftly {
@@ -119,8 +119,25 @@ class CalculateSettlementAmountServiceTest() {
         )
 
         val amount = settlementAmountService.calculateAmountDivideByEqual(ownerInsuranceFee.premium, remitters.size)
-
         assertThat(ownerInsuranceFee.premium >= amount.multiply(BigDecimal(remitters.size))).isTrue()
+    }
+
+    @Test
+    fun `동일한 금액으로 나눌 수 없으면, 동일한 금액으로 나눌 수 있는 최소 금액을 한화생명이 지급한다`() {
+        val ownerInsuranceFee =
+            InsuranceFeeDto(id = 1, userId = 1, premium = BigDecimal(10_000), paymentCompleted = false)
+
+        val remitters = listOf(
+            UserDto(1, "Alice"),
+            UserDto(2, "Bob"),
+            UserDto(3, "Charlie"),
+            UserDto(4, "David")
+        )
+
+        val amount = settlementAmountService.calculateAmountDivideByEqual(ownerInsuranceFee.premium, remitters.size)
+        val remain = settlementAmountService.calculateRemain(ownerInsuranceFee.premium, remitters.size)
+
+        assertThat(ownerInsuranceFee.premium).isEqualTo(amount.multiply(BigDecimal(remitters.size)).add(remain))
     }
 
 
@@ -157,6 +174,26 @@ class CalculateSettlementAmountServiceTest() {
             RequestedSettlementDetailDto(1, BigDecimal(6_000), 3),
             RequestedSettlementDetailDto(1, BigDecimal(-1_000), 4)
         )
+
+        val remitterAmountList = remitters.stream()
+            .map { it.amount }
+            .toList()
+
+        assertThrows<IllegalArgumentException> {
+            settlementAmountService.calculateDifferentAmount(
+                ownerInsuranceFee.premium,
+                remitterAmountList
+            )
+        }
+    }
+
+
+    @Test
+    fun `정산금을 보내야 하는 사람은 1명 이상이어야 한다`() {
+        val ownerInsuranceFee =
+            InsuranceFeeDto(id = 1, userId = 1, premium = BigDecimal(30_000), paymentCompleted = false)
+
+        val remitters = ArrayList<RequestedSettlementDetailDto>()
 
         val remitterAmountList = remitters.stream()
             .map { it.amount }

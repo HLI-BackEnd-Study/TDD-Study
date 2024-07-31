@@ -14,6 +14,7 @@ class RequestedSettlement(
     val requestName: String,
     val requesterId: Long,
     val amount: BigDecimal,
+    val discountAmount: BigDecimal,
     val requestDateTime: LocalDateTime,
     val completionDateTime: LocalDateTime? = null,
     @OneToMany(fetch = FetchType.LAZY)

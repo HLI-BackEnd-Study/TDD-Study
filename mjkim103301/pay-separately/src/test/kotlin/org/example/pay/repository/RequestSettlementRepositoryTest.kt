@@ -39,6 +39,7 @@ class RequestSettlementRepositoryTest {
             requestName = "한화생명 보험료 정산",
             requesterId = 1,
             amount = BigDecimal(30_000),
+            discountAmount = BigDecimal.ZERO,
             requestDateTime = LocalDateTime.now(),
             requestDetails = requestedSettlementDetails
         )

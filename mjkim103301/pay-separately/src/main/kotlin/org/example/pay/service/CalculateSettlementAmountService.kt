@@ -12,8 +12,13 @@ class CalculateSettlementAmountService(
      */
     fun calculateAmountDivideByEqual(premium: BigDecimal, size: Int): BigDecimal {
         validateOverOrSameToZero(premium)
-        val remain = premium.remainder(BigDecimal(size))
+        validateOverToZero(size)
+        val remain = calculateRemain(premium, size)
         return premium.minus(remain).divide(BigDecimal(size))
+    }
+
+    fun calculateRemain(premium: BigDecimal, size: Int): BigDecimal {
+        return premium.remainder(BigDecimal(size))
     }
 
     /**
@@ -21,6 +26,7 @@ class CalculateSettlementAmountService(
      */
     fun calculateDifferentAmount(premium: BigDecimal, remitterAmountList: List<BigDecimal>): Boolean {
         validateOverOrSameToZero(premium)
+        validateOverToZero(remitterAmountList.size)
         remitterAmountList.forEach {
             validateOverOrSameToZero(it)
         }
@@ -31,8 +37,10 @@ class CalculateSettlementAmountService(
     }
 
     fun validateOverOrSameToZero(money: BigDecimal) {
-        if (money < BigDecimal.ZERO) {
-            throw IllegalArgumentException("0원 미만인 금액이 요청으로 들어올 수 없습니다.")
-        }
+        require(money >= BigDecimal.ZERO) { "0원 미만인 금액이 요청으로 들어올 수 없습니다." }
+    }
+
+    fun validateOverToZero(size: Int) {
+        require(size >= 1) { "1 이상인 값만 들어올 수 있습니다." }
     }
 }
