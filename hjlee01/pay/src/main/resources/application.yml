@@ -1,0 +1,11 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: pay
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/pay?autoReconnection=true&useSSL=false&allowMultiQueries=true
+    username: root
+    password: welcome!@#123
