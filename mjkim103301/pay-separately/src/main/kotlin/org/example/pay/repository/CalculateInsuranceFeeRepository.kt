@@ -1,6 +1,6 @@
 package org.example.pay.repository
 
-import org.example.pay.model.InsuranceFee
+import org.example.pay.domain.model.InsuranceFee
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 

@@ -1,7 +1,7 @@
 package org.example.pay.service
 
 import org.example.pay.dto.InsuranceFeeDto
-import org.example.pay.model.InsuranceFee
+import org.example.pay.domain.model.InsuranceFee
 import org.example.pay.repository.CalculateInsuranceFeeRepository
 import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.stereotype.Service

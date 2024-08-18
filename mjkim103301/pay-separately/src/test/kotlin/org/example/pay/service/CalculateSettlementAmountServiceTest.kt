@@ -5,8 +5,6 @@ import org.assertj.core.api.SoftAssertions.assertSoftly
 import org.example.pay.dto.InsuranceFeeDto
 import org.example.pay.dto.RequestedSettlementDetailDto
 import org.example.pay.dto.UserDto
-import org.example.pay.model.RequestedSettlement
-import org.example.pay.model.User
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

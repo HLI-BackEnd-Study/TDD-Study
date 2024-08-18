@@ -1,8 +1,5 @@
 package org.example.pay.dto
 
-import jakarta.persistence.FetchType
-import jakarta.persistence.OneToMany
-import org.example.pay.model.RequestedSettlementDetail
 import java.math.BigDecimal
 import java.time.LocalDateTime
 

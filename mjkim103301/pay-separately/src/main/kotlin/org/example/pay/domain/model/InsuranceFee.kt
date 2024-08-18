@@ -1,4 +1,4 @@
-package org.example.pay.model
+package org.example.pay.domain.model
 
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
