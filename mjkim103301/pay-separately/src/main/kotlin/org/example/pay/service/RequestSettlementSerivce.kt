@@ -7,7 +7,6 @@ import org.example.pay.dto.RequestedSettlementDetailDto
 import org.example.pay.dto.RequestedSettlementDto
 import org.example.pay.domain.model.Settlement
 import org.example.pay.domain.model.SettlementDetail
-import org.example.pay.repository.RequestSettlementRepository
 import java.math.BigDecimal
 import java.time.LocalDateTime
 

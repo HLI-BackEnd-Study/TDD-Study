@@ -1,10 +1,9 @@
 package org.example.pay.dto
 
+import kotlinx.datetime.LocalDateTime
 import java.math.BigDecimal
-import java.time.LocalDateTime
 
 data class InsuranceFeeDto(
-    val id: Long? = null,
     val userId: Long,
     val premium: BigDecimal,
     val paymentCompleted: Boolean,
