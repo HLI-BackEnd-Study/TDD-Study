@@ -9,5 +9,5 @@ import java.math.BigDecimal
 object Accounts : LongIdTable("accounts", "id") {
     val userId = long("user_id").uniqueIndex()
         .references(Users.id)
-    val balance = decimal("balance", 18, 0)
+    val balance = decimal("balance", 18, 0).default(BigDecimal.ZERO)
 }

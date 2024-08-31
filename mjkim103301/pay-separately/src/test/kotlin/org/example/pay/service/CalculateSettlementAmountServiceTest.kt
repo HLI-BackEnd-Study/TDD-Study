@@ -3,7 +3,7 @@ package org.example.pay.service
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions.assertSoftly
 import org.example.pay.dto.InsuranceFeeDto
-import org.example.pay.dto.RequestedSettlementDetailDto
+import org.example.pay.dto.SettlementDetailDto
 import org.example.pay.dto.UserDto
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -72,23 +72,23 @@ class CalculateSettlementAmountServiceTest() {
         // Alice가 다른 사람들한테 받은 정산금 총합: 40,000원.
         val insuranceFee = BigDecimal.valueOf(30_000)
         val requestedSettlements = listOf(
-            RequestedSettlementDetailDto(
-                1,
+            SettlementDetailDto(
+
                 BigDecimal(10_000),
                 2
             ),
-            RequestedSettlementDetailDto(
-                1,
+            SettlementDetailDto(
+
                 BigDecimal(10_000),
                 3
             ),
-            RequestedSettlementDetailDto(
-                1,
+            SettlementDetailDto(
+
                 BigDecimal(10_000),
                 4
             ),
-            RequestedSettlementDetailDto(
-                1,
+            SettlementDetailDto(
+
                 BigDecimal(10_000),
                 5
             )
@@ -107,7 +107,7 @@ class CalculateSettlementAmountServiceTest() {
     @Test
     fun `송금인에게 요청할 정산금(총 보험료를 동일한 금액으로 나눔)을 계산한다`() {
         val ownerInsuranceFee =
-            InsuranceFeeDto(id = 1, userId = 1, premium = BigDecimal(10_000), paymentCompleted = false)
+            InsuranceFeeDto(userId = 1, premium = BigDecimal(10_000), paymentCompleted = false)
 
         val remitters = listOf(
             UserDto(1, "Alice"),
@@ -123,7 +123,7 @@ class CalculateSettlementAmountServiceTest() {
     @Test
     fun `동일한 금액으로 나눌 수 없으면, 동일한 금액으로 나눌 수 있는 최소 금액을 한화생명이 지급한다`() {
         val ownerInsuranceFee =
-            InsuranceFeeDto(id = 1, userId = 1, premium = BigDecimal(10_000), paymentCompleted = false)
+            InsuranceFeeDto(userId = 1, premium = BigDecimal(10_000), paymentCompleted = false)
 
         val remitters = listOf(
             UserDto(1, "Alice"),
@@ -142,13 +142,13 @@ class CalculateSettlementAmountServiceTest() {
     @Test
     fun `각 송금인에게 요청할 정산금을 계산한다`() {
         val ownerInsuranceFee =
-            InsuranceFeeDto(id = 1, userId = 1, premium = BigDecimal(30_000), paymentCompleted = false)
+            InsuranceFeeDto(userId = 1, premium = BigDecimal(30_000), paymentCompleted = false)
 
         val remitters = listOf(
-            RequestedSettlementDetailDto(1, BigDecimal(15_000), 1),
-            RequestedSettlementDetailDto(1, BigDecimal(5_000), 2),
-            RequestedSettlementDetailDto(1, BigDecimal(5_000), 3),
-            RequestedSettlementDetailDto(1, BigDecimal(5_000), 4)
+            SettlementDetailDto(BigDecimal(15_000), 1),
+            SettlementDetailDto(BigDecimal(5_000), 2),
+            SettlementDetailDto(BigDecimal(5_000), 3),
+            SettlementDetailDto(BigDecimal(5_000), 4)
         )
 
         val remitterAmountList = remitters.stream()
@@ -164,13 +164,13 @@ class CalculateSettlementAmountServiceTest() {
     @Test
     fun `송금인에게 요청하는 금액은 0원 이상이어야 한다`() {
         val ownerInsuranceFee =
-            InsuranceFeeDto(id = 1, userId = 1, premium = BigDecimal(30_000), paymentCompleted = false)
+            InsuranceFeeDto(userId = 1, premium = BigDecimal(30_000), paymentCompleted = false)
 
         val remitters = listOf(
-            RequestedSettlementDetailDto(1, BigDecimal(15_000), 1),
-            RequestedSettlementDetailDto(1, BigDecimal(5_000), 2),
-            RequestedSettlementDetailDto(1, BigDecimal(6_000), 3),
-            RequestedSettlementDetailDto(1, BigDecimal(-1_000), 4)
+            SettlementDetailDto(BigDecimal(15_000), 1),
+            SettlementDetailDto(BigDecimal(5_000), 2),
+            SettlementDetailDto(BigDecimal(6_000), 3),
+            SettlementDetailDto(BigDecimal(-1_000), 4)
         )
 
         val remitterAmountList = remitters.stream()
@@ -189,9 +189,9 @@ class CalculateSettlementAmountServiceTest() {
     @Test
     fun `정산금을 보내야 하는 사람은 1명 이상이어야 한다`() {
         val ownerInsuranceFee =
-            InsuranceFeeDto(id = 1, userId = 1, premium = BigDecimal(30_000), paymentCompleted = false)
+            InsuranceFeeDto(userId = 1, premium = BigDecimal(30_000), paymentCompleted = false)
 
-        val remitters = ArrayList<RequestedSettlementDetailDto>()
+        val remitters = ArrayList<SettlementDetailDto>()
 
         val remitterAmountList = remitters.stream()
             .map { it.amount }

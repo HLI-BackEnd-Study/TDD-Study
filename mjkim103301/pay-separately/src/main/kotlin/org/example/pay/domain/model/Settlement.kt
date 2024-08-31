@@ -1,13 +1,9 @@
 package org.example.pay.domain.model
 
-import jakarta.persistence.*
 import org.example.pay.domain.table.Settlements
-import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
-import java.math.BigDecimal
-import java.time.LocalDateTime
 
 class Settlement(id: EntityID<Long>) : LongEntity(id) {
     companion object : LongEntityClass<Settlement>(Settlements)

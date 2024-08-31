@@ -6,6 +6,6 @@ import java.math.BigDecimal
 data class InsuranceFeeDto(
     val userId: Long,
     val premium: BigDecimal,
-    val paymentCompleted: Boolean,
+    val paymentCompleted: Boolean = false,
     val completedDateTime: LocalDateTime? = null
 )

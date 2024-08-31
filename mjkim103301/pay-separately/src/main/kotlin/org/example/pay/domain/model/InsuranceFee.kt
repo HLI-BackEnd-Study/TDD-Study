@@ -1,21 +1,19 @@
 package org.example.pay.domain.model
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import lombok.ToString
+
+import org.example.pay.domain.table.InsuranceFees
+import org.example.pay.domain.table.Users
+import org.jetbrains.exposed.dao.LongEntity
+import org.jetbrains.exposed.dao.LongEntityClass
+import org.jetbrains.exposed.dao.id.EntityID
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
-@Entity
-@ToString
-class InsuranceFee(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
-    val userId: Long,
-    val premium: BigDecimal,
-    val paymentCompleted: Boolean = false,
-    val completedDateTime: LocalDateTime? = null
-)
+
+class InsuranceFee(id: EntityID<Long>) : LongEntity(id) {
+    companion object : LongEntityClass<InsuranceFee>(InsuranceFees)
+    var userId by InsuranceFees.userId
+    var premium by InsuranceFees.premium
+    var paymentCompleted by InsuranceFees.paymentCompleted
+    var completedDateTime by InsuranceFees.completedDateTime
+}
