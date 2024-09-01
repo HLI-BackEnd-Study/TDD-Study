@@ -1,39 +1,97 @@
 package org.example.pay.service
 
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import org.example.pay.domain.model.Settlement
-import org.example.pay.domain.model.SettlementDetail
+import org.example.pay.dto.SettlementDetailDto
 import org.example.pay.dto.SettlementDto
+import org.example.pay.repository.RequestSettlementRepository
+import org.example.pay.repository.RequestSettlementRepositoryImpl
+import org.example.pay.util.CalculateSettlementUtils
 import java.math.BigDecimal
 
+/**
+ * 정산금 관리 서비스
+ *
+ * @property requestSettlementRepository
+ */
 class RequestSettlementSerivce(
+    private val requestSettlementRepository: RequestSettlementRepository = RequestSettlementRepositoryImpl()
 ) {
-
-
     /**
      * 정산 요청 저장
      */
-    fun createRequestedSettlement(
-        settlementDetailDto: SettlementDto,
-        discount: BigDecimal
+    fun createRequestedSettlements(
+        settlementDto: SettlementDto
     ) {
-        val settlement = Settlement.new {
-            requestName = settlementDetailDto.requestName
-            requesterId = settlementDetailDto.requesterId
-            amount = settlementDetailDto.amount
-            discountAmount = discount
-            requestDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+        val requestedAmounts = settlementDto.requestDetails.map {
+            it.amount
+        } + (settlementDto.discountAmount)
+        val isPossible = CalculateSettlementUtils.isSameToPremium(settlementDto.amount, requestedAmounts)
+        require(isPossible) { "정산금 총합이 최종 금액과 일치하지 않습니다." }
+        requestSettlementRepository.createSettlement(settlementDto)
+    }
+
+    /**
+     * 정산 완료 확인
+     *
+     * @param insuranceFeeId 보험료 아이디
+     * @return 보험료 정산 완료 여부
+     */
+    fun checkSettlementIsCompleted(insuranceFeeId: Long): Boolean {
+        val settlement = findByInsuranceFeeId(insuranceFeeId)
+        if (settlement.completed) {
+            return true
+        }
+        val settlementDetails = requestSettlementRepository.findSettlementDetailsBySettlementId(settlement.id.value)
+        val listOfNeedToPaid = settlementDetails.filter {
+            !it.completed
+        }.toList()
+        if (listOfNeedToPaid.isEmpty()) {
+            requestSettlementRepository.updateToCompleted(settlement)
+            return true
         }
 
-        settlementDetailDto.requestDetails
-            .map { detail ->
-                SettlementDetail.new {
-                    amount = detail.amount
+        return false
+    }
+
+    private fun findByInsuranceFeeId(insuranceFeeId: Long): Settlement {
+        return requestSettlementRepository.findSettlementByInsuranceFeeId(insuranceFeeId)
+
+    }
+
+    /**
+     * 내가 요청한 정산 목록 조회
+     *
+     * @param requesterId
+     * @return
+     */
+    private fun findRequestSettlements(requesterId: Long): List<SettlementDto> {
+        val settlements = requestSettlementRepository.findSettlements(requesterId)
+        val results = mutableListOf<SettlementDto>()
+
+        settlements.forEach { settlement ->
+            val settlementDetails = requestSettlementRepository.findSettlementDetailsBySettlementId(settlement.id.value)
+            val settlementDetailDtos = settlementDetails.map { detail ->
+                SettlementDetailDto(
+                    id = detail.id.value,
+                    amount = detail.amount,
                     requestedPersonId = detail.requestedPersonId
-                    settlementId = settlement.id.value
-                }
-            }
+                )
+            }.toList()
+            results.add(
+                SettlementDto(
+                    id = settlement.id.value,
+                    requestName = settlement.requestName,
+                    amount = settlement.amount,
+                    discountAmount = settlement.discountAmount ?: BigDecimal.ZERO,
+                    requestDateTime = settlement.requestDateTime,
+                    completed = settlement.completed,
+                    completionDateTime = settlement.completionDateTime,
+                    requestDetails = settlementDetailDtos,
+                    requesterId = settlement.requesterId,
+                    insuranceFeeId = settlement.insuranceFeeId
+                )
+            )
+        }
+        return results
     }
 }

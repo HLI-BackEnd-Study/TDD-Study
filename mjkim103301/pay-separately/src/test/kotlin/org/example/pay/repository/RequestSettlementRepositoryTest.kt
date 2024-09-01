@@ -44,7 +44,9 @@ class RequestSettlementRepositoryTest : DatabaseConnectTest() {
         val settlementDto = SettlementDto(
             requestName = requestNameValue,
             requesterId = requesterIdValue,
+            insuranceFeeId = 1,
             amount = BigDecimal(30_000),
+            discountAmount = BigDecimal.ZERO,
             requestDetails = listOf(
                 SettlementDetailDto(
                     amount = BigDecimal(10_000),
@@ -62,7 +64,7 @@ class RequestSettlementRepositoryTest : DatabaseConnectTest() {
         )
         val discountAmount = BigDecimal.ZERO
 
-        repository.createSettlement(settlementDto, discountAmount)
+        repository.createSettlement(settlementDto)
 
 
         // when

@@ -1,4 +1,4 @@
-package org.example.pay.service
+package org.example.pay.util
 
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions.assertSoftly
@@ -6,7 +6,6 @@ import org.example.pay.dto.InsuranceFeeDto
 import org.example.pay.dto.SettlementDetailDto
 import org.example.pay.dto.UserDto
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.math.BigDecimal
@@ -14,13 +13,7 @@ import java.math.BigDecimal
 /**
  * 정산금 계산 서비스 테스트
  */
-class CalculateSettlementAmountServiceTest() {
-    private lateinit var settlementAmountService: CalculateSettlementAmountService
-
-    @BeforeEach
-    fun setUp() {
-        settlementAmountService = CalculateSettlementAmountService()
-    }
+class CalculateSettlementUtilsTest() {
 
     @Test
     fun `정산금 동일한 금액으로 딱 떨어지게 계산하는 테스트`() {
@@ -47,9 +40,9 @@ class CalculateSettlementAmountServiceTest() {
         val insuranceFee: BigDecimal = BigDecimal.valueOf(5_000)
         val people: Int = 7
 
-        val remain = settlementAmountService.calculateRemain(insuranceFee, people)
+        val remain = CalculateSettlementUtils.calculateRemain(insuranceFee, people)
         println("나머지: $remain")
-        val settlement = settlementAmountService.calculateAmountDivideByEqual(insuranceFee, people)
+        val settlement = CalculateSettlementUtils.calculateAmountDivideByEqual(insuranceFee, people)
         println("보험료 정산금: $settlement")
 
         assertSoftly {
@@ -73,22 +66,22 @@ class CalculateSettlementAmountServiceTest() {
         val insuranceFee = BigDecimal.valueOf(30_000)
         val requestedSettlements = listOf(
             SettlementDetailDto(
-
+                null,
                 BigDecimal(10_000),
-                2
+                2,
             ),
             SettlementDetailDto(
-
+                null,
                 BigDecimal(10_000),
                 3
             ),
             SettlementDetailDto(
-
+                null,
                 BigDecimal(10_000),
                 4
             ),
             SettlementDetailDto(
-
+                null,
                 BigDecimal(10_000),
                 5
             )
@@ -116,7 +109,7 @@ class CalculateSettlementAmountServiceTest() {
             UserDto(4, "David")
         )
 
-        val amount = settlementAmountService.calculateAmountDivideByEqual(ownerInsuranceFee.premium, remitters.size)
+        val amount = CalculateSettlementUtils.calculateAmountDivideByEqual(ownerInsuranceFee.premium, remitters.size)
         assertThat(ownerInsuranceFee.premium >= amount.multiply(BigDecimal(remitters.size))).isTrue()
     }
 
@@ -132,8 +125,8 @@ class CalculateSettlementAmountServiceTest() {
             UserDto(4, "David")
         )
 
-        val amount = settlementAmountService.calculateAmountDivideByEqual(ownerInsuranceFee.premium, remitters.size)
-        val remain = settlementAmountService.calculateRemain(ownerInsuranceFee.premium, remitters.size)
+        val amount = CalculateSettlementUtils.calculateAmountDivideByEqual(ownerInsuranceFee.premium, remitters.size)
+        val remain = CalculateSettlementUtils.calculateRemain(ownerInsuranceFee.premium, remitters.size)
 
         assertThat(ownerInsuranceFee.premium).isEqualTo(amount.multiply(BigDecimal(remitters.size)).add(remain))
     }
@@ -145,10 +138,10 @@ class CalculateSettlementAmountServiceTest() {
             InsuranceFeeDto(userId = 1, premium = BigDecimal(30_000), paymentCompleted = false)
 
         val remitters = listOf(
-            SettlementDetailDto(BigDecimal(15_000), 1),
-            SettlementDetailDto(BigDecimal(5_000), 2),
-            SettlementDetailDto(BigDecimal(5_000), 3),
-            SettlementDetailDto(BigDecimal(5_000), 4)
+            SettlementDetailDto(null, BigDecimal(15_000), 1),
+            SettlementDetailDto(null, BigDecimal(5_000), 2),
+            SettlementDetailDto(null, BigDecimal(5_000), 3),
+            SettlementDetailDto(null, BigDecimal(5_000), 4)
         )
 
         val remitterAmountList = remitters.stream()
@@ -156,7 +149,7 @@ class CalculateSettlementAmountServiceTest() {
             .toList()
 
         val possible: Boolean =
-            settlementAmountService.calculateDifferentAmount(ownerInsuranceFee.premium, remitterAmountList)
+            CalculateSettlementUtils.isSameToPremium(ownerInsuranceFee.premium, remitterAmountList)
 
         assertTrue(possible)
     }
@@ -167,10 +160,10 @@ class CalculateSettlementAmountServiceTest() {
             InsuranceFeeDto(userId = 1, premium = BigDecimal(30_000), paymentCompleted = false)
 
         val remitters = listOf(
-            SettlementDetailDto(BigDecimal(15_000), 1),
-            SettlementDetailDto(BigDecimal(5_000), 2),
-            SettlementDetailDto(BigDecimal(6_000), 3),
-            SettlementDetailDto(BigDecimal(-1_000), 4)
+            SettlementDetailDto(null, BigDecimal(15_000), 1),
+            SettlementDetailDto(null, BigDecimal(5_000), 2),
+            SettlementDetailDto(null, BigDecimal(6_000), 3),
+            SettlementDetailDto(null, BigDecimal(-1_000), 4)
         )
 
         val remitterAmountList = remitters.stream()
@@ -178,7 +171,7 @@ class CalculateSettlementAmountServiceTest() {
             .toList()
 
         assertThrows<IllegalArgumentException> {
-            settlementAmountService.calculateDifferentAmount(
+            CalculateSettlementUtils.isSameToPremium(
                 ownerInsuranceFee.premium,
                 remitterAmountList
             )
@@ -198,7 +191,7 @@ class CalculateSettlementAmountServiceTest() {
             .toList()
 
         assertThrows<IllegalArgumentException> {
-            settlementAmountService.calculateDifferentAmount(
+            CalculateSettlementUtils.isSameToPremium(
                 ownerInsuranceFee.premium,
                 remitterAmountList
             )

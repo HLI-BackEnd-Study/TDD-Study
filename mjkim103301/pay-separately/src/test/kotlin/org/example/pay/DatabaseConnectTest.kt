@@ -1,6 +1,5 @@
 package org.example.pay
 
-import org.example.pay.domain.table.Accounts
 import org.example.pay.domain.table.InsuranceFees
 import org.example.pay.domain.table.SettlementDetails
 import org.example.pay.domain.table.Settlements
@@ -26,7 +25,6 @@ abstract class DatabaseConnectTest {
         transaction {
             drop(SettlementDetails)
             drop(Settlements)
-            drop(Accounts)
             drop(InsuranceFees)
             drop(Users)
         }
@@ -39,7 +37,6 @@ abstract class DatabaseConnectTest {
     private fun createTables() {
         transaction {
             create(Users)
-            create(Accounts)
             create(InsuranceFees)
             create(Settlements)
             create(SettlementDetails)

@@ -2,6 +2,7 @@ package org.example.pay.repository
 
 import org.assertj.core.api.Assertions.assertThat
 import org.example.pay.DatabaseConnectTest
+import org.example.pay.domain.model.InsuranceFee
 import org.example.pay.domain.model.User
 import org.example.pay.dto.SettlementDetailDto
 import org.example.pay.dto.SettlementDto
@@ -27,7 +28,9 @@ class RemitSettlementRepositoryTest() : DatabaseConnectTest() {
         val settlementDto = SettlementDto(
             requestName = requestNameValue,
             requesterId = requesterIdValue,
+            insuranceFeeId = 1,
             amount = BigDecimal(30_000),
+            discountAmount = BigDecimal.ZERO,
             requestDetails = listOf(
                 SettlementDetailDto(
                     amount = BigDecimal(10_000),
@@ -43,7 +46,6 @@ class RemitSettlementRepositoryTest() : DatabaseConnectTest() {
                 )
             )
         )
-        val discountAmount = BigDecimal.ZERO
         transaction {
             // 정산 요청자
             User.new {
@@ -57,8 +59,13 @@ class RemitSettlementRepositoryTest() : DatabaseConnectTest() {
             User.new {
                 name = "심청이2"
             }
+
+            InsuranceFee.new {
+                userId = 1
+                premium = settlementDto.amount
+            }
         }
-        requestSettlementRepository.createSettlement(settlementDto, discountAmount)
+        requestSettlementRepository.createSettlement(settlementDto)
     }
 
     @Test
@@ -68,7 +75,7 @@ class RemitSettlementRepositoryTest() : DatabaseConnectTest() {
 
         remitSettlementRepository.remitSettlements(requestedSettlements)
 
-        val results =  remitSettlementRepository.findSettlementDetails(requestedUserId)
+        val results = remitSettlementRepository.findSettlementDetails(requestedUserId)
 
         assertThat(results.size).isEqualTo(0)
     }

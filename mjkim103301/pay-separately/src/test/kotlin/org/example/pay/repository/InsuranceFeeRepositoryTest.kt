@@ -14,8 +14,8 @@ import java.math.BigDecimal
 /**
  * 보험료 계산 레포지토리 테스트
  */
-class CalculateInsuranceFeeRepositoryTest() : DatabaseConnectTest() {
-    private val repository: CalculateInsuranceFeeRepository = CalculateInsuranceFeeRepositoryImpl()
+class InsuranceFeeRepositoryTest() : DatabaseConnectTest() {
+    private val repository: InsuranceFeeRepository = InsuranceFeeRepositoryImpl()
 
     @BeforeEach
     fun setUp(){
@@ -56,7 +56,7 @@ class CalculateInsuranceFeeRepositoryTest() : DatabaseConnectTest() {
     @Test
     fun `납부가 완료되지 않은 보험료 조회 테스트`(){
         val userId:Long = 2
-        val insurances = repository.findInsuranceFeeToBePaidByUserId(userId)
+        val insurances = repository.findInsuranceFeeToBePaid(userId)
 
         assertSoftly {
             insurances.forEach{
