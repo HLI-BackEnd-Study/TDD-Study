@@ -1,6 +1,7 @@
 package org.example.pay.domain.model
 
 import org.example.pay.domain.table.Settlements
+import org.example.pay.dto.SettlementDetailDto
 import org.example.pay.dto.SettlementDto
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass
@@ -21,7 +22,7 @@ class Settlement(id: EntityID<Long>) : LongEntity(id) {
     var completed by Settlements.completed
     var completionDateTime by Settlements.completionDateTime
 
-    fun buildSettlementDto(): SettlementDto {
+    fun toDto(requestDetails: List<SettlementDetailDto>): SettlementDto {
         return SettlementDto(
             id = this.id.value,
             requestName = this.requestName,
@@ -32,7 +33,7 @@ class Settlement(id: EntityID<Long>) : LongEntity(id) {
             requestDateTime = this.requestDateTime,
             completed = this.completed,
             completionDateTime = this.completionDateTime,
-            requestDetails = emptyList(),
+            requestDetails = requestDetails,
         )
     }
 }

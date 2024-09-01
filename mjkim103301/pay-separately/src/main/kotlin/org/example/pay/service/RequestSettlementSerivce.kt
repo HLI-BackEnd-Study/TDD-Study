@@ -1,12 +1,10 @@
 package org.example.pay.service
 
 import org.example.pay.domain.model.Settlement
-import org.example.pay.dto.SettlementDetailDto
 import org.example.pay.dto.SettlementDto
 import org.example.pay.repository.RequestSettlementRepository
 import org.example.pay.repository.RequestSettlementRepositoryImpl
 import org.example.pay.util.CalculateSettlementUtils
-import java.math.BigDecimal
 
 /**
  * 정산금 관리 서비스
@@ -71,25 +69,10 @@ class RequestSettlementSerivce(
         settlements.forEach { settlement ->
             val settlementDetails = requestSettlementRepository.findSettlementDetailsBySettlementId(settlement.id.value)
             val settlementDetailDtos = settlementDetails.map { detail ->
-                SettlementDetailDto(
-                    id = detail.id.value,
-                    amount = detail.amount,
-                    requestedPersonId = detail.requestedPersonId
-                )
+                detail.toDto()
             }.toList()
             results.add(
-                SettlementDto(
-                    id = settlement.id.value,
-                    requestName = settlement.requestName,
-                    amount = settlement.amount,
-                    discountAmount = settlement.discountAmount ?: BigDecimal.ZERO,
-                    requestDateTime = settlement.requestDateTime,
-                    completed = settlement.completed,
-                    completionDateTime = settlement.completionDateTime,
-                    requestDetails = settlementDetailDtos,
-                    requesterId = settlement.requesterId,
-                    insuranceFeeId = settlement.insuranceFeeId
-                )
+                settlement.toDto(settlementDetailDtos)
             )
         }
         return results

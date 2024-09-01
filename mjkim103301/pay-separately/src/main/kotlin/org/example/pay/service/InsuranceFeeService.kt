@@ -1,6 +1,5 @@
 package org.example.pay.service
 
-import org.example.pay.domain.model.InsuranceFee
 import org.example.pay.dto.InsuranceFeeDto
 import org.example.pay.repository.InsuranceFeeRepository
 import org.example.pay.repository.InsuranceFeeRepositoryImpl
@@ -23,16 +22,10 @@ class InsuranceFeeService(
     fun getInsuranceFee(userId: Long): List<InsuranceFeeDto> {
         val insuranceFees = insuranceFeeRepository.findInsuranceFeeToBePaid(userId)
         return insuranceFees.map {
-            buildInsuranceFeeDto(it)
+            it.toDto()
         }
     }
 
-    fun buildInsuranceFeeDto(insuranceFee: InsuranceFee) = InsuranceFeeDto(
-        userId = insuranceFee.id.value,
-        premium = insuranceFee.premium,
-        paymentCompleted = insuranceFee.paymentCompleted,
-        completedDateTime = insuranceFee.completedDateTime
-    )
 
     /**
      * 보험료 납부 완료 확인
