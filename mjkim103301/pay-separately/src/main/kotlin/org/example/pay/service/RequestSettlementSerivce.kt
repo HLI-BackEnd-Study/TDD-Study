@@ -2,15 +2,18 @@ package org.example.pay.service
 
 import org.example.pay.domain.model.Settlement
 import org.example.pay.dto.SettlementDto
+import org.example.pay.dto.request.SettlementCreateDto
 import org.example.pay.repository.RequestSettlementRepository
 import org.example.pay.repository.RequestSettlementRepositoryImpl
 import org.example.pay.util.CalculateSettlementUtils
+import org.springframework.stereotype.Service
 
 /**
  * 정산금 관리 서비스
  *
  * @property requestSettlementRepository
  */
+@Service
 class RequestSettlementSerivce(
     private val requestSettlementRepository: RequestSettlementRepository = RequestSettlementRepositoryImpl()
 ) {
@@ -18,7 +21,7 @@ class RequestSettlementSerivce(
      * 정산 요청 저장
      */
     fun createRequestedSettlements(
-        settlementDto: SettlementDto
+        settlementDto: SettlementCreateDto
     ) {
         val requestedAmounts = settlementDto.requestDetails.map {
             it.amount

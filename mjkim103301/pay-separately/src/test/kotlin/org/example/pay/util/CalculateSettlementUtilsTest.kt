@@ -66,22 +66,22 @@ class CalculateSettlementUtilsTest() {
         val insuranceFee = BigDecimal.valueOf(30_000)
         val requestedSettlements = listOf(
             SettlementDetailDto(
-                null,
+                1,
                 BigDecimal(10_000),
                 2,
             ),
             SettlementDetailDto(
-                null,
+                2,
                 BigDecimal(10_000),
                 3
             ),
             SettlementDetailDto(
-                null,
+                3,
                 BigDecimal(10_000),
                 4
             ),
             SettlementDetailDto(
-                null,
+                4,
                 BigDecimal(10_000),
                 5
             )
@@ -138,10 +138,10 @@ class CalculateSettlementUtilsTest() {
             InsuranceFeeDto(userId = 1, premium = BigDecimal(30_000), paymentCompleted = false)
 
         val remitters = listOf(
-            SettlementDetailDto(null, BigDecimal(15_000), 1),
-            SettlementDetailDto(null, BigDecimal(5_000), 2),
-            SettlementDetailDto(null, BigDecimal(5_000), 3),
-            SettlementDetailDto(null, BigDecimal(5_000), 4)
+            SettlementDetailDto(1, BigDecimal(15_000), 1),
+            SettlementDetailDto(2, BigDecimal(5_000), 2),
+            SettlementDetailDto(3, BigDecimal(5_000), 3),
+            SettlementDetailDto(4, BigDecimal(5_000), 4)
         )
 
         val remitterAmountList = remitters.stream()
@@ -160,10 +160,10 @@ class CalculateSettlementUtilsTest() {
             InsuranceFeeDto(userId = 1, premium = BigDecimal(30_000), paymentCompleted = false)
 
         val remitters = listOf(
-            SettlementDetailDto(null, BigDecimal(15_000), 1),
-            SettlementDetailDto(null, BigDecimal(5_000), 2),
-            SettlementDetailDto(null, BigDecimal(6_000), 3),
-            SettlementDetailDto(null, BigDecimal(-1_000), 4)
+            SettlementDetailDto(1, BigDecimal(15_000), 1),
+            SettlementDetailDto(2, BigDecimal(5_000), 2),
+            SettlementDetailDto(3, BigDecimal(6_000), 3),
+            SettlementDetailDto(4, BigDecimal(-1_000), 4)
         )
 
         val remitterAmountList = remitters.stream()

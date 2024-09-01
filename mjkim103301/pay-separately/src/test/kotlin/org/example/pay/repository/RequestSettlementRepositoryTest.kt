@@ -4,8 +4,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.SoftAssertions.assertSoftly
 import org.example.pay.DatabaseConnectTest
 import org.example.pay.domain.model.User
-import org.example.pay.dto.SettlementDetailDto
-import org.example.pay.dto.SettlementDto
+import org.example.pay.dto.request.SettlementCreateDto
+import org.example.pay.dto.request.SettlementDetailCreateDto
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -40,23 +40,23 @@ class RequestSettlementRepositoryTest : DatabaseConnectTest() {
     fun `정산금 요청정보 저장 테스트`() {
         // given
         val requestNameValue: String = "한화생명 보험료 정산"
-        val requesterIdValue:Long = 1
-        val settlementDto = SettlementDto(
+        val requesterIdValue: Long = 1
+        val settlementDto = SettlementCreateDto(
             requestName = requestNameValue,
             requesterId = requesterIdValue,
             insuranceFeeId = 1,
             amount = BigDecimal(30_000),
             discountAmount = BigDecimal.ZERO,
             requestDetails = listOf(
-                SettlementDetailDto(
+                SettlementDetailCreateDto(
                     amount = BigDecimal(10_000),
                     requestedPersonId = 1
                 ),
-                SettlementDetailDto(
+                SettlementDetailCreateDto(
                     amount = BigDecimal(10_000),
                     requestedPersonId = 2
                 ),
-                SettlementDetailDto(
+                SettlementDetailCreateDto(
                     amount = BigDecimal(10_000),
                     requestedPersonId = 3
                 )

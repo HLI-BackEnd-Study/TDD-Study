@@ -4,14 +4,14 @@ import org.example.pay.domain.model.Settlement
 import org.example.pay.domain.model.SettlementDetail
 import org.example.pay.domain.table.SettlementDetails
 import org.example.pay.domain.table.Settlements
-import org.example.pay.dto.SettlementDto
+import org.example.pay.dto.request.SettlementCreateDto
 import org.example.pay.util.LocalDateTimeUtils
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
 
 interface RequestSettlementRepository {
-    fun createSettlement(settlementDto: SettlementDto): Settlement
+    fun createSettlement(settlementDto: SettlementCreateDto): Settlement
     fun findSettlements(requesterId: Long): List<Settlement>
     fun findSettlementByInsuranceFeeId(insuranceFeeId: Long): Settlement
     fun findSettlementDetailsBySettlementId(settlementId: Long): List<SettlementDetail>
@@ -19,7 +19,7 @@ interface RequestSettlementRepository {
 }
 
 class RequestSettlementRepositoryImpl : RequestSettlementRepository {
-    override fun createSettlement(settlementDto: SettlementDto): Settlement {
+    override fun createSettlement(settlementDto: SettlementCreateDto): Settlement {
         return transaction {
             val settlement = Settlement.new {
                 requestName = settlementDto.requestName
