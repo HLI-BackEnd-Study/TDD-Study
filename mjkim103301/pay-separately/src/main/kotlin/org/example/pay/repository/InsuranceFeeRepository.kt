@@ -6,8 +6,9 @@ import org.example.pay.dto.InsuranceFeeDto
 import org.example.pay.util.LocalDateTimeUtils
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.springframework.stereotype.Repository
 
-
+@Repository
 interface InsuranceFeeRepository {
     fun createInsuranceFee(insuranceFeeDto: InsuranceFeeDto): InsuranceFee
     fun findInsuranceFeeToBePaid(userId: Long): List<InsuranceFee>

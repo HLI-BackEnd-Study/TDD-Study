@@ -8,8 +8,9 @@ import org.example.pay.dto.request.SettlementCreateDto
 import org.example.pay.util.LocalDateTimeUtils
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.springframework.stereotype.Repository
 
-
+@Repository
 interface RequestSettlementRepository {
     fun createSettlement(settlementDto: SettlementCreateDto): Settlement
     fun findSettlements(requesterId: Long): List<Settlement>

@@ -1,10 +1,11 @@
 package org.example.pay.service
 
 import org.example.pay.repository.UserRepository
-import org.example.pay.repository.UserRepositoryImpl
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
-class UserService(private val userRepository: UserRepository = UserRepositoryImpl()) {
+@Transactional(readOnly = true)
+class UserService(private val userRepository: UserRepository) {
     fun findUser(userId: Long) = userRepository.findById(userId)
 }

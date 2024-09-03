@@ -2,18 +2,20 @@ package org.example.pay.service
 
 import org.example.pay.dto.SettlementDetailResponseDto
 import org.example.pay.repository.RemitSettlementRepository
-import org.example.pay.repository.RemitSettlementRepositoryImpl
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * 정산금 납부 서비스
  *
  */
 @Service
+@Transactional(readOnly = true)
 class RemitSettlementService(
-    private val remitSettlementRepository: RemitSettlementRepository = RemitSettlementRepositoryImpl()
+    private val remitSettlementRepository: RemitSettlementRepository,
+    private val userService:UserService
 ) {
-    private val userService = UserService()
+
 
     /**
      * 정산해야 할 목록 조회
@@ -49,6 +51,7 @@ class RemitSettlementService(
      *
      * @param settlementDetailId 납부할 아이디
      */
+    @Transactional
     fun remitSettlement(settlementDetailId: Long) {
         val settlementDetail = remitSettlementRepository.findSettlementDetailById(settlementDetailId)
         if (settlementDetail.completed) {
@@ -62,6 +65,7 @@ class RemitSettlementService(
      *
      * @param settlementDetailIds 납부할 아이디 목록
      */
+    @Transactional
     fun remitSettlements(settlementDetailIds: List<Long>) {
         settlementDetailIds.map { remitSettlement(it) }
 

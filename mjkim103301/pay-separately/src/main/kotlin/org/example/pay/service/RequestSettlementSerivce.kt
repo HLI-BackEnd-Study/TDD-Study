@@ -4,9 +4,9 @@ import org.example.pay.domain.model.Settlement
 import org.example.pay.dto.SettlementDto
 import org.example.pay.dto.request.SettlementCreateDto
 import org.example.pay.repository.RequestSettlementRepository
-import org.example.pay.repository.RequestSettlementRepositoryImpl
 import org.example.pay.util.CalculateSettlementUtils
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * 정산금 관리 서비스
@@ -14,12 +14,14 @@ import org.springframework.stereotype.Service
  * @property requestSettlementRepository
  */
 @Service
+@Transactional(readOnly = true)
 class RequestSettlementSerivce(
-    private val requestSettlementRepository: RequestSettlementRepository = RequestSettlementRepositoryImpl()
+    private val requestSettlementRepository: RequestSettlementRepository
 ) {
     /**
      * 정산 요청 저장
      */
+    @Transactional
     fun createRequestedSettlements(
         settlementDto: SettlementCreateDto
     ) {
@@ -37,6 +39,7 @@ class RequestSettlementSerivce(
      * @param insuranceFeeId 보험료 아이디
      * @return 보험료 정산 완료 여부
      */
+    @Transactional
     fun checkSettlementIsCompleted(insuranceFeeId: Long): Boolean {
         val settlement = findByInsuranceFeeId(insuranceFeeId)
         if (settlement.completed) {

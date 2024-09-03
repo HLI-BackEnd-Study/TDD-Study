@@ -6,8 +6,9 @@ import org.example.pay.domain.table.SettlementDetails
 import org.example.pay.util.LocalDateTimeUtils
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.springframework.stereotype.Repository
 
-
+@Repository
 interface RemitSettlementRepository {
     fun findSettlementById(settlementId: Long): Settlement
     fun findSettlementDetailById(settlementDetailId: Long): SettlementDetail
