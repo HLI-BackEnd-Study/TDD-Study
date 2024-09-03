@@ -9,7 +9,7 @@ plugins {
 
 group = "org.example"
 version = "0.0.1-SNAPSHOT"
-val exposedVersion = "0.53.0"
+val exposedVersion = "0.54.0"
 
 java {
 	toolchain {
@@ -28,6 +28,7 @@ dependencies {
 	implementation("org.jetbrains.exposed:exposed-core:$exposedVersion" )
 	implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
 	implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+	implementation("org.jetbrains.exposed:exposed-spring-boot-starter:$exposedVersion")
 	implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposedVersion")
 	runtimeOnly ("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
