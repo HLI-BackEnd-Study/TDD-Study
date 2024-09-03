@@ -20,7 +20,7 @@ class InsuranceFeeService(
     /**
      * 내야 할 보험료 목록 조회
      */
-    fun getInsuranceFee(userId: Long): List<InsuranceFeeDto> {
+    fun findInsuranceFee(userId: Long): List<InsuranceFeeDto> {
         val insuranceFees = insuranceFeeRepository.findInsuranceFeeToBePaid(userId)
         return insuranceFees.map {
             it.toDto()

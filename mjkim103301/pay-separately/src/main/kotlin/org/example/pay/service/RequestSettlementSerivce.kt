@@ -24,13 +24,19 @@ class RequestSettlementSerivce(
     @Transactional
     fun createRequestedSettlements(
         settlementDto: SettlementCreateDto
-    ) {
+    ): SettlementDto {
         val requestedAmounts = settlementDto.requestDetails.map {
             it.amount
         } + (settlementDto.discountAmount)
         val isPossible = CalculateSettlementUtils.isSameToPremium(settlementDto.amount, requestedAmounts)
         require(isPossible) { "정산금 총합이 최종 금액과 일치하지 않습니다." }
-        requestSettlementRepository.createSettlement(settlementDto)
+
+        val settlement = requestSettlementRepository.createSettlement(settlementDto)
+        val settlementDetailDto = requestSettlementRepository.findSettlementDetailsBySettlementId(settlement.id.value)
+            .map { it.toDto() }
+            .toList()
+
+        return settlement.toDto(settlementDetailDto)
     }
 
     /**

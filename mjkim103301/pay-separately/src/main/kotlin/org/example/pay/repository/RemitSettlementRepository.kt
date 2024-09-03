@@ -4,6 +4,7 @@ import org.example.pay.domain.model.Settlement
 import org.example.pay.domain.model.SettlementDetail
 import org.example.pay.domain.table.SettlementDetails
 import org.example.pay.util.LocalDateTimeUtils
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.stereotype.Repository
@@ -14,8 +15,9 @@ interface RemitSettlementRepository {
     fun findSettlementDetailById(settlementDetailId: Long): SettlementDetail
     fun findSettlementDetails(requestedPersonId: Long): List<SettlementDetail>
     fun remitSettlements(settlementDetails: List<SettlementDetail>)
-
     fun remitSettlement(settlementDetail: SettlementDetail)
+    fun findSettlementDetailsBySettlementId(settlementId: Long): List<SettlementDetail>
+    fun updateToCompleted(settlement: Settlement)
 }
 
 class RemitSettlementRepositoryImpl : RemitSettlementRepository {
@@ -55,6 +57,20 @@ class RemitSettlementRepositoryImpl : RemitSettlementRepository {
         transaction {
             settlementDetail.completed = true
             settlementDetail.completionDateTime = LocalDateTimeUtils.now()
+        }
+    }
+
+    override fun findSettlementDetailsBySettlementId(settlementId: Long): List<SettlementDetail> {
+        return transaction {
+            SettlementDetail.find(SettlementDetails.settlementId eq settlementId)
+                .toList()
+        }
+    }
+
+    override fun updateToCompleted(settlement: Settlement) {
+        return transaction {
+            settlement.completed = true
+            settlement.completionDateTime = LocalDateTimeUtils.now()
         }
     }
 }
