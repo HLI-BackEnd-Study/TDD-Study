@@ -1,7 +1,7 @@
 package org.example.pay.service
 
 import org.example.pay.dto.SettlementDetailResponseDto
-import org.example.pay.repository.RemitSettlementRepository
+import org.example.pay.repository.SettlementRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional(readOnly = true)
 class RemitSettlementService(
-    private val remitSettlementRepository: RemitSettlementRepository,
+    private val settlementRepository: SettlementRepository,
     private val userService: UserService
 ) {
 
@@ -22,10 +22,10 @@ class RemitSettlementService(
      *
      */
     fun findSettlementToPaid(requestedPersonId: Long): List<SettlementDetailResponseDto> {
-        val settlementDetails = remitSettlementRepository.findSettlementDetails(requestedPersonId)
+        val settlementDetails = settlementRepository.findSettlementDetails(requestedPersonId)
         val results = mutableListOf<SettlementDetailResponseDto>()
         settlementDetails.forEach { detail ->
-            val settlement = remitSettlementRepository.findSettlementById(detail.id.value)
+            val settlement = settlementRepository.findSettlementById(detail.id.value)
             val requester = userService.findUser(settlement.requesterId)
             if (!settlement.completed) {
                 results.add(
@@ -53,26 +53,26 @@ class RemitSettlementService(
      * @param settlementDetailId 납부할 아이디
      */
     fun remitSettlement(settlementDetailId: Long) {
-        val settlementDetail = remitSettlementRepository.findSettlementDetailById(settlementDetailId)
+        val settlementDetail = settlementRepository.findSettlementDetailById(settlementDetailId)
         if (settlementDetail.completed) {
             throw NoSuchElementException("이미 정산 완료된 항목입니다.")
         }
-        remitSettlementRepository.remitSettlement(settlementDetail)
+        settlementRepository.remitSettlement(settlementDetail)
 
         checkSettlementIsCompleted(settlementDetail.settlementId)
     }
 
     fun checkSettlementIsCompleted(settlementId: Long) {
-        val settlement = remitSettlementRepository.findSettlementById(settlementId)
+        val settlement = settlementRepository.findSettlementById(settlementId)
         if (settlement.completed) {
             return
         }
-        val settlementDetails = remitSettlementRepository.findSettlementDetailsBySettlementId(settlementId)
+        val settlementDetails = settlementRepository.findSettlementDetailsBySettlementId(settlementId)
         val listOfNeedToPaid = settlementDetails.filter {
             !it.completed
         }.toList()
         if (listOfNeedToPaid.isEmpty()) {
-            remitSettlementRepository.updateToCompleted(settlement)
+            settlementRepository.updateToCompleted(settlement)
         }
         return
     }

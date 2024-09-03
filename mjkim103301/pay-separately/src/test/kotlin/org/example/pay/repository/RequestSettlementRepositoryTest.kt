@@ -15,7 +15,7 @@ import java.math.BigDecimal
  * 정산금 요청 레포지토리 테스트
  */
 class RequestSettlementRepositoryTest : DatabaseConnectTest() {
-    private val repository: RequestSettlementRepository = RequestSettlementRepositoryImpl()
+    private val repository: SettlementRepository = SettlementRepositoryImpl()
 
     @BeforeEach
     fun setUp() {

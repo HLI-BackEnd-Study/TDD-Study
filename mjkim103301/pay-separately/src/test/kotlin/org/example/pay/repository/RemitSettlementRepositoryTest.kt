@@ -15,10 +15,10 @@ import java.math.BigDecimal
 /**
  * 정산금 송금 레포지토리 테스트
  */
-class RemitSettlementRepositoryTest() : DatabaseConnectTest() {
+class RemitSettlementRepositoryTest(
+) : DatabaseConnectTest() {
+    private var settlementRepository: SettlementRepository = SettlementRepositoryImpl()
 
-    private var remitSettlementRepository: RemitSettlementRepository = RemitSettlementRepositoryImpl()
-    private var requestSettlementRepository: RequestSettlementRepository = RequestSettlementRepositoryImpl()
 
     @DisplayName("사용자 정보, 정산금 요청 정보 저장")
     @BeforeEach
@@ -65,17 +65,17 @@ class RemitSettlementRepositoryTest() : DatabaseConnectTest() {
                 premium = settlementDto.amount
             }
         }
-        requestSettlementRepository.createSettlement(settlementDto)
+        this.settlementRepository.createSettlement(settlementDto)
     }
 
     @Test
     fun `요청받은 정산금 송금 테스트`() {
         val requestedUserId: Long = 2
-        val requestedSettlements = remitSettlementRepository.findSettlementDetails(requestedUserId)
+        val requestedSettlements = this.settlementRepository.findSettlementDetails(requestedUserId)
 
-        remitSettlementRepository.remitSettlements(requestedSettlements)
+        this.settlementRepository.remitSettlements(requestedSettlements)
 
-        val results = remitSettlementRepository.findSettlementDetails(requestedUserId)
+        val results = this.settlementRepository.findSettlementDetails(requestedUserId)
 
         assertThat(results.size).isEqualTo(0)
     }

@@ -3,6 +3,8 @@ package org.example.pay.repository
 import org.example.pay.domain.model.Settlement
 import org.example.pay.domain.model.SettlementDetail
 import org.example.pay.domain.table.SettlementDetails
+import org.example.pay.domain.table.Settlements
+import org.example.pay.dto.request.SettlementCreateDto
 import org.example.pay.util.LocalDateTimeUtils
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
@@ -10,17 +12,20 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.stereotype.Repository
 
 @Repository
-interface RemitSettlementRepository {
+interface SettlementRepository {
     fun findSettlementById(settlementId: Long): Settlement
     fun findSettlementDetailById(settlementDetailId: Long): SettlementDetail
     fun findSettlementDetails(requestedPersonId: Long): List<SettlementDetail>
     fun remitSettlements(settlementDetails: List<SettlementDetail>)
     fun remitSettlement(settlementDetail: SettlementDetail)
+    fun createSettlement(settlementDto: SettlementCreateDto): Settlement
+    fun findSettlements(requesterId: Long): List<Settlement>
+    fun findSettlementByInsuranceFeeId(insuranceFeeId: Long): Settlement
     fun findSettlementDetailsBySettlementId(settlementId: Long): List<SettlementDetail>
     fun updateToCompleted(settlement: Settlement)
 }
 
-class RemitSettlementRepositoryImpl : RemitSettlementRepository {
+class SettlementRepositoryImpl : SettlementRepository {
     override fun findSettlementById(settlementId: Long): Settlement {
         return transaction {
             Settlement.findById(settlementId) ?: throw NoSuchElementException("정산 요청 항목이 없습니다.")
@@ -57,6 +62,40 @@ class RemitSettlementRepositoryImpl : RemitSettlementRepository {
         transaction {
             settlementDetail.completed = true
             settlementDetail.completionDateTime = LocalDateTimeUtils.now()
+        }
+    }
+
+    override fun createSettlement(settlementDto: SettlementCreateDto): Settlement {
+        return transaction {
+            val settlement = Settlement.new {
+                requestName = settlementDto.requestName
+                requesterId = settlementDto.requesterId
+                amount = settlementDto.amount
+                discountAmount = settlementDto.discountAmount
+            }
+            settlementDto.requestDetails.map { detail ->
+                SettlementDetail.new {
+                    amount = detail.amount
+                    requestedPersonId = detail.requestedPersonId
+                    settlementId = settlement.id.value
+                }
+            }
+            settlement
+        }
+    }
+
+    override fun findSettlements(requesterId: Long): List<Settlement> {
+        return transaction {
+            Settlement.find {
+                Settlements.requesterId eq requesterId
+            }.toList()
+        }
+    }
+
+    override fun findSettlementByInsuranceFeeId(insuranceFeeId: Long): Settlement {
+        return transaction {
+            Settlement.find(Settlements.insuranceFeeId eq insuranceFeeId)
+                .singleOrNull() ?: throw NoSuchElementException("조회할 정산금요청항목이 없습니다.")
         }
     }
 
