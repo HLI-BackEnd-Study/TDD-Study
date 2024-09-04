@@ -1,0 +1,82 @@
+package org.example.pay.repository
+
+import org.assertj.core.api.Assertions.assertThat
+import org.example.pay.DatabaseConnectTest
+import org.example.pay.domain.model.InsuranceFee
+import org.example.pay.domain.model.User
+import org.example.pay.dto.request.SettlementCreateDto
+import org.example.pay.dto.request.SettlementDetailCreateDto
+import org.jetbrains.exposed.sql.transactions.transaction
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import java.math.BigDecimal
+
+/**
+ * 정산금 송금 레포지토리 테스트
+ */
+class RemitSettlementRepositoryTest(
+) : DatabaseConnectTest() {
+    private var settlementRepository: SettlementRepository = SettlementRepositoryImpl()
+
+
+    @DisplayName("사용자 정보, 정산금 요청 정보 저장")
+    @BeforeEach
+    fun setUp() {
+        val requestNameValue: String = "한화생명 보험료 정산"
+        val requesterIdValue: Long = 1
+        val settlementDto = SettlementCreateDto(
+            requestName = requestNameValue,
+            requesterId = requesterIdValue,
+            insuranceFeeId = 1,
+            amount = BigDecimal(30_000),
+            discountAmount = BigDecimal.ZERO,
+            requestDetails = listOf(
+                SettlementDetailCreateDto(
+                    amount = BigDecimal(10_000),
+                    requestedPersonId = 1
+                ),
+                SettlementDetailCreateDto(
+                    amount = BigDecimal(10_000),
+                    requestedPersonId = 2
+                ),
+                SettlementDetailCreateDto(
+                    amount = BigDecimal(10_000),
+                    requestedPersonId = 3
+                )
+            )
+        )
+        transaction {
+            // 정산 요청자
+            User.new {
+                name = "홍길동"
+            }
+
+            // 나머지 사람들
+            User.new {
+                name = "심청이1"
+            }
+            User.new {
+                name = "심청이2"
+            }
+
+            InsuranceFee.new {
+                userId = 1
+                premium = settlementDto.amount
+            }
+        }
+        this.settlementRepository.createSettlement(settlementDto)
+    }
+
+    @Test
+    fun `요청받은 정산금 송금 테스트`() {
+        val requestedUserId: Long = 2
+        val requestedSettlements = this.settlementRepository.findSettlementDetails(requestedUserId)
+
+        this.settlementRepository.remitSettlements(requestedSettlements)
+
+        val results = this.settlementRepository.findSettlementDetails(requestedUserId)
+
+        assertThat(results.size).isEqualTo(0)
+    }
+}
