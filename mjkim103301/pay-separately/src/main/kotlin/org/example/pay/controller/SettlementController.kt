@@ -6,13 +6,18 @@ import org.example.pay.dto.request.SettlementUpdateDto
 import org.example.pay.service.CalculateSettlementService
 import org.example.pay.service.RemitSettlementService
 import org.example.pay.service.RequestSettlementSerivce
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/v1/settlements")
-class SettlementController(
-
+class SettlementController @Autowired constructor(
     private val remitSettlementService: RemitSettlementService,
     private val requestSettlementService: RequestSettlementSerivce,
     private val calculateSettlementService: CalculateSettlementService

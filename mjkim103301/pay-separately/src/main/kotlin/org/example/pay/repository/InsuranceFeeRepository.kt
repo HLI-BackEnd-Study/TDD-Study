@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.stereotype.Repository
 
-@Repository
+
 interface InsuranceFeeRepository {
     fun createInsuranceFee(insuranceFeeDto: InsuranceFeeDto): InsuranceFee
     fun findInsuranceFeeToBePaid(userId: Long): List<InsuranceFee>
@@ -17,9 +17,10 @@ interface InsuranceFeeRepository {
 
 }
 
+@Repository
 class InsuranceFeeRepositoryImpl : InsuranceFeeRepository {
     override fun createInsuranceFee(insuranceFeeDto: InsuranceFeeDto): InsuranceFee {
-        return transaction {
+        return  transaction {
             InsuranceFee.new {
                 userId = insuranceFeeDto.userId
                 premium = insuranceFeeDto.premium

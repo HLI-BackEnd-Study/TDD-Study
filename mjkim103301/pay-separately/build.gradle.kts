@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	id("org.springframework.boot") version "3.3.1"
@@ -12,9 +13,11 @@ version = "0.0.1-SNAPSHOT"
 val exposedVersion = "0.54.0"
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
+	sourceCompatibility = JavaVersion.VERSION_17
+}
+
+kotlin {
+	jvmToolchain(17)
 }
 
 repositories {
@@ -36,9 +39,9 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-kotlin {
+tasks.withType<KotlinCompile> {
 	compilerOptions {
-		freeCompilerArgs.addAll("-Xjsr305=strict")
+		freeCompilerArgs.set(listOf("-Xjsr305=strict"))
 	}
 }
 

@@ -11,7 +11,7 @@ import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.stereotype.Repository
 
-@Repository
+
 interface SettlementRepository {
     fun findSettlementById(settlementId: Long): Settlement
     fun findSettlementDetailById(settlementDetailId: Long): SettlementDetail
@@ -25,6 +25,7 @@ interface SettlementRepository {
     fun updateToCompleted(settlement: Settlement)
 }
 
+@Repository
 class SettlementRepositoryImpl : SettlementRepository {
     override fun findSettlementById(settlementId: Long): Settlement {
         return transaction {

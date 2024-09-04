@@ -2,6 +2,7 @@ package org.example.pay.service
 
 import org.example.pay.dto.SettlementDetailResponseDto
 import org.example.pay.repository.SettlementRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -11,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Service
 @Transactional(readOnly = true)
-class RemitSettlementService(
+class RemitSettlementService @Autowired constructor(
     private val settlementRepository: SettlementRepository,
     private val userService: UserService
 ) {

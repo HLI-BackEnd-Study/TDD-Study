@@ -4,11 +4,12 @@ import org.example.pay.domain.model.User
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.stereotype.Repository
 
-@Repository
+
 interface UserRepository {
     fun findById(userId: Long): User
 }
 
+@Repository
 class UserRepositoryImpl : UserRepository {
     override fun findById(userId: Long): User {
         return transaction {

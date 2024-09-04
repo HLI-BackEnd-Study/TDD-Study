@@ -2,6 +2,7 @@ package org.example.pay.service
 
 import org.example.pay.dto.InsuranceFeeDto
 import org.example.pay.repository.InsuranceFeeRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -9,9 +10,10 @@ import org.springframework.transaction.annotation.Transactional
  * 개인 보험료 관리 서비스
  *
  */
+
 @Service
 @Transactional(readOnly = true)
-class InsuranceFeeService(
+class InsuranceFeeService @Autowired constructor(
     private val insuranceFeeRepository: InsuranceFeeRepository,
     private val requestSettlementSerivce: RequestSettlementSerivce
 
