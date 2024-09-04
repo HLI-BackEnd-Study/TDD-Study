@@ -17,7 +17,7 @@ class InsuranceFeeController @Autowired constructor(private val insuranceFeeServ
      * 나의 보험료 조회
      */
     @GetMapping("/{user-id}")
-    fun findInsuranceFeesById(@PathVariable userId: Long): ResponseEntity<List<InsuranceFeeDto>> {
+    fun findInsuranceFeesById(@PathVariable(name = "user-id") userId: Long): ResponseEntity<List<InsuranceFeeDto>> {
         val insuranceFees = insuranceFeeService.findInsuranceFee(userId)
         return ResponseEntity.ok(insuranceFees)
     }
